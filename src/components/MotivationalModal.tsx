@@ -75,45 +75,36 @@ export const MotivationalModal = ({ isOpen, onClose, onAcknowledge }: Motivation
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md bg-gradient-wellness border-2 border-primary/20 shadow-floating">
-        <DialogHeader>
-          <DialogTitle className="text-center text-xl font-bold text-primary mb-4">
-            Screen Time Limit Reached!
-          </DialogTitle>
-        </DialogHeader>
-        
-        <div className="text-center space-y-6 py-4">
-          <div className="flex justify-center">
-            <div className="bg-white rounded-full p-4 shadow-wellness">
-              <Icon className={`w-12 h-12 ${currentQuote.color}`} />
+        <div className="text-center space-y-8 py-6">
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-primary">
+              Time Limit Reached
+            </h2>
+            
+            <div className="flex justify-center">
+              <div className="bg-white rounded-full p-6 shadow-wellness">
+                <Icon className={`w-16 h-16 ${currentQuote.color}`} />
+              </div>
             </div>
-          </div>
-          
-          <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-foreground">
+            
+            <h3 className="text-3xl font-bold text-foreground px-4">
               {currentQuote.text}
             </h3>
-            <p className="text-muted-foreground">
-              {currentQuote.description}
-            </p>
           </div>
           
-          <div className="bg-primary/5 rounded-lg p-4 border border-primary/10">
-            <p className="text-sm text-primary font-medium">
-              Take a break and return to a healthier relationship with technology ✨
-            </p>
-          </div>
-          
-          <div className="flex gap-3 pt-2">
+          <div className="flex gap-4 pt-4">
             <Button 
               onClick={onClose}
               variant="outline"
-              className="flex-1 border-primary/20 hover:bg-primary/5"
+              size="lg"
+              className="flex-1 border-primary/20 hover:bg-primary/5 text-lg py-6"
             >
               Just 5 more minutes
             </Button>
             <Button 
               onClick={onAcknowledge}
-              className="flex-1 bg-gradient-primary hover:opacity-90 shadow-gentle"
+              size="lg"
+              className="flex-1 bg-gradient-primary hover:opacity-90 shadow-gentle text-lg py-6"
             >
               I'll take a break!
             </Button>
