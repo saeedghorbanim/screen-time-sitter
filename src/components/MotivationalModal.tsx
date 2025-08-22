@@ -57,10 +57,11 @@ const motivationalQuotes = [
 interface MotivationalModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onExtend: () => void;
   onAcknowledge: () => void;
 }
 
-export const MotivationalModal = ({ isOpen, onClose, onAcknowledge }: MotivationalModalProps) => {
+export const MotivationalModal = ({ isOpen, onClose, onExtend, onAcknowledge }: MotivationalModalProps) => {
   const [currentQuote, setCurrentQuote] = useState(motivationalQuotes[0]);
 
   useEffect(() => {
@@ -90,7 +91,7 @@ export const MotivationalModal = ({ isOpen, onClose, onAcknowledge }: Motivation
           
           <div className="flex flex-col gap-3 pt-2">
             <Button 
-              onClick={onClose}
+              onClick={onExtend}
               variant="outline"
               size="lg"
               className="w-full border-white/30 bg-white/10 text-white hover:bg-white/20 text-base py-4 font-comfortaa font-semibold rounded-lg"

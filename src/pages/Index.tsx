@@ -91,6 +91,17 @@ const Index = () => {
     });
   };
 
+  const handleModalExtend = () => {
+    setDailyLimit(prev => prev + 5); // Add 5 minutes
+    setShowModal(false);
+    setHasShownWarning(false); // Reset warning so it can show again at new limit
+    setIsTracking(true); // Resume tracking
+    toast({
+      title: "Extended! ⏰",
+      description: "Added 5 more minutes to your daily limit",
+    });
+  };
+
   const handleModalAcknowledge = () => {
     setShowModal(false);
     setIsTracking(false);
@@ -244,6 +255,7 @@ const Index = () => {
       <MotivationalModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
+        onExtend={handleModalExtend}
         onAcknowledge={handleModalAcknowledge}
       />
     </div>
