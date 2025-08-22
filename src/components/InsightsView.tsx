@@ -159,50 +159,74 @@ export const InsightsView = () => {
         </CardContent>
       </Card>
 
-      {/* Trends */}
+      {/* Improvement Suggestions */}
       <Card className="shadow-wellness border-2 border-primary/10 bg-white/80">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-primary">
-            <TrendingDown className="w-5 h-5" />
-            Weekly Trends
+            <TrendingUp className="w-5 h-5" />
+            Improvement Suggestions
           </CardTitle>
           <CardDescription>
-            Insights about your digital wellness journey
+            Personalized tips to help you achieve your digital wellness goals
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4">
-            <div className="flex items-start gap-3 p-3 bg-green-50/50 rounded-lg border border-green-200/50">
-              <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
-              <div>
-                <div className="font-medium text-green-800">Great Progress!</div>
-                <div className="text-sm text-green-700">
-                  You stayed within your limit on {successDays} out of 7 days this week.
-                </div>
-              </div>
-            </div>
-            
-            {exceededDays > 0 && (
-              <div className="flex items-start gap-3 p-3 bg-red-50/50 rounded-lg border border-red-200/50">
-                <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5" />
+            {averageUsage > 120 && (
+              <div className="flex items-start gap-3 p-3 bg-amber-50/50 rounded-lg border border-amber-200/50">
+                <Clock className="w-5 h-5 text-amber-600 mt-0.5" />
                 <div>
-                  <div className="font-medium text-red-800">Room for Improvement</div>
-                  <div className="text-sm text-red-700">
-                    You exceeded your daily limit on {exceededDays} days. Consider adjusting your habits or limit.
+                  <div className="font-medium text-amber-800">Set Smaller Daily Goals</div>
+                  <div className="text-sm text-amber-700">
+                    Try reducing your daily limit by 15-30 minutes. Gradual changes are more sustainable than drastic cuts.
                   </div>
                 </div>
               </div>
             )}
             
-            <div className="flex items-start gap-3 p-3 bg-blue-50/50 rounded-lg border border-blue-200/50">
-              <Clock className="w-5 h-5 text-blue-600 mt-0.5" />
+            {exceededDays >= 3 && (
+              <div className="flex items-start gap-3 p-3 bg-blue-50/50 rounded-lg border border-blue-200/50">
+                <AlertTriangle className="w-5 h-5 text-blue-600 mt-0.5" />
+                <div>
+                  <div className="font-medium text-blue-800">Create Phone-Free Zones</div>
+                  <div className="text-sm text-blue-700">
+                    Designate certain areas (like your bedroom or dining table) as phone-free spaces to build healthy habits.
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            <div className="flex items-start gap-3 p-3 bg-green-50/50 rounded-lg border border-green-200/50">
+              <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
               <div>
-                <div className="font-medium text-blue-800">Daily Average</div>
-                <div className="text-sm text-blue-700">
-                  Your average daily usage is {formatTime(averageUsage)}. Keep working towards your {formatTime(120)} daily goal!
+                <div className="font-medium text-green-800">Use the 20-20-20 Rule</div>
+                <div className="text-sm text-green-700">
+                  Every 20 minutes, look at something 20 feet away for 20 seconds. This helps reduce eye strain and creates natural breaks.
                 </div>
               </div>
             </div>
+            
+            {successDays >= 5 ? (
+              <div className="flex items-start gap-3 p-3 bg-purple-50/50 rounded-lg border border-purple-200/50">
+                <TrendingUp className="w-5 h-5 text-purple-600 mt-0.5" />
+                <div>
+                  <div className="font-medium text-purple-800">You're Doing Great!</div>
+                  <div className="text-sm text-purple-700">
+                    Consider challenging yourself with a slightly lower daily limit or explore new offline hobbies.
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-start gap-3 p-3 bg-indigo-50/50 rounded-lg border border-indigo-200/50">
+                <Clock className="w-5 h-5 text-indigo-600 mt-0.5" />
+                <div>
+                  <div className="font-medium text-indigo-800">Schedule Breaks</div>
+                  <div className="text-sm text-indigo-700">
+                    Set reminders to take 5-minute breaks every hour. Use this time to stretch, breathe, or look outside.
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
