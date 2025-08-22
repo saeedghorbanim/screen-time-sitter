@@ -58,7 +58,7 @@ const Index = () => {
   // Show loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-wellness flex items-center justify-center">
+      <div className="min-h-screen bg-wellness-enhanced floating-orbs flex items-center justify-center">
         <Card className="p-8 text-center">
           <div className="text-primary">Loading...</div>
         </Card>
@@ -69,7 +69,7 @@ const Index = () => {
   // Show login prompt if not authenticated
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-wellness flex items-center justify-center p-4">
+      <div className="min-h-screen bg-wellness-enhanced floating-orbs flex items-center justify-center p-4">
         <Card className="max-w-md mx-auto text-center shadow-wellness border-2 border-primary/10 bg-white/90">
           <CardHeader>
             <div className="flex justify-center mb-4">
@@ -164,7 +164,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-wellness px-4 py-2">
+    <div className="min-h-screen bg-wellness-enhanced floating-orbs px-4 py-2">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-primary/10 sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4">

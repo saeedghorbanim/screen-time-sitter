@@ -127,7 +127,7 @@ export const Testimonials = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-wellness flex items-center justify-center p-4">
+      <div className="min-h-screen bg-wellness-enhanced floating-orbs flex items-center justify-center p-4">
         <Card className="w-full max-w-md text-center border-2 border-primary/10 bg-white/80 backdrop-blur-sm">
           <CardHeader>
             <CardTitle>Sign In Required</CardTitle>
@@ -146,7 +146,7 @@ export const Testimonials = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-wellness p-4">
+    <div className="min-h-screen bg-wellness-enhanced floating-orbs p-4">
       <div className="container mx-auto max-w-4xl space-y-6">
         {/* Header */}
         <div className="text-center py-8">

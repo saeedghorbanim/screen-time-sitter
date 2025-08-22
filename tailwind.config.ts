@@ -79,8 +79,13 @@ export default {
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-wellness': 'var(--gradient-wellness)',
+				'gradient-sunset': 'var(--gradient-sunset)',
+				'gradient-ocean': 'var(--gradient-ocean)',
+				'gradient-forest': 'var(--gradient-forest)',
 				'gradient-progress': 'var(--gradient-progress)',
-				'gradient-warning': 'var(--gradient-warning)'
+				'gradient-warning': 'var(--gradient-warning)',
+				'pattern-dots': 'var(--pattern-dots)',
+				'pattern-waves': 'var(--pattern-waves)'
 			},
 			boxShadow: {
 				'gentle': 'var(--shadow-gentle)',
