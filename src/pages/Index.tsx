@@ -6,11 +6,10 @@ import { ProgressCircle } from "@/components/ProgressCircle";
 import { TimeDisplay } from "@/components/TimeDisplay";
 import { TimeLimitSettings } from "@/components/TimeLimitSettings";
 import { InsightsView } from "@/components/InsightsView";
-import { BuddiesView } from "@/components/BuddiesView";
 import { MotivationalModal } from "@/components/MotivationalModal";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/components/AuthProvider";
-import { Smartphone, Settings, BarChart3, Play, Pause, RotateCcw, LogOut, Users, LogIn } from "lucide-react";
+import { Smartphone, Settings, BarChart3, Play, Pause, RotateCcw, LogOut, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Index = () => {
@@ -204,14 +203,10 @@ const Index = () => {
 
       <main className="container mx-auto px-4 py-8 max-w-4xl">
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-white/50 border border-primary/10">
+          <TabsList className="grid w-full grid-cols-3 bg-white/50 border border-primary/10">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <BarChart3 className="w-4 h-4" />
               Dashboard
-            </TabsTrigger>
-            <TabsTrigger value="buddies" className="flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              Buddies
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Settings className="w-4 h-4" />
@@ -300,9 +295,6 @@ const Index = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="buddies">
-            <BuddiesView />
-          </TabsContent>
 
           <TabsContent value="settings">
             <TimeLimitSettings
