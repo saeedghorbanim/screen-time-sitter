@@ -23,16 +23,37 @@ export const BuddyRequests = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('buddy_requests')
-        .select(`
-          *,
-          sender:profiles!buddy_requests_sender_id_fkey(display_name, username),
-          receiver:profiles!buddy_requests_receiver_id_fkey(display_name, username)
-        `)
+        .select('*')
         .or(`sender_id.eq.${user?.id},receiver_id.eq.${user?.id}`)
         .eq('status', 'pending');
 
       if (error) throw error;
-      return data;
+
+      // Fetch sender and receiver profiles manually
+      const requestsWithProfiles = await Promise.all(
+        data.map(async (request) => {
+          const [senderProfile, receiverProfile] = await Promise.all([
+            supabase
+              .from('profiles')
+              .select('display_name, username, user_id')
+              .eq('user_id', request.sender_id)
+              .maybeSingle(),
+            supabase
+              .from('profiles')
+              .select('display_name, username, user_id')
+              .eq('user_id', request.receiver_id)
+              .maybeSingle()
+          ]);
+
+          return {
+            ...request,
+            sender: senderProfile.data,
+            receiver: receiverProfile.data,
+          };
+        })
+      );
+
+      return requestsWithProfiles;
     },
     enabled: !!user?.id,
   });

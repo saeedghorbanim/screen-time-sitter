@@ -17,23 +17,30 @@ export const BuddiesList = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('buddies')
-        .select(`
-          *,
-          user1:profiles!buddies_user1_id_fkey(display_name, username, user_id),
-          user2:profiles!buddies_user2_id_fkey(display_name, username, user_id)
-        `)
+        .select('*')
         .or(`user1_id.eq.${user?.id},user2_id.eq.${user?.id}`);
 
       if (error) throw error;
 
-      // Get the buddy (not the current user) from each relationship
-      const buddyProfiles = data.map(buddy => {
-        const isUser1 = buddy.user1_id === user?.id;
-        return {
-          ...buddy,
-          buddy_profile: isUser1 ? buddy.user2 : buddy.user1,
-        };
-      });
+      // Get the buddy profiles manually
+      const buddyProfiles = await Promise.all(
+        data.map(async (buddy) => {
+          const isUser1 = buddy.user1_id === user?.id;
+          const buddyUserId = isUser1 ? buddy.user2_id : buddy.user1_id;
+
+          // Fetch buddy profile
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('display_name, username, user_id')
+            .eq('user_id', buddyUserId)
+            .single();
+
+          return {
+            ...buddy,
+            buddy_profile: profile,
+          };
+        })
+      );
 
       // Fetch today's usage data for each buddy
       const buddiesWithUsage = await Promise.all(
@@ -41,9 +48,9 @@ export const BuddiesList = () => {
           const { data: usage } = await supabase
             .from('daily_usage')
             .select('usage_minutes, daily_limit_minutes, status')
-            .eq('user_id', buddy.buddy_profile.user_id)
+            .eq('user_id', buddy.buddy_profile?.user_id)
             .eq('date', new Date().toISOString().split('T')[0])
-            .single();
+            .maybeSingle();
 
           return {
             ...buddy,
@@ -94,7 +101,7 @@ export const BuddiesList = () => {
             <Card key={buddy.id} className="border-2 border-primary/10 bg-white/80 backdrop-blur-sm">
               <CardHeader className="text-center">
                 <CardTitle className="text-lg">
-                  {buddy.buddy_profile.display_name || buddy.buddy_profile.username || 'Unknown User'}
+                  {buddy.buddy_profile?.display_name || buddy.buddy_profile?.username || 'Unknown User'}
                 </CardTitle>
                 <CardDescription>Today's Progress</CardDescription>
               </CardHeader>
