@@ -13,9 +13,8 @@ import { Smartphone, Settings, BarChart3, Play, Pause, RotateCcw, LogOut, Users,
 import { Link } from "react-router-dom";
 
 const Index = () => {
+  // ALL HOOKS MUST BE CALLED FIRST - BEFORE ANY CONDITIONAL RETURNS
   const { user, signOut, loading } = useAuth();
-  
-  // State management
   const [dailyLimit, setDailyLimit] = useState(120); // 2 hours default
   const [currentUsage, setCurrentUsage] = useState(85); // Demo usage
   const [isTracking, setIsTracking] = useState(false);
@@ -23,6 +22,38 @@ const Index = () => {
   const [hasShownWarning, setHasShownWarning] = useState(false);
   const { toast } = useToast();
 
+  // Calculate progress percentage
+  const progressPercentage = (currentUsage / dailyLimit) * 100;
+  const remainingTime = Math.max(0, dailyLimit - currentUsage);
+
+  // Demo timer effect - ALL useEffect calls must be before conditional returns
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    
+    if (isTracking && currentUsage < dailyLimit) {
+      interval = setInterval(() => {
+        setCurrentUsage(prev => {
+          const newUsage = prev + 1;
+          
+          // Show warning and stop tracking when limit is reached
+          if (newUsage >= dailyLimit && !hasShownWarning) {
+            setShowModal(true);
+            setHasShownWarning(true);
+            setIsTracking(false); // Stop tracking automatically
+          }
+          
+          return newUsage;
+        });
+      }, 1000); // Increase usage by 1 minute every second for demo
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isTracking, dailyLimit, hasShownWarning, currentUsage]);
+
+  // NOW we can do conditional returns after all hooks are called
+  
   // Show loading state
   if (loading) {
     return (
@@ -67,36 +98,6 @@ const Index = () => {
       </div>
     );
   }
-
-  // Calculate progress percentage
-  const progressPercentage = (currentUsage / dailyLimit) * 100;
-  const remainingTime = Math.max(0, dailyLimit - currentUsage);
-
-  // Demo timer effect
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    
-    if (isTracking && currentUsage < dailyLimit) {
-      interval = setInterval(() => {
-        setCurrentUsage(prev => {
-          const newUsage = prev + 1;
-          
-          // Show warning and stop tracking when limit is reached
-          if (newUsage >= dailyLimit && !hasShownWarning) {
-            setShowModal(true);
-            setHasShownWarning(true);
-            setIsTracking(false); // Stop tracking automatically
-          }
-          
-          return newUsage;
-        });
-      }, 1000); // Increase usage by 1 minute every second for demo
-    }
-
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [isTracking, dailyLimit, hasShownWarning, currentUsage]);
 
   const handleLimitChange = (newLimit: number) => {
     setDailyLimit(newLimit);
