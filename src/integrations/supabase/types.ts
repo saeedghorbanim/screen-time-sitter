@@ -14,7 +14,120 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      buddies: {
+        Row: {
+          created_at: string
+          id: string
+          user1_id: string
+          user2_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user1_id: string
+          user2_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user1_id?: string
+          user2_id?: string
+        }
+        Relationships: []
+      }
+      buddy_requests: {
+        Row: {
+          created_at: string
+          id: string
+          message: string | null
+          receiver_id: string
+          sender_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          receiver_id: string
+          sender_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          receiver_id?: string
+          sender_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      daily_usage: {
+        Row: {
+          created_at: string
+          daily_limit_minutes: number
+          date: string
+          id: string
+          status: string
+          updated_at: string
+          usage_minutes: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          daily_limit_minutes?: number
+          date?: string
+          id?: string
+          status?: string
+          updated_at?: string
+          usage_minutes?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          daily_limit_minutes?: number
+          date?: string
+          id?: string
+          status?: string
+          updated_at?: string
+          usage_minutes?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
