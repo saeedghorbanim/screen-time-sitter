@@ -166,7 +166,7 @@
 }
 
 /* Enhanced background utilities */
-@layer base {
+@layer utilities {
   .bg-calming-dots {
     background-image: var(--pattern-dots);
     background-size: 20px 20px;

@@ -8,12 +8,6 @@ export default {
 		"./app/**/*.{ts,tsx}",
 		"./src/**/*.{ts,tsx}",
 	],
-	safelist: [
-		'bg-wellness-enhanced',
-		'floating-orbs',
-		'bg-calming-dots',
-		'bg-calming-waves'
-	],
 	prefix: "",
 	theme: {
 		container: {
