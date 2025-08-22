@@ -47,6 +47,86 @@ const getStatusColor = (status: string) => {
   }
 };
 
+const suggestionPool = [
+  {
+    title: "Try the Pomodoro Technique",
+    description: "Work in 25-minute focused blocks, then take a 5-minute break. This naturally limits screen time while boosting productivity.",
+    icon: "Clock",
+    color: "blue"
+  },
+  {
+    title: "Create Morning Phone-Free Time", 
+    description: "Keep your phone away for the first hour after waking up. Start your day with intention instead of notifications.",
+    icon: "CheckCircle",
+    color: "green"
+  },
+  {
+    title: "Use Grayscale Mode",
+    description: "Switch your phone to grayscale to make it less visually appealing and reduce the urge to mindlessly scroll.",
+    icon: "AlertTriangle", 
+    color: "amber"
+  },
+  {
+    title: "Set App Time Limits",
+    description: "Use built-in screen time controls to set daily limits on your most-used social media and entertainment apps.",
+    icon: "Clock",
+    color: "indigo"
+  },
+  {
+    title: "Practice the 5-4-3-2-1 Grounding",
+    description: "When you feel the urge to check your phone, notice 5 things you see, 4 you can touch, 3 you hear, 2 you smell, 1 you taste.",
+    icon: "CheckCircle",
+    color: "purple"
+  },
+  {
+    title: "Charge Your Phone Outside the Bedroom",
+    description: "Keep your phone in another room while sleeping. Use a traditional alarm clock instead of your phone.",
+    icon: "TrendingUp",
+    color: "green"
+  },
+  {
+    title: "Take Walking Breaks",
+    description: "Every hour, take a 5-minute walk without your phone. Fresh air and movement help reset your focus.",
+    icon: "Clock",
+    color: "blue"
+  },
+  {
+    title: "Use Do Not Disturb Liberally",
+    description: "Schedule automatic Do Not Disturb during work hours, meals, and family time. You control your notifications, not the other way around.",
+    icon: "AlertTriangle",
+    color: "amber"
+  },
+  {
+    title: "Practice Single-Tasking",
+    description: "When eating, just eat. When talking to someone, just listen. Give your full attention to one thing at a time.",
+    icon: "CheckCircle",
+    color: "green"
+  },
+  {
+    title: "Create Tech-Free Meals",
+    description: "Make all meals phone-free zones. This improves digestion, conversation, and mindful eating habits.",
+    icon: "TrendingUp",
+    color: "purple"
+  },
+  {
+    title: "Use Physical Books Instead",
+    description: "Replace some of your digital reading with physical books or magazines. It's easier on your eyes and more engaging.",
+    icon: "Clock",
+    color: "indigo"
+  },
+  {
+    title: "Practice Deep Breathing",
+    description: "Before picking up your phone, take three deep breaths. Ask yourself: 'Do I really need to check this right now?'",
+    icon: "CheckCircle",
+    color: "blue"
+  }
+];
+
+const getRandomSuggestions = (count: number) => {
+  const shuffled = [...suggestionPool].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+};
+
 const formatTime = (minutes: number) => {
   const hours = Math.floor(minutes / 60);
   const mins = minutes % 60;
@@ -61,6 +141,76 @@ export const InsightsView = () => {
   const averageUsage = Math.round(totalUsage / weeklyData.length);
   const successDays = weeklyData.filter(day => day.status === 'success').length;
   const exceededDays = weeklyData.filter(day => day.status === 'exceeded').length;
+  
+  const suggestions = getRandomSuggestions(4);
+
+  const getIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'Clock':
+        return Clock;
+      case 'CheckCircle':
+        return CheckCircle;
+      case 'AlertTriangle':
+        return AlertTriangle;
+      case 'TrendingUp':
+        return TrendingUp;
+      default:
+        return CheckCircle;
+    }
+  };
+
+  const getColorClasses = (color: string) => {
+    switch (color) {
+      case 'blue':
+        return {
+          bg: 'bg-blue-50/50',
+          border: 'border-blue-200/50',
+          iconColor: 'text-blue-600',
+          titleColor: 'text-blue-800',
+          descColor: 'text-blue-700'
+        };
+      case 'green':
+        return {
+          bg: 'bg-green-50/50',
+          border: 'border-green-200/50',
+          iconColor: 'text-green-600',
+          titleColor: 'text-green-800',
+          descColor: 'text-green-700'
+        };
+      case 'amber':
+        return {
+          bg: 'bg-amber-50/50',
+          border: 'border-amber-200/50',
+          iconColor: 'text-amber-600',
+          titleColor: 'text-amber-800',
+          descColor: 'text-amber-700'
+        };
+      case 'purple':
+        return {
+          bg: 'bg-purple-50/50',
+          border: 'border-purple-200/50',
+          iconColor: 'text-purple-600',
+          titleColor: 'text-purple-800',
+          descColor: 'text-purple-700'
+        };
+      case 'indigo':
+        return {
+          bg: 'bg-indigo-50/50',
+          border: 'border-indigo-200/50',
+          iconColor: 'text-indigo-600',
+          titleColor: 'text-indigo-800',
+          descColor: 'text-indigo-700'
+        };
+      default:
+        return {
+          bg: 'bg-blue-50/50',
+          border: 'border-blue-200/50',
+          iconColor: 'text-blue-600',
+          titleColor: 'text-blue-800',
+          descColor: 'text-blue-700'
+        };
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -169,61 +319,22 @@ export const InsightsView = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4">
-            {averageUsage > 120 && (
-              <div className="flex items-start gap-3 p-3 bg-amber-50/50 rounded-lg border border-amber-200/50">
-                <Clock className="w-5 h-5 text-amber-600 mt-0.5" />
-                <div>
-                  <div className="text-lg font-bold text-amber-800">Set Smaller Daily Goals</div>
-                  <div className="text-base text-amber-700">
-                    Try reducing your daily limit by 15-30 minutes. Gradual changes are more sustainable than drastic cuts.
+            {suggestions.map((suggestion, index) => {
+              const IconComponent = getIcon(suggestion.icon);
+              const colors = getColorClasses(suggestion.color);
+              
+              return (
+                <div key={index} className={`flex items-start gap-3 p-3 ${colors.bg} rounded-lg border ${colors.border}`}>
+                  <IconComponent className={`w-5 h-5 ${colors.iconColor} mt-0.5`} />
+                  <div>
+                    <div className={`text-lg font-bold ${colors.titleColor}`}>{suggestion.title}</div>
+                    <div className={`text-base ${colors.descColor}`}>
+                      {suggestion.description}
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-            
-            {exceededDays >= 3 && (
-              <div className="flex items-start gap-3 p-3 bg-blue-50/50 rounded-lg border border-blue-200/50">
-                <AlertTriangle className="w-5 h-5 text-blue-600 mt-0.5" />
-                <div>
-                  <div className="text-lg font-bold text-blue-800">Create Phone-Free Zones</div>
-                  <div className="text-base text-blue-700">
-                    Designate certain areas (like your bedroom or dining table) as phone-free spaces to build healthy habits.
-                  </div>
-                </div>
-              </div>
-            )}
-            
-            <div className="flex items-start gap-3 p-3 bg-green-50/50 rounded-lg border border-green-200/50">
-              <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
-              <div>
-                <div className="text-lg font-bold text-green-800">Use the 20-20-20 Rule</div>
-                <div className="text-base text-green-700">
-                  Every 20 minutes, look at something 20 feet away for 20 seconds. This helps reduce eye strain and creates natural breaks.
-                </div>
-              </div>
-            </div>
-            
-            {successDays >= 5 ? (
-              <div className="flex items-start gap-3 p-3 bg-purple-50/50 rounded-lg border border-purple-200/50">
-                <TrendingUp className="w-5 h-5 text-purple-600 mt-0.5" />
-                <div>
-                  <div className="text-lg font-bold text-purple-800">You're Doing Great!</div>
-                  <div className="text-base text-purple-700">
-                    Consider challenging yourself with a slightly lower daily limit or explore new offline hobbies.
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="flex items-start gap-3 p-3 bg-indigo-50/50 rounded-lg border border-indigo-200/50">
-                <Clock className="w-5 h-5 text-indigo-600 mt-0.5" />
-                <div>
-                  <div className="text-lg font-bold text-indigo-800">Schedule Breaks</div>
-                  <div className="text-base text-indigo-700">
-                    Set reminders to take 5-minute breaks every hour. Use this time to stretch, breathe, or look outside.
-                  </div>
-                </div>
-              </div>
-            )}
+              );
+            })}
           </div>
         </CardContent>
       </Card>
