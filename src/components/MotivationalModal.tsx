@@ -74,31 +74,33 @@ export const MotivationalModal = ({ isOpen, onClose, onAcknowledge }: Motivation
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-sm mx-4 bg-red-500 border-2 border-red-600 shadow-xl">
-        <div className="text-center space-y-6 py-4">
+      <DialogContent className="max-w-sm mx-auto bg-red-500 border-2 border-red-600 shadow-xl rounded-xl">
+        <div className="text-center space-y-6 py-6 px-4">
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-white">
+            <h2 className="text-2xl font-bold text-white leading-tight">
               Time Limit Reached
             </h2>
             
-            <h3 className="text-2xl font-semibold text-white px-2">
-              {currentQuote.text}
-            </h3>
+            <div className="px-2">
+              <h3 className="text-xl font-semibold text-white leading-relaxed break-words">
+                {currentQuote.text}
+              </h3>
+            </div>
           </div>
           
-          <div className="flex gap-3 pt-4">
+          <div className="flex flex-col gap-3 pt-2">
             <Button 
               onClick={onClose}
               variant="outline"
               size="lg"
-              className="flex-1 border-white/30 bg-white/10 text-white hover:bg-white/20 text-base py-4 font-semibold"
+              className="w-full border-white/30 bg-white/10 text-white hover:bg-white/20 text-base py-4 font-semibold rounded-lg"
             >
               Just 5 more minutes
             </Button>
             <Button 
               onClick={onAcknowledge}
               size="lg"
-              className="flex-1 bg-white text-red-600 hover:bg-gray-100 text-base py-4 font-semibold"
+              className="w-full bg-white text-red-600 hover:bg-gray-100 text-base py-4 font-semibold rounded-lg"
             >
               I'll take a break!
             </Button>
