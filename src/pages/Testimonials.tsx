@@ -151,7 +151,7 @@ export const Testimonials = () => {
         {/* Header */}
         <div className="text-center py-8">
           <Heart className="w-16 h-16 mx-auto text-red-500 mb-4" />
-          <h1 className="text-4xl font-bold text-primary mb-4">Community Success Stories</h1>
+          <h1 className="text-4xl font-bold text-primary mb-4">Community Successes</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Real stories from real people who have transformed their digital wellness with MindfulTime.
           </p>
@@ -164,7 +164,7 @@ export const Testimonials = () => {
               className="bg-gradient-primary hover:opacity-90"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Share Your Story
+              Share Your Success
             </Button>
           </div>
         </div>
@@ -175,7 +175,7 @@ export const Testimonials = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <MessageSquare className="w-5 h-5" />
-                Share Your Success Story
+                Share Your Success
               </CardTitle>
               <CardDescription>
                 Help inspire others by sharing how MindfulTime has helped improve your digital wellness.
@@ -194,7 +194,7 @@ export const Testimonials = () => {
               </div>
               
               <div>
-                <label className="text-sm font-medium">Your Story</label>
+                <label className="text-sm font-medium">Your Success</label>
                 <Textarea
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
@@ -224,7 +224,7 @@ export const Testimonials = () => {
                   className="bg-gradient-primary hover:opacity-90"
                 >
                   <Send className="w-4 h-4 mr-2" />
-                  {submitTestimonialMutation.isPending ? 'Submitting...' : 'Submit Story'}
+                  {submitTestimonialMutation.isPending ? "Submitting..." : "Submit Success"}
                 </Button>
               </div>
             </CardContent>
@@ -237,7 +237,7 @@ export const Testimonials = () => {
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
                 <div className="text-2xl font-bold text-primary">{testimonials.length}</div>
-                <div className="text-sm text-muted-foreground">Success Stories</div>
+                <div className="text-sm text-muted-foreground">Successes</div>
               </div>
               <div>
                 <div className="text-2xl font-bold text-primary">
@@ -249,7 +249,7 @@ export const Testimonials = () => {
                 <div className="text-2xl font-bold text-primary">
                   {testimonials.filter(t => t.is_featured).length}
                 </div>
-                <div className="text-sm text-muted-foreground">Featured Stories</div>
+                <div className="text-sm text-muted-foreground">Featured Successes</div>
               </div>
             </div>
           </CardContent>
@@ -259,7 +259,7 @@ export const Testimonials = () => {
         {isLoading && (
           <div className="text-center py-12">
             <MessageSquare className="w-12 h-12 mx-auto text-primary mb-4 animate-pulse" />
-            <p className="text-muted-foreground">Loading success stories...</p>
+            <p className="text-muted-foreground">Loading successes...</p>
           </div>
         )}
 
@@ -268,16 +268,16 @@ export const Testimonials = () => {
           <Card className="border-2 border-primary/10 bg-white/80 backdrop-blur-sm">
             <CardContent className="pt-6 text-center py-12">
               <MessageSquare className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-xl font-semibold mb-2">No stories yet</h3>
+              <h3 className="text-xl font-semibold mb-2">No successes yet</h3>
               <p className="text-muted-foreground mb-4">
-                Be the first to share your success story with the community!
+                Be the first to share your success with the community!
               </p>
               <Button 
                 onClick={() => setShowForm(true)}
                 className="bg-gradient-primary hover:opacity-90"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Share Your Story
+                Share Your Success
               </Button>
             </CardContent>
           </Card>
@@ -321,12 +321,12 @@ export const Testimonials = () => {
                 <div className="flex items-center justify-between mt-4">
                   <div className="flex items-center gap-2">
                     <ThumbsUp className="w-4 h-4 text-green-500" />
-                    <span className="text-sm text-muted-foreground">Helpful story</span>
+                    <span className="text-sm text-muted-foreground">Helpful success</span>
                   </div>
                   {testimonial.is_featured && (
-                    <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
-                      Featured Story
-                    </Badge>
+                     <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+                       Featured Success
+                     </Badge>
                   )}
                 </div>
               </CardContent>

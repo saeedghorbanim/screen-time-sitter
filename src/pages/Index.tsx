@@ -219,7 +219,7 @@ const Index = () => {
               onClick={() => navigate('/testimonials')}
             >
               <Heart className="w-4 h-4" />
-              Stories
+              Successes
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Settings className="w-4 h-4" />
