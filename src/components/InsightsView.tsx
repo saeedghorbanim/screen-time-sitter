@@ -166,9 +166,6 @@ export const InsightsView = () => {
             <TrendingUp className="w-5 h-5" />
             Improvement Suggestions
           </CardTitle>
-          <CardDescription>
-            Personalized tips to help you achieve your digital wellness goals
-          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4">
@@ -176,8 +173,8 @@ export const InsightsView = () => {
               <div className="flex items-start gap-3 p-3 bg-amber-50/50 rounded-lg border border-amber-200/50">
                 <Clock className="w-5 h-5 text-amber-600 mt-0.5" />
                 <div>
-                  <div className="font-medium text-amber-800">Set Smaller Daily Goals</div>
-                  <div className="text-sm text-amber-700">
+                  <div className="text-lg font-bold text-amber-800">Set Smaller Daily Goals</div>
+                  <div className="text-base text-amber-700">
                     Try reducing your daily limit by 15-30 minutes. Gradual changes are more sustainable than drastic cuts.
                   </div>
                 </div>
@@ -188,8 +185,8 @@ export const InsightsView = () => {
               <div className="flex items-start gap-3 p-3 bg-blue-50/50 rounded-lg border border-blue-200/50">
                 <AlertTriangle className="w-5 h-5 text-blue-600 mt-0.5" />
                 <div>
-                  <div className="font-medium text-blue-800">Create Phone-Free Zones</div>
-                  <div className="text-sm text-blue-700">
+                  <div className="text-lg font-bold text-blue-800">Create Phone-Free Zones</div>
+                  <div className="text-base text-blue-700">
                     Designate certain areas (like your bedroom or dining table) as phone-free spaces to build healthy habits.
                   </div>
                 </div>
@@ -199,8 +196,8 @@ export const InsightsView = () => {
             <div className="flex items-start gap-3 p-3 bg-green-50/50 rounded-lg border border-green-200/50">
               <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
               <div>
-                <div className="font-medium text-green-800">Use the 20-20-20 Rule</div>
-                <div className="text-sm text-green-700">
+                <div className="text-lg font-bold text-green-800">Use the 20-20-20 Rule</div>
+                <div className="text-base text-green-700">
                   Every 20 minutes, look at something 20 feet away for 20 seconds. This helps reduce eye strain and creates natural breaks.
                 </div>
               </div>
@@ -210,8 +207,8 @@ export const InsightsView = () => {
               <div className="flex items-start gap-3 p-3 bg-purple-50/50 rounded-lg border border-purple-200/50">
                 <TrendingUp className="w-5 h-5 text-purple-600 mt-0.5" />
                 <div>
-                  <div className="font-medium text-purple-800">You're Doing Great!</div>
-                  <div className="text-sm text-purple-700">
+                  <div className="text-lg font-bold text-purple-800">You're Doing Great!</div>
+                  <div className="text-base text-purple-700">
                     Consider challenging yourself with a slightly lower daily limit or explore new offline hobbies.
                   </div>
                 </div>
@@ -220,8 +217,8 @@ export const InsightsView = () => {
               <div className="flex items-start gap-3 p-3 bg-indigo-50/50 rounded-lg border border-indigo-200/50">
                 <Clock className="w-5 h-5 text-indigo-600 mt-0.5" />
                 <div>
-                  <div className="font-medium text-indigo-800">Schedule Breaks</div>
-                  <div className="text-sm text-indigo-700">
+                  <div className="text-lg font-bold text-indigo-800">Schedule Breaks</div>
+                  <div className="text-base text-indigo-700">
                     Set reminders to take 5-minute breaks every hour. Use this time to stretch, breathe, or look outside.
                   </div>
                 </div>
