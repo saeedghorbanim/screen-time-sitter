@@ -74,37 +74,31 @@ export const MotivationalModal = ({ isOpen, onClose, onAcknowledge }: Motivation
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md bg-gradient-wellness border-2 border-primary/20 shadow-floating">
-        <div className="text-center space-y-8 py-6">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-primary">
+      <DialogContent className="max-w-sm mx-4 bg-red-500 border-2 border-red-600 shadow-xl">
+        <div className="text-center space-y-6 py-4">
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-white">
               Time Limit Reached
             </h2>
             
-            <div className="flex justify-center">
-              <div className="bg-white rounded-full p-6 shadow-wellness">
-                <Icon className={`w-16 h-16 ${currentQuote.color}`} />
-              </div>
-            </div>
-            
-            <h3 className="text-3xl font-bold text-foreground px-4">
+            <h3 className="text-2xl font-semibold text-white px-2">
               {currentQuote.text}
             </h3>
           </div>
           
-          <div className="flex gap-4 pt-4">
+          <div className="flex gap-3 pt-4">
             <Button 
               onClick={onClose}
               variant="outline"
               size="lg"
-              className="flex-1 border-primary/20 hover:bg-primary/5 text-lg py-6"
+              className="flex-1 border-white/30 bg-white/10 text-white hover:bg-white/20 text-base py-4 font-semibold"
             >
               Just 5 more minutes
             </Button>
             <Button 
               onClick={onAcknowledge}
               size="lg"
-              className="flex-1 bg-gradient-primary hover:opacity-90 shadow-gentle text-lg py-6"
+              className="flex-1 bg-white text-red-600 hover:bg-gray-100 text-base py-4 font-semibold"
             >
               I'll take a break!
             </Button>
