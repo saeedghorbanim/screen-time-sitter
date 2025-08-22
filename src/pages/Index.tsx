@@ -10,7 +10,7 @@ import { MotivationalModal } from "@/components/MotivationalModal";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/components/AuthProvider";
 import { Smartphone, Settings, BarChart3, Play, Pause, RotateCcw, LogOut, LogIn, Trophy, Heart } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Index = () => {
   // ALL HOOKS MUST BE CALLED FIRST - BEFORE ANY CONDITIONAL RETURNS
@@ -212,7 +212,11 @@ const Index = () => {
               <Trophy className="w-4 h-4" />
               Leaderboards
             </TabsTrigger>
-            <TabsTrigger value="testimonials" className="flex items-center gap-2">
+            <TabsTrigger 
+              value="testimonials" 
+              className="flex items-center gap-2"
+              onClick={() => window.open('/testimonials', '_self')}
+            >
               <Heart className="w-4 h-4" />
               Stories
             </TabsTrigger>
@@ -317,15 +321,10 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="testimonials">
+            {/* This tab redirects to the testimonials page */}
             <div className="text-center py-12">
               <Heart className="w-16 h-16 mx-auto text-red-500 mb-4" />
-              <h2 className="text-2xl font-bold text-primary mb-4">Success Stories</h2>
-              <p className="text-muted-foreground mb-6">
-                Read inspiring stories from our community members!
-              </p>
-              <Button asChild className="bg-gradient-primary hover:opacity-90">
-                <Link to="/testimonials">View All Stories</Link>
-              </Button>
+              <h2 className="text-2xl font-bold text-primary mb-4">Redirecting to Stories...</h2>
             </div>
           </TabsContent>
 

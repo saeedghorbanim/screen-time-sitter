@@ -334,24 +334,6 @@ export const Testimonials = () => {
           ))}
         </div>
 
-        {/* Footer CTA */}
-        {testimonials.length > 0 && !showForm && (
-          <Card className="border-2 border-primary/10 bg-white/80 backdrop-blur-sm">
-            <CardContent className="pt-6 text-center py-8">
-              <h3 className="text-xl font-semibold mb-2">Have your own success story?</h3>
-              <p className="text-muted-foreground mb-4">
-                Join the community and inspire others with your digital wellness journey.
-              </p>
-              <Button 
-                onClick={() => setShowForm(true)}
-                className="bg-gradient-primary hover:opacity-90"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Share Your Story
-              </Button>
-            </CardContent>
-          </Card>
-        )}
       </div>
     </div>
   );
