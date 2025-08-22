@@ -9,7 +9,7 @@ import { InsightsView } from "@/components/InsightsView";
 import { MotivationalModal } from "@/components/MotivationalModal";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/components/AuthProvider";
-import { Smartphone, Settings, BarChart3, Play, Pause, RotateCcw, LogOut, LogIn, Trophy } from "lucide-react";
+import { Smartphone, Settings, BarChart3, Play, Pause, RotateCcw, LogOut, LogIn, Trophy, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Index = () => {
@@ -203,7 +203,7 @@ const Index = () => {
 
       <main className="container mx-auto px-4 py-8 max-w-4xl">
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-white/50 border border-primary/10">
+          <TabsList className="grid w-full grid-cols-5 bg-white/50 border border-primary/10">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <BarChart3 className="w-4 h-4" />
               Dashboard
@@ -211,6 +211,10 @@ const Index = () => {
             <TabsTrigger value="leaderboards" className="flex items-center gap-2">
               <Trophy className="w-4 h-4" />
               Leaderboards
+            </TabsTrigger>
+            <TabsTrigger value="testimonials" className="flex items-center gap-2">
+              <Heart className="w-4 h-4" />
+              Stories
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Settings className="w-4 h-4" />
@@ -312,11 +316,17 @@ const Index = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="settings">
-            <TimeLimitSettings
-              currentLimit={dailyLimit}
-              onLimitChange={handleLimitChange}
-            />
+          <TabsContent value="testimonials">
+            <div className="text-center py-12">
+              <Heart className="w-16 h-16 mx-auto text-red-500 mb-4" />
+              <h2 className="text-2xl font-bold text-primary mb-4">Success Stories</h2>
+              <p className="text-muted-foreground mb-6">
+                Read inspiring stories from our community members!
+              </p>
+              <Button asChild className="bg-gradient-primary hover:opacity-90">
+                <Link to="/testimonials">View All Stories</Link>
+              </Button>
+            </div>
           </TabsContent>
 
           <TabsContent value="insights">
