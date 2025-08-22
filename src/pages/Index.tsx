@@ -8,9 +8,13 @@ import { TimeLimitSettings } from "@/components/TimeLimitSettings";
 import { InsightsView } from "@/components/InsightsView";
 import { MotivationalModal } from "@/components/MotivationalModal";
 import { useToast } from "@/hooks/use-toast";
-import { Smartphone, Settings, BarChart3, Play, Pause, RotateCcw } from "lucide-react";
+import { useAuth } from "@/components/AuthProvider";
+import { Smartphone, Settings, BarChart3, Play, Pause, RotateCcw, LogOut, Users, LogIn } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Index = () => {
+  const { user, signOut, loading } = useAuth();
+  
   // State management
   const [dailyLimit, setDailyLimit] = useState(120); // 2 hours default
   const [currentUsage, setCurrentUsage] = useState(85); // Demo usage
@@ -18,6 +22,51 @@ const Index = () => {
   const [showModal, setShowModal] = useState(false);
   const [hasShownWarning, setHasShownWarning] = useState(false);
   const { toast } = useToast();
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-wellness flex items-center justify-center">
+        <Card className="p-8 text-center">
+          <div className="text-primary">Loading...</div>
+        </Card>
+      </div>
+    );
+  }
+
+  // Show login prompt if not authenticated
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gradient-wellness flex items-center justify-center p-4">
+        <Card className="max-w-md mx-auto text-center shadow-wellness border-2 border-primary/10 bg-white/90">
+          <CardHeader>
+            <div className="flex justify-center mb-4">
+              <div className="bg-gradient-primary rounded-xl p-3">
+                <Smartphone className="w-8 h-8 text-white" />
+              </div>
+            </div>
+            <CardTitle className="text-2xl font-bold text-primary">Welcome to MindfulTime</CardTitle>
+            <CardDescription>
+              Your Digital Wellness Companion with Accountability Buddies
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-muted-foreground">
+              Track your screen time, get insights, and stay accountable with friends and family.
+            </p>
+            <div className="space-y-3">
+              <Link to="/auth">
+                <Button className="w-full bg-gradient-primary hover:opacity-90" size="lg">
+                  <LogIn className="w-4 h-4 mr-2" />
+                  Sign In / Sign Up
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   // Calculate progress percentage
   const progressPercentage = (currentUsage / dailyLimit) * 100;
@@ -126,6 +175,26 @@ const Index = () => {
                 <h1 className="text-xl font-bold text-primary">MindfulTime</h1>
                 <p className="text-sm text-muted-foreground">Digital Wellness Companion</p>
               </div>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <div className="text-right">
+                <div className="text-sm font-medium text-primary">
+                  {user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'User'}
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  {user?.email}
+                </div>
+              </div>
+              <Button 
+                onClick={signOut}
+                variant="outline" 
+                size="sm"
+                className="border-primary/20 hover:bg-primary/5"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </Button>
             </div>
           </div>
         </div>
