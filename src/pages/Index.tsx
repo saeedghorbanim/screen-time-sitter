@@ -26,15 +26,16 @@ const Index = () => {
   useEffect(() => {
     let interval: NodeJS.Timeout;
     
-    if (isTracking) {
+    if (isTracking && currentUsage < dailyLimit) {
       interval = setInterval(() => {
         setCurrentUsage(prev => {
           const newUsage = prev + 1;
           
-          // Show warning when approaching or exceeding limit
+          // Show warning and stop tracking when limit is reached
           if (newUsage >= dailyLimit && !hasShownWarning) {
             setShowModal(true);
             setHasShownWarning(true);
+            setIsTracking(false); // Stop tracking automatically
           }
           
           return newUsage;
@@ -45,7 +46,7 @@ const Index = () => {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isTracking, dailyLimit, hasShownWarning]);
+  }, [isTracking, dailyLimit, hasShownWarning, currentUsage]);
 
   const handleLimitChange = (newLimit: number) => {
     setDailyLimit(newLimit);
@@ -57,6 +58,14 @@ const Index = () => {
   };
 
   const handleStartTracking = () => {
+    if (currentUsage >= dailyLimit) {
+      toast({
+        title: "Daily Limit Reached",
+        description: "Reset your usage or wait until tomorrow to continue tracking",
+        variant: "destructive"
+      });
+      return;
+    }
     setIsTracking(true);
     toast({
       title: "Tracking Started",
