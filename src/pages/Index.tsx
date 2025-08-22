@@ -9,7 +9,7 @@ import { InsightsView } from "@/components/InsightsView";
 import { MotivationalModal } from "@/components/MotivationalModal";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/components/AuthProvider";
-import { Smartphone, Settings, BarChart3, Play, Pause, RotateCcw, LogOut, LogIn } from "lucide-react";
+import { Smartphone, Settings, BarChart3, Play, Pause, RotateCcw, LogOut, LogIn, Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Index = () => {
@@ -203,10 +203,14 @@ const Index = () => {
 
       <main className="container mx-auto px-4 py-8 max-w-4xl">
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 bg-white/50 border border-primary/10">
+          <TabsList className="grid w-full grid-cols-4 bg-white/50 border border-primary/10">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <BarChart3 className="w-4 h-4" />
               Dashboard
+            </TabsTrigger>
+            <TabsTrigger value="leaderboards" className="flex items-center gap-2">
+              <Trophy className="w-4 h-4" />
+              Leaderboards
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Settings className="w-4 h-4" />
@@ -295,6 +299,18 @@ const Index = () => {
             </Card>
           </TabsContent>
 
+          <TabsContent value="leaderboards">
+            <div className="text-center py-12">
+              <Trophy className="w-16 h-16 mx-auto text-primary mb-4" />
+              <h2 className="text-2xl font-bold text-primary mb-4">Community Leaderboards</h2>
+              <p className="text-muted-foreground mb-6">
+                Check out how you compare with the community in anonymous rankings!
+              </p>
+              <Button asChild className="bg-gradient-primary hover:opacity-90">
+                <Link to="/leaderboards">View Full Leaderboards</Link>
+              </Button>
+            </div>
+          </TabsContent>
 
           <TabsContent value="settings">
             <TimeLimitSettings
