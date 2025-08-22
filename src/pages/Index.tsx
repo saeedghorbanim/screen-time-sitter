@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProgressCircle } from "@/components/ProgressCircle";
 import { TimeDisplay } from "@/components/TimeDisplay";
 import { TimeLimitSettings } from "@/components/TimeLimitSettings";
+import { InsightsView } from "@/components/InsightsView";
 import { MotivationalModal } from "@/components/MotivationalModal";
 import { useToast } from "@/hooks/use-toast";
 import { Smartphone, Settings, BarChart3, Play, Pause, RotateCcw } from "lucide-react";
@@ -231,22 +232,8 @@ const Index = () => {
             />
           </TabsContent>
 
-          <TabsContent value="insights" className="space-y-6">
-            <Card className="shadow-wellness border-2 border-primary/10">
-              <CardHeader>
-                <CardTitle className="text-primary">Weekly Insights</CardTitle>
-                <CardDescription>
-                  Track your progress and build healthier habits
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="text-center py-12">
-                <div className="text-muted-foreground">
-                  <Smartphone className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                  <p className="text-lg font-medium mb-2">Coming Soon!</p>
-                  <p>Detailed analytics and insights will be available here</p>
-                </div>
-              </CardContent>
-            </Card>
+          <TabsContent value="insights">
+            <InsightsView />
           </TabsContent>
         </Tabs>
       </main>
