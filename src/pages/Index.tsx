@@ -13,6 +13,7 @@ import { Smartphone, Settings, BarChart3, Play, Pause, RotateCcw, LogOut, LogIn,
 import { Link, useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const navigate = useNavigate();
   // ALL HOOKS MUST BE CALLED FIRST - BEFORE ANY CONDITIONAL RETURNS
   const { user, signOut, loading } = useAuth();
   const [dailyLimit, setDailyLimit] = useState(120); // 2 hours default
@@ -215,7 +216,7 @@ const Index = () => {
             <TabsTrigger 
               value="testimonials" 
               className="flex items-center gap-2"
-              onClick={() => window.open('/testimonials', '_self')}
+              onClick={() => navigate('/testimonials')}
             >
               <Heart className="w-4 h-4" />
               Stories
@@ -321,11 +322,7 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="testimonials">
-            {/* This tab redirects to the testimonials page */}
-            <div className="text-center py-12">
-              <Heart className="w-16 h-16 mx-auto text-red-500 mb-4" />
-              <h2 className="text-2xl font-bold text-primary mb-4">Redirecting to Stories...</h2>
-            </div>
+            {/* This content won't be shown as it redirects immediately */}
           </TabsContent>
 
           <TabsContent value="insights">
