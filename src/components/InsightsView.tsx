@@ -1,7 +1,22 @@
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, TrendingDown, TrendingUp, Clock, CheckCircle, AlertTriangle, XCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { PatternInsights } from "./PatternInsights";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { 
+  Calendar, 
+  TrendingDown, 
+  TrendingUp, 
+  Clock, 
+  CheckCircle, 
+  AlertTriangle, 
+  XCircle,
+  Brain,
+  RefreshCw
+} from "lucide-react";
 
 interface DayData {
   day: string;
@@ -137,12 +152,48 @@ const formatTime = (minutes: number) => {
 };
 
 export const InsightsView = () => {
+  const [patternData, setPatternData] = useState<any>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const { toast } = useToast();
+  
   const totalUsage = weeklyData.reduce((sum, day) => sum + day.usage, 0);
   const averageUsage = Math.round(totalUsage / weeklyData.length);
   const successDays = weeklyData.filter(day => day.status === 'success').length;
   const exceededDays = weeklyData.filter(day => day.status === 'exceeded').length;
   
   const suggestions = getRandomSuggestions(4);
+
+  useEffect(() => {
+    loadPatternAnalysis();
+  }, []);
+
+  const loadPatternAnalysis = async () => {
+    setIsAnalyzing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('analyze-usage-patterns');
+      
+      if (error) throw error;
+      
+      setPatternData(data);
+    } catch (error) {
+      console.error('Error loading pattern analysis:', error);
+      toast({
+        title: "Analysis Error",
+        description: "Unable to load pattern analysis. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  const handleRefreshAnalysis = () => {
+    loadPatternAnalysis();
+    toast({
+      title: "Analysis Refreshed",
+      description: "Loading updated insights based on your latest usage data."
+    });
+  };
 
   const getIcon = (iconName: string) => {
     switch (iconName) {
@@ -214,6 +265,53 @@ export const InsightsView = () => {
 
   return (
     <div className="space-y-6">
+      {/* Pattern Analysis Section */}
+      <Card className="shadow-wellness border-2 border-primary/10 bg-white/80">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2 text-primary">
+                <Brain className="w-5 h-5" />
+                Smart Pattern Recognition
+              </CardTitle>
+              <CardDescription>
+                AI-powered analysis of your usage patterns and personalized insights
+              </CardDescription>
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleRefreshAnalysis}
+              disabled={isAnalyzing}
+            >
+              <RefreshCw className={`h-4 w-4 ${isAnalyzing ? 'animate-spin' : ''}`} />
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {patternData ? (
+            <PatternInsights 
+              patterns={patternData.patterns} 
+              aiInsights={patternData.aiInsights}
+              isLoading={false}
+            />
+          ) : (
+            <PatternInsights 
+              patterns={{
+                weeklyTrend: 'stable',
+                peakUsageDays: [],
+                averageDaily: 0,
+                bingeSessions: 0,
+                triggerPatterns: [],
+                riskLevel: 'low'
+              }}
+              aiInsights={[]}
+              isLoading={isAnalyzing}
+            />
+          )}
+        </CardContent>
+      </Card>
+
       {/* Weekly Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card className="bg-white/80 border-primary/10">
