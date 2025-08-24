@@ -189,11 +189,11 @@ Usage Analysis for Last ${usage.length} Days:
         messages: [
           {
             role: 'system',
-            content: 'You are a digital wellness expert helping users understand their phone usage patterns. Provide personalized, actionable insights to reduce excessive screen time. Keep responses concise and motivating.'
+            content: 'You are a digital wellness expert. Give short, direct commands to reduce phone usage. Start each tip with an action verb. Keep each tip under 10 words.'
           },
           {
             role: 'user',
-            content: `Based on this usage data, provide 3-4 specific, actionable tips to help reduce phone usage:\n\n${usageSummary}`
+            content: `Give 3-4 simple commands based on this data:\n\n${usageSummary}`
           }
         ],
         temperature: 0.7,
