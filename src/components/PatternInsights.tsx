@@ -187,7 +187,7 @@ export const PatternInsights: React.FC<PatternInsightsProps> = ({
             <Target className="h-5 w-5" />
             Personalized Recommendations
           </CardTitle>
-          <CardDescription>AI-generated tips based on your usage patterns</CardDescription>
+          <CardDescription>Personalized recommendations</CardDescription>
         </CardHeader>
         <CardContent>
           <ul className="space-y-3">

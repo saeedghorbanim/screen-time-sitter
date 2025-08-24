@@ -325,6 +325,26 @@ const Index = () => {
             {/* This content won't be shown as it redirects immediately */}
           </TabsContent>
 
+          <TabsContent value="settings" className="space-y-6">
+            <Card className="shadow-wellness border-2 border-primary/10 bg-white/80">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-primary">
+                  <Settings className="w-5 h-5" />
+                  Settings
+                </CardTitle>
+                <CardDescription>
+                  Customize your digital wellness experience
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <TimeLimitSettings
+                  currentLimit={dailyLimit}
+                  onLimitChange={setDailyLimit}
+                />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           <TabsContent value="insights">
             <InsightsView />
           </TabsContent>
