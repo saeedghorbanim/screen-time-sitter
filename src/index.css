@@ -17,30 +17,30 @@
     --popover: 120 20% 98%;
     --popover-foreground: 140 8% 15%;
 
-    /* Primary - calming sage green */
-    --primary: 140 35% 45%;
-    --primary-foreground: 120 15% 97%;
-    --primary-glow: 140 40% 55%;
+    /* Primary - warm sunset orange */
+    --primary: 20 85% 55%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 25 90% 65%;
 
-    /* Secondary - warm earth tone */
-    --secondary: 35 25% 85%;
-    --secondary-foreground: 140 8% 15%;
+    /* Secondary - soft sunset pink */
+    --secondary: 340 75% 80%;
+    --secondary-foreground: 20 15% 15%;
 
     /* Muted tones */
-    --muted: 120 15% 92%;
-    --muted-foreground: 140 6% 50%;
+    --muted: 30 30% 92%;
+    --muted-foreground: 20 10% 45%;
 
-    /* Accent - gentle mint */
-    --accent: 160 30% 80%;
-    --accent-foreground: 140 8% 15%;
+    /* Accent - golden yellow */
+    --accent: 45 95% 70%;
+    --accent-foreground: 20 15% 15%;
 
-    /* Warning - soft orange for alerts */
-    --warning: 25 85% 60%;
-    --warning-foreground: 120 15% 97%;
+    /* Warning - vibrant sunset orange */
+    --warning: 15 90% 65%;
+    --warning-foreground: 0 0% 100%;
 
-    /* Success - nature green */
-    --success: 140 50% 50%;
-    --success-foreground: 120 15% 97%;
+    /* Success - warm coral */
+    --success: 10 75% 60%;
+    --success-foreground: 0 0% 100%;
 
     --destructive: 0 75% 55%;
     --destructive-foreground: 120 15% 97%;
@@ -49,14 +49,14 @@
     --input: 120 20% 95%;
     --ring: 140 35% 45%;
 
-    /* Enhanced Gradients - More vibrant and calming */
+    /* Enhanced Gradients - Sunset inspired */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-    --gradient-wellness: linear-gradient(135deg, hsl(140 30% 95%), hsl(160 40% 85%), hsl(180 35% 90%));
-    --gradient-sunset: linear-gradient(135deg, hsl(25 70% 85%), hsl(45 60% 90%), hsl(160 40% 85%));
-    --gradient-ocean: linear-gradient(135deg, hsl(200 60% 85%), hsl(180 50% 80%), hsl(160 40% 85%));
-    --gradient-forest: linear-gradient(135deg, hsl(140 40% 80%), hsl(120 35% 85%), hsl(100 30% 90%));
+    --gradient-wellness: linear-gradient(135deg, hsl(20 80% 88%), hsl(340 70% 85%), hsl(45 85% 88%));
+    --gradient-sunset: linear-gradient(135deg, hsl(15 85% 70%), hsl(25 90% 75%), hsl(45 95% 80%));
+    --gradient-ocean: linear-gradient(135deg, hsl(340 60% 75%), hsl(320 50% 80%), hsl(300 40% 85%));
+    --gradient-forest: linear-gradient(135deg, hsl(25 70% 75%), hsl(35 65% 80%), hsl(45 80% 85%));
     --gradient-progress: linear-gradient(90deg, hsl(var(--success)), hsl(var(--primary)));
-    --gradient-warning: linear-gradient(45deg, hsl(var(--warning)), hsl(25 90% 65%));
+    --gradient-warning: linear-gradient(45deg, hsl(var(--warning)), hsl(25 90% 70%));
     
     /* Calming background patterns */
     --pattern-dots: radial-gradient(circle at 2px 2px, hsl(var(--primary) / 0.1) 1px, transparent 0);
@@ -107,25 +107,25 @@
     --popover: 140 15% 10%;
     --popover-foreground: 120 15% 95%;
 
-    /* Primary remains calming but adapted for dark */
-    --primary: 140 40% 60%;
-    --primary-foreground: 140 10% 8%;
-    --primary-glow: 140 45% 70%;
+    /* Primary - warm sunset orange for dark mode */
+    --primary: 20 80% 65%;
+    --primary-foreground: 20 15% 8%;
+    --primary-glow: 25 85% 75%;
 
-    --secondary: 35 15% 20%;
-    --secondary-foreground: 120 15% 95%;
+    --secondary: 340 60% 30%;
+    --secondary-foreground: 340 5% 95%;
 
-    --muted: 140 10% 15%;
-    --muted-foreground: 140 5% 65%;
+    --muted: 20 15% 15%;
+    --muted-foreground: 20 10% 65%;
 
-    --accent: 160 20% 25%;
-    --accent-foreground: 120 15% 95%;
+    --accent: 45 85% 35%;
+    --accent-foreground: 45 5% 95%;
 
-    --warning: 25 85% 65%;
-    --warning-foreground: 140 10% 8%;
+    --warning: 15 85% 70%;
+    --warning-foreground: 15 10% 8%;
 
-    --success: 140 50% 55%;
-    --success-foreground: 140 10% 8%;
+    --success: 10 70% 65%;
+    --success-foreground: 10 10% 8%;
 
     --destructive: 0 75% 60%;
     --destructive-foreground: 120 15% 95%;
@@ -212,7 +212,7 @@
   .floating-orbs::before {
     width: 200px;
     height: 200px;
-    background: hsl(160 60% 70%);
+    background: hsl(25 85% 70%);
     top: 10%;
     left: 10%;
     animation-delay: 0s;
@@ -221,7 +221,7 @@
   .floating-orbs::after {
     width: 150px;
     height: 150px;
-    background: hsl(200 50% 75%);
+    background: hsl(340 70% 75%);
     bottom: 20%;
     right: 15%;
     animation-delay: 4s;
