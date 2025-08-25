@@ -60,6 +60,7 @@ const Index = () => {
   
   // Show loading state
   if (loading) {
+    console.log('🟡 Index: Showing loading state');
     return (
       <div className="min-h-screen bg-wellness-enhanced floating-orbs flex items-center justify-center">
         <Card className="p-8 text-center">
@@ -71,6 +72,7 @@ const Index = () => {
 
   // Show login prompt if not authenticated
   if (!user) {
+    console.log('🟡 Index: Showing login prompt (no user)');
     return (
       <div className="min-h-screen bg-wellness-enhanced floating-orbs flex items-center justify-center p-4">
         <Card className="max-w-md mx-auto text-center shadow-wellness border-2 border-primary/10 bg-white/90">
@@ -166,6 +168,7 @@ const Index = () => {
     });
   };
 
+  console.log('🟡 Index: Rendering main dashboard with user:', user?.email);
   return (
     <div className="min-h-screen bg-wellness-enhanced floating-orbs px-4 py-2">
       {/* Header */}
