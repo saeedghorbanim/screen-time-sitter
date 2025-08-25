@@ -322,7 +322,16 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="testimonials">
-            {/* This content won't be shown as it redirects immediately */}
+            <div className="text-center py-12">
+              <Heart className="w-16 h-16 mx-auto text-primary mb-4" />
+              <h2 className="text-2xl font-bold text-primary mb-4">Success Stories</h2>
+              <p className="text-muted-foreground mb-6">
+                Read inspiring stories from our community and share your own digital wellness journey!
+              </p>
+              <Button asChild className="bg-gradient-primary hover:opacity-90">
+                <Link to="/testimonials">View All Success Stories</Link>
+              </Button>
+            </div>
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
