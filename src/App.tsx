@@ -16,8 +16,8 @@ const App = () => (
     <TooltipProvider>
       <div className="min-h-screen">
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/auth" element={<Auth />} />
+          <Route path="/" element={<Auth />} />
+          <Route path="/dashboard" element={<Index />} />
           <Route path="/leaderboards" element={<Leaderboards />} />
           <Route path="/testimonials" element={<Testimonials />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

@@ -55,7 +55,7 @@ export const Auth = () => {
   // Redirect if already authenticated
   useEffect(() => {
     if (user) {
-      window.location.href = '/';
+      window.location.href = '/dashboard';
     }
   }, [user]);
 
@@ -656,12 +656,6 @@ export const Auth = () => {
             {currentStep === 'suggestions' && renderSuggestionsStep()}
             {currentStep === 'signup' && renderSignUpStep()}
             {currentStep === 'signin' && renderSignInStep()}
-            
-            <div className="mt-8 text-center">
-              <Link to="/" className="text-sm text-primary hover:underline">
-                ← Back to Home
-              </Link>
-            </div>
           </CardContent>
         </Card>
       </div>
