@@ -9,27 +9,23 @@ import { Auth } from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import Leaderboards from "./pages/Leaderboards";
 import Testimonials from "./pages/Testimonials";
-import { AuthProvider } from "./components/AuthProvider";
-
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <AuthProvider>
-        <div className="min-h-screen">
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/leaderboards" element={<Leaderboards />} />
-            <Route path="/testimonials" element={<Testimonials />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Toaster />
-          <Sonner />
-        </div>
-      </AuthProvider>
+      <div className="min-h-screen">
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/leaderboards" element={<Leaderboards />} />
+          <Route path="/testimonials" element={<Testimonials />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Toaster />
+        <Sonner />
+      </div>
     </TooltipProvider>
   </QueryClientProvider>
 );
