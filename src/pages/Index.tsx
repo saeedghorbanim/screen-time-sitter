@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProgressCircle } from "@/components/ProgressCircle";
 import { TimeDisplay } from "@/components/TimeDisplay";
 import { TimeLimitSettings } from "@/components/TimeLimitSettings";
+import { AccountSettings } from "@/components/AccountSettings";
 import { InsightsView } from "@/components/InsightsView";
 import { MotivationalModal } from "@/components/MotivationalModal";
 import { WelcomeBackModal } from "@/components/WelcomeBackModal";
@@ -328,10 +329,10 @@ const Index = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-primary">
                   <Settings className="w-5 h-5" />
-                  Settings
+                  Daily Limit Settings
                 </CardTitle>
                 <CardDescription>
-                  Customize your digital wellness experience
+                  Customize your daily screen time limits
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -341,6 +342,8 @@ const Index = () => {
                 />
               </CardContent>
             </Card>
+            
+            <AccountSettings />
           </TabsContent>
 
           <TabsContent value="insights">
