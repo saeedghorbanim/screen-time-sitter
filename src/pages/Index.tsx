@@ -247,7 +247,6 @@ const Index = () => {
             <TabsTrigger 
               value="testimonials" 
               className="flex items-center gap-2"
-              onClick={() => navigate('/testimonials')}
             >
               <Heart className="w-4 h-4" />
               Successes
