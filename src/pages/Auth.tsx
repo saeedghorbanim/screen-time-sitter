@@ -12,8 +12,11 @@ type AuthStep = 'welcome' | 'onboarding' | 'signup' | 'signin';
 interface OnboardingData {
   mostUsedApps: string[];
   dailyHours: string;
+  peakUsageTimes: string[];
   digitalGoals: string[];
   currentChallenges: string[];
+  accountabilityPrefs: string[];
+  reminderPrefs: string;
   motivations: string[];
 }
 
@@ -27,8 +30,11 @@ export const Auth = () => {
   const [onboardingData, setOnboardingData] = useState<OnboardingData>({
     mostUsedApps: [],
     dailyHours: '',
+    peakUsageTimes: [],
     digitalGoals: [],
     currentChallenges: [],
+    accountabilityPrefs: [],
+    reminderPrefs: '',
     motivations: []
   });
   
@@ -96,6 +102,13 @@ export const Auth = () => {
       multiple: false
     },
     {
+      title: "When do you use your phone the most?",
+      subtitle: "Select your peak usage times",
+      options: ["Morning (6-9 AM)", "Work hours (9-5 PM)", "Evening (5-9 PM)", "Night (9 PM-12 AM)", "Late night (12-6 AM)", "Weekend mornings", "Weekend evenings"],
+      key: "peakUsageTimes" as keyof OnboardingData,
+      multiple: true
+    },
+    {
       title: "What are your digital wellness goals?",
       subtitle: "What would you like to achieve?",
       options: ["Reduce overall screen time", "Better sleep habits", "More focus time", "Healthier app usage", "Digital detox periods", "Mindful usage"],
@@ -108,6 +121,20 @@ export const Auth = () => {
       options: ["Mindless scrolling", "FOMO", "Work demands", "Boredom", "Habit", "Notifications"],
       key: "currentChallenges" as keyof OnboardingData,
       multiple: true
+    },
+    {
+      title: "How do you prefer to stay accountable?",
+      subtitle: "What helps you stick to your goals?",
+      options: ["Daily reminders", "Weekly check-ins", "Friend/family support", "Progress tracking", "Rewards system", "Community challenges"],
+      key: "accountabilityPrefs" as keyof OnboardingData,
+      multiple: true
+    },
+    {
+      title: "When would you like digital break reminders?",
+      subtitle: "Choose your preferred reminder times",
+      options: ["Every 30 minutes", "Every hour", "Every 2 hours", "Before meals", "Before bed", "Custom schedule", "No reminders"],
+      key: "reminderPrefs" as keyof OnboardingData,
+      multiple: false
     },
     {
       title: "What motivates you to change?",
