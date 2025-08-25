@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -24,8 +25,39 @@ const Index = () => {
   const [showModal, setShowModal] = useState(false);
   const [hasShownWarning, setHasShownWarning] = useState(false);
   const [showWelcomeBack, setShowWelcomeBack] = useState(false);
+  const [userProfile, setUserProfile] = useState<{ username?: string; display_name?: string } | null>(null);
   const [hasShownWelcomeBack, setHasShownWelcomeBack] = useState(false);
   const { toast } = useToast();
+  
+  // Fetch user profile data
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (!user) return;
+      
+      const { data } = await supabase
+        .from('profiles')
+        .select('username, display_name')
+        .eq('user_id', user.id)
+        .single();
+      
+      setUserProfile(data);
+    };
+
+    fetchUserProfile();
+    
+    // Listen for profile updates
+    const handleProfileUpdate = () => {
+      fetchUserProfile();
+    };
+    
+    window.addEventListener('profileUpdated', handleProfileUpdate);
+    
+    return () => {
+      window.removeEventListener('profileUpdated', handleProfileUpdate);
+    };
+  }, [user]);
+
+  const displayName = userProfile?.username || userProfile?.display_name || user?.email?.split('@')[0] || "User";
 
   // Calculate progress percentage
   const progressPercentage = (currentUsage / dailyLimit) * 100;
@@ -172,10 +204,7 @@ const Index = () => {
             <div className="flex items-center gap-3">
               <div className="text-right">
                 <div className="text-sm font-medium text-primary">
-                  {user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'User'}
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  {user?.email}
+                  {displayName}
                 </div>
               </div>
               
@@ -364,7 +393,7 @@ const Index = () => {
       <WelcomeBackModal
         isOpen={showWelcomeBack}
         onClose={() => setShowWelcomeBack(false)}
-        userName={user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'User'}
+        userName={displayName}
       />
     </div>
   );

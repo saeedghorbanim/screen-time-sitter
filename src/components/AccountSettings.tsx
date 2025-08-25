@@ -29,6 +29,11 @@ export const AccountSettings = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
 
+  const refreshProfile = () => {
+    // Trigger a custom event that the parent component can listen to
+    window.dispatchEvent(new CustomEvent('profileUpdated'));
+  };
+
   const handleUsernameChange = async () => {
     if (!newUsername.trim()) {
       toast({
@@ -77,8 +82,8 @@ export const AccountSettings = () => {
 
       setNewUsername("");
       
-      // Refresh the page to update username everywhere
-      window.location.reload();
+      // Refresh profile data
+      refreshProfile();
     } catch (error: any) {
       toast({
         title: "Update Failed",
