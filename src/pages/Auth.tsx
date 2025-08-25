@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2, Smartphone, Users, Target, ArrowRight, ArrowLeft, Clock, Heart, CheckCircle, Lightbulb, Timer, Bell } from 'lucide-react';
+import { Loader2, Smartphone, Users, Target, ArrowRight, ArrowLeft, Clock, Heart, CheckCircle, Lightbulb, Timer, Bell, Star, TrendingUp, Shield, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 type AuthStep = 'welcome' | 'onboarding' | 'suggestions' | 'signup' | 'signin';
@@ -177,20 +177,60 @@ export const Auth = () => {
   };
 
   const renderWelcomeStep = () => (
-    <div className="text-center space-y-8">
-      <div className="space-y-4">
-        <h1 className="text-4xl lg:text-5xl font-bold text-primary">
-          Welcome to MindfulTime
-        </h1>
-        <p className="text-xl text-muted-foreground">
-          Your Digital Wellness Journey Starts Here
+    <div className="text-center space-y-10">
+      {/* Hero Section */}
+      <div className="space-y-6 animate-fade-in">
+        <div className="relative">
+          <div className="absolute -top-4 -left-4 w-8 h-8 bg-gradient-primary rounded-full opacity-60 animate-pulse"></div>
+          <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-gradient-secondary rounded-full opacity-40 animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <h1 className="text-4xl lg:text-6xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+            Welcome to MindfulTime
+          </h1>
+        </div>
+        <p className="text-xl lg:text-2xl text-muted-foreground max-w-2xl mx-auto">
+          Join <span className="font-bold text-primary">127,000+</span> people transforming their digital habits
         </p>
       </div>
-      
+
+      {/* Key Statistics */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 my-8">
+        <div className="flex flex-col items-center p-6 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-xl border border-primary/20 hover-scale">
+          <TrendingUp className="w-10 h-10 text-primary mb-3" />
+          <div className="text-2xl font-bold text-primary">92%</div>
+          <span className="text-sm text-muted-foreground">Success Rate</span>
+        </div>
+        <div className="flex flex-col items-center p-6 bg-gradient-to-br from-secondary/10 to-accent/10 rounded-xl border border-secondary/20 hover-scale">
+          <Users className="w-10 h-10 text-secondary mb-3" />
+          <div className="text-2xl font-bold text-secondary">2.3hrs</div>
+          <span className="text-sm text-muted-foreground">Avg. Reduction</span>
+        </div>
+        <div className="flex flex-col items-center p-6 bg-gradient-to-br from-accent/10 to-primary/10 rounded-xl border border-accent/20 hover-scale">
+          <Shield className="w-10 h-10 text-accent mb-3" />
+          <div className="text-2xl font-bold text-accent">30 Days</div>
+          <span className="text-sm text-muted-foreground">To New Habits</span>
+        </div>
+      </div>
+
+      {/* Testimonial */}
+      <div className="bg-gradient-to-r from-white/60 to-white/40 rounded-xl p-6 border border-primary/10 max-w-xl mx-auto animate-fade-in">
+        <div className="flex items-center justify-center mb-4">
+          {[...Array(5)].map((_, i) => (
+            <Star key={i} className="w-5 h-5 fill-warning text-warning" />
+          ))}
+        </div>
+        <blockquote className="text-muted-foreground italic mb-4">
+          "MindfulTime helped me reclaim 3 hours of my day. I'm more present with my family and finally sleeping better."
+        </blockquote>
+        <div className="text-sm font-medium text-primary">
+          — Sarah M., San Francisco
+        </div>
+      </div>
+
+      {/* Main Action Buttons */}
       <div className="space-y-4 max-w-md mx-auto">
         <Button 
           onClick={() => setCurrentStep('onboarding')}
-          className="w-full h-16 text-lg bg-gradient-primary hover:opacity-90"
+          className="w-full h-16 text-lg bg-gradient-primary hover:opacity-90 hover-scale"
           size="lg"
         >
           <Heart className="w-6 h-6 mr-3" />
@@ -200,25 +240,61 @@ export const Auth = () => {
         <Button 
           onClick={() => setCurrentStep('signin')}
           variant="outline"
-          className="w-full h-12 border-primary/20 hover:bg-primary/5"
+          className="w-full h-12 border-primary/20 hover:bg-primary/5 hover-scale"
           size="lg"
         >
           Already have an account? Sign In
         </Button>
       </div>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-12">
-        <div className="flex flex-col items-center p-6 bg-white/50 rounded-lg">
-          <Target className="w-8 h-8 text-primary mb-2" />
-          <span className="text-sm font-medium">Set Goals</span>
+
+      {/* Feature Highlights */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12">
+        <div className="flex flex-col items-center p-6 bg-white/50 rounded-xl border border-primary/10 hover-scale">
+          <div className="relative mb-4">
+            <Target className="w-10 h-10 text-primary" />
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-secondary rounded-full flex items-center justify-center">
+              <Zap className="w-2 h-2 text-white" />
+            </div>
+          </div>
+          <h3 className="font-semibold text-primary mb-2">Smart Goals</h3>
+          <p className="text-sm text-muted-foreground text-center">AI-powered personalized targets that adapt to your lifestyle</p>
         </div>
-        <div className="flex flex-col items-center p-6 bg-white/50 rounded-lg">
-          <Users className="w-8 h-8 text-primary mb-2" />
-          <span className="text-sm font-medium">Find Buddies</span>
+        
+        <div className="flex flex-col items-center p-6 bg-white/50 rounded-xl border border-primary/10 hover-scale">
+          <div className="relative mb-4">
+            <Users className="w-10 h-10 text-secondary" />
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-primary rounded-full flex items-center justify-center">
+              <Heart className="w-2 h-2 text-white" />
+            </div>
+          </div>
+          <h3 className="font-semibold text-secondary mb-2">Community Support</h3>
+          <p className="text-sm text-muted-foreground text-center">Connect with like-minded people on the same journey</p>
         </div>
-        <div className="flex flex-col items-center p-6 bg-white/50 rounded-lg">
-          <Smartphone className="w-8 h-8 text-primary mb-2" />
-          <span className="text-sm font-medium">Track Progress</span>
+        
+        <div className="flex flex-col items-center p-6 bg-white/50 rounded-xl border border-primary/10 hover-scale">
+          <div className="relative mb-4">
+            <Smartphone className="w-10 h-10 text-accent" />
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-accent rounded-full flex items-center justify-center">
+              <TrendingUp className="w-2 h-2 text-white" />
+            </div>
+          </div>
+          <h3 className="font-semibold text-accent mb-2">Real-time Insights</h3>
+          <p className="text-sm text-muted-foreground text-center">Track progress with beautiful analytics and actionable tips</p>
+        </div>
+      </div>
+
+      {/* Growth Quote */}
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-lg p-6 border border-primary/10">
+          <div className="flex items-center justify-center mb-3">
+            <TrendingUp className="w-6 h-6 text-primary mr-2" />
+            <span className="font-semibold text-primary">Growing Fast</span>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            <span className="font-bold text-primary">+15,000</span> new users joined this month • 
+            <span className="font-bold text-secondary"> 4.9/5</span> App Store rating • 
+            <span className="font-bold text-accent"> Featured</span> by Apple
+          </p>
         </div>
       </div>
     </div>
