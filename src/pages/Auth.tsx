@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/components/AuthProvider';
-import { useSubscription } from '@/contexts/SubscriptionContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,7 +10,6 @@ import { Link } from 'react-router-dom';
 
 export const Auth = () => {
   const { signUp, signIn, user } = useAuth();
-  const { createCheckout } = useSubscription();
   const [loading, setLoading] = useState(false);
   
   // Sign up form state
@@ -41,12 +39,11 @@ export const Auth = () => {
     
     try {
       const result = await signUp(signUpData.email, signUpData.password, signUpData.username, signUpData.displayName);
-      if (result.needsSubscription && !result.error) {
-        // Wait a moment for auth to process, then redirect to checkout
-        setTimeout(() => {
-          createCheckout();
-        }, 2000);
+      if (result.error) {
+        // Error handling is done in AuthProvider
+        return;
       }
+      // Success - user will be redirected automatically
     } finally {
       setLoading(false);
     }
@@ -146,14 +143,6 @@ export const Auth = () => {
               </TabsContent>
               
               <TabsContent value="signup" className="space-y-4">
-                <div className="mb-6 p-4 bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 rounded-lg">
-                  <h3 className="font-semibold text-primary mb-2">Annual Subscription - $30/year</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Join Digital Wellness Premium for advanced analytics, AI insights, and accountability features. 
-                    Cancel anytime.
-                  </p>
-                </div>
-                
                 <form onSubmit={handleSignUp} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -209,7 +198,7 @@ export const Auth = () => {
                         Creating Account...
                       </>
                     ) : (
-                      'Create Account & Subscribe ($30/year)'
+                      'Create Account'
                     )}
                   </Button>
                 </form>

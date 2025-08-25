@@ -7,18 +7,15 @@ import { TimeDisplay } from "@/components/TimeDisplay";
 import { TimeLimitSettings } from "@/components/TimeLimitSettings";
 import { InsightsView } from "@/components/InsightsView";
 import { MotivationalModal } from "@/components/MotivationalModal";
-import { SubscriptionGate } from "@/components/SubscriptionGate";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/components/AuthProvider";
-import { useSubscription } from "@/contexts/SubscriptionContext";
-import { Smartphone, Settings, BarChart3, Play, Pause, RotateCcw, LogOut, LogIn, Trophy, Heart, Crown, CreditCard } from "lucide-react";
+import { Smartphone, Settings, BarChart3, Play, Pause, RotateCcw, LogOut, LogIn, Trophy, Heart } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Index = () => {
   const navigate = useNavigate();
   // ALL HOOKS MUST BE CALLED FIRST - BEFORE ANY CONDITIONAL RETURNS
   const { user, signOut, loading } = useAuth();
-  const { subscribed, subscriptionTier, subscriptionEnd, createCheckout, manageSubscription, loading: subscriptionLoading } = useSubscription();
   const [dailyLimit, setDailyLimit] = useState(120); // 2 hours default
   const [currentUsage, setCurrentUsage] = useState(85); // Demo usage
   const [isTracking, setIsTracking] = useState(false);
@@ -60,7 +57,6 @@ const Index = () => {
   
   // Show loading state
   if (loading) {
-    console.log('🟡 Index: Showing loading state');
     return (
       <div className="min-h-screen bg-wellness-enhanced floating-orbs flex items-center justify-center">
         <Card className="p-8 text-center">
@@ -72,7 +68,6 @@ const Index = () => {
 
   // Show login prompt if not authenticated
   if (!user) {
-    console.log('🟡 Index: Showing login prompt (no user)');
     return (
       <div className="min-h-screen bg-wellness-enhanced floating-orbs flex items-center justify-center p-4">
         <Card className="max-w-md mx-auto text-center shadow-wellness border-2 border-primary/10 bg-white/90">
@@ -168,7 +163,6 @@ const Index = () => {
     });
   };
 
-  console.log('🟡 Index: Rendering main dashboard with user:', user?.email);
   return (
     <div className="min-h-screen bg-wellness-enhanced floating-orbs px-4 py-2">
       {/* Header */}
@@ -193,36 +187,9 @@ const Index = () => {
                 <div className="text-xs text-muted-foreground">
                   {user?.email}
                 </div>
-                {subscribed && (
-                  <div className="flex items-center gap-1 text-xs text-primary font-medium">
-                    <Crown className="w-3 h-3" />
-                    Premium
-                  </div>
-                )}
               </div>
               
-              {!subscribed ? (
-                <Button 
-                  onClick={createCheckout}
-                  className="bg-gradient-to-r from-primary to-accent hover:opacity-90"
-                  size="sm"
-                >
-                  <Crown className="w-4 h-4 mr-2" />
-                  Upgrade
-                </Button>
-              ) : (
-                <Button 
-                  onClick={manageSubscription}
-                  variant="outline" 
-                  size="sm"
-                  className="border-primary/20 hover:bg-primary/5"
-                >
-                  <CreditCard className="w-4 h-4 mr-2" />
-                  Manage
-                </Button>
-              )}
-              
-              <Button 
+              <Button
                 onClick={signOut}
                 variant="outline" 
                 size="sm"
@@ -379,9 +346,7 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="insights">
-            <SubscriptionGate feature="advanced insights and AI recommendations">
-              <InsightsView />
-            </SubscriptionGate>
+            <InsightsView />
           </TabsContent>
         </Tabs>
       </main>

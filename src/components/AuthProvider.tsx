@@ -5,7 +5,6 @@ import { useToast } from '@/hooks/use-toast';
 
 interface SignUpResult {
   error: any;
-  needsSubscription?: boolean;
 }
 
 interface AuthContextType {
@@ -97,17 +96,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (data.user && !data.session) {
         toast({
           title: "Account created!",
-          description: "Please check your email for a confirmation link, then return to complete your subscription.",
+          description: "Please check your email for a confirmation link.",
         });
-        return { error: null, needsSubscription: true };
+        return { error: null };
       }
 
       if (data.user && data.session) {
         toast({
           title: "Account created!",
-          description: "Redirecting to complete your subscription...",
+          description: "Welcome to MindfulTime!",
         });
-        return { error: null, needsSubscription: true };
+        return { error: null };
       }
 
       return { error: null };
@@ -229,32 +228,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signOut = async () => {
     try {
-      console.log('🔴 Sign out started');
-      
       // Immediately update state for faster UI response
       setSession(null);
       setUser(null);
-      console.log('🔴 Auth state cleared');
       
       // Show toast immediately
       toast({
         title: "Signed out",
         description: "You have been successfully signed out.",
       });
-      console.log('🔴 Toast shown');
       
       // Redirect immediately
-      console.log('🔴 Redirecting to /auth');
       window.location.href = '/auth';
       
       // Clean up in the background
       setTimeout(() => {
-        console.log('🔴 Background cleanup started');
         cleanupAuthState();
         supabase.auth.signOut({ scope: 'global' }).catch(() => {});
       }, 100);
     } catch (error: any) {
-      console.log('🔴 Sign out error:', error);
       toast({
         title: "Sign Out Error",
         description: error.message,
