@@ -68,36 +68,9 @@ const Index = () => {
 
   // Show login prompt if not authenticated
   if (!user) {
-    return (
-      <div className="min-h-screen bg-wellness-enhanced floating-orbs flex items-center justify-center p-4">
-        <Card className="max-w-md mx-auto text-center shadow-wellness border-2 border-primary/10 bg-white/90">
-          <CardHeader>
-            <div className="flex justify-center mb-4">
-              <div className="bg-gradient-primary rounded-xl p-3">
-                <Smartphone className="w-8 h-8 text-white" />
-              </div>
-            </div>
-            <CardTitle className="text-2xl font-bold text-primary">Welcome to MindfulTime</CardTitle>
-            <CardDescription>
-              Your Digital Wellness Companion with Accountability Buddies
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-muted-foreground">
-              Track your screen time, get insights, and stay accountable with friends and family.
-            </p>
-            <div className="space-y-3">
-              <Link to="/auth">
-                <Button className="w-full bg-gradient-primary hover:opacity-90" size="lg">
-                  <LogIn className="w-4 h-4 mr-2" />
-                  Sign In / Sign Up
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
+    // Redirect to auth page using React Router
+    navigate('/', { replace: true });
+    return null;
   }
 
   const handleLimitChange = (newLimit: number) => {

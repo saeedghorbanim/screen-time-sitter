@@ -212,7 +212,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           title: "Welcome back!",
           description: "Successfully signed in.",
         });
-        window.location.href = '/';
+        // Navigation will be handled by the Auth component
       }
 
       return { error: null };
@@ -239,7 +239,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       
       // Redirect immediately
-      window.location.href = '/auth';
+      // Navigation will be handled by the component detecting auth state change
       
       // Clean up in the background
       setTimeout(() => {

@@ -166,7 +166,7 @@ export const Leaderboards = () => {
             See how you stack up against the community! All rankings are anonymous to protect privacy.
           </p>
           <Button asChild variant="outline" className="mt-4">
-            <Link to="/">← Back to Dashboard</Link>
+            <Link to="/dashboard">← Back to Dashboard</Link>
           </Button>
         </div>
 

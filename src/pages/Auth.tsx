@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Loader2, Smartphone, Users, Target, ArrowRight, ArrowLeft, Clock, Heart, CheckCircle, Lightbulb, Timer, Bell, Star, TrendingUp, Shield, Zap } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 type AuthStep = 'welcome' | 'onboarding' | 'suggestions' | 'signup' | 'signin';
 
@@ -21,6 +21,7 @@ interface OnboardingData {
 }
 
 export const Auth = () => {
+  const navigate = useNavigate();
   const { signUp, signIn, user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState<AuthStep>('welcome');
@@ -55,9 +56,9 @@ export const Auth = () => {
   // Redirect if already authenticated
   useEffect(() => {
     if (user) {
-      window.location.href = '/dashboard';
+      navigate('/dashboard', { replace: true });
     }
-  }, [user]);
+  }, [user, navigate]);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();

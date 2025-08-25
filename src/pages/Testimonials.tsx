@@ -157,7 +157,7 @@ export const Testimonials = () => {
           </p>
           <div className="flex gap-4 justify-center mt-6">
             <Button asChild variant="outline">
-              <Link to="/">← Back to Dashboard</Link>
+              <Link to="/dashboard">← Back to Dashboard</Link>
             </Button>
             <Button 
               onClick={() => setShowForm(!showForm)}
