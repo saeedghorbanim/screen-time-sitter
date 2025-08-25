@@ -7,6 +7,7 @@ import { TimeDisplay } from "@/components/TimeDisplay";
 import { TimeLimitSettings } from "@/components/TimeLimitSettings";
 import { InsightsView } from "@/components/InsightsView";
 import { MotivationalModal } from "@/components/MotivationalModal";
+import { WelcomeBackModal } from "@/components/WelcomeBackModal";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/components/AuthProvider";
 import { Smartphone, Settings, BarChart3, Play, Pause, RotateCcw, LogOut, LogIn, Trophy, Heart } from "lucide-react";
@@ -21,6 +22,8 @@ const Index = () => {
   const [isTracking, setIsTracking] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [hasShownWarning, setHasShownWarning] = useState(false);
+  const [showWelcomeBack, setShowWelcomeBack] = useState(false);
+  const [hasShownWelcomeBack, setHasShownWelcomeBack] = useState(false);
   const { toast } = useToast();
 
   // Calculate progress percentage
@@ -52,6 +55,19 @@ const Index = () => {
       if (interval) clearInterval(interval);
     };
   }, [isTracking, dailyLimit, hasShownWarning, currentUsage]);
+
+  // Show welcome back modal when user first loads the dashboard
+  useEffect(() => {
+    if (user && !loading && !hasShownWelcomeBack) {
+      // Small delay to ensure smooth transition
+      const timer = setTimeout(() => {
+        setShowWelcomeBack(true);
+        setHasShownWelcomeBack(true);
+      }, 800);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [user, loading, hasShownWelcomeBack]);
 
   // NOW we can do conditional returns after all hooks are called
   
@@ -339,6 +355,13 @@ const Index = () => {
         onClose={() => setShowModal(false)}
         onExtend={handleModalExtend}
         onAcknowledge={handleModalAcknowledge}
+      />
+
+      {/* Welcome Back Modal */}
+      <WelcomeBackModal
+        isOpen={showWelcomeBack}
+        onClose={() => setShowWelcomeBack(false)}
+        userName={user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'User'}
       />
     </div>
   );
