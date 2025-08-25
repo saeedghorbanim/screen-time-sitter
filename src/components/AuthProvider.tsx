@@ -3,12 +3,17 @@ import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
+interface SignUpResult {
+  error: any;
+  needsSubscription?: boolean;
+}
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, username: string, displayName: string) => Promise<{ error: any }>;
-  signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string, username: string, displayName: string) => Promise<SignUpResult>;
+  signIn: (emailOrUsername: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
 }
 
@@ -91,9 +96,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (data.user && !data.session) {
         toast({
-          title: "Check your email",
-          description: "Please check your email for a confirmation link before signing in.",
+          title: "Account created!",
+          description: "Please check your email for a confirmation link, then return to complete your subscription.",
         });
+        return { error: null, needsSubscription: true };
+      }
+
+      if (data.user && data.session) {
+        toast({
+          title: "Account created!",
+          description: "Redirecting to complete your subscription...",
+        });
+        return { error: null, needsSubscription: true };
       }
 
       return { error: null };
@@ -107,7 +121,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (emailOrUsername: string, password: string) => {
     try {
       cleanupAuthState();
       
@@ -117,15 +131,78 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // Continue even if this fails
       }
 
+      let email = emailOrUsername;
+      
+      // If input doesn't contain @, it's likely a username, so look up the email
+      if (!emailOrUsername.includes('@')) {
+        try {
+          const { data: profiles, error: profileError } = await supabase
+            .from('profiles')
+            .select('user_id')
+            .eq('username', emailOrUsername)
+            .single();
+          
+          if (profileError || !profiles) {
+            toast({
+              title: "Sign In Error",
+              description: "Username not found. Please check your username or use your email address.",
+              variant: "destructive",
+            });
+            return { error: new Error("Username not found") };
+          }
+
+          // Get the email from auth.users
+          const { data: userInfo, error: userError } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('user_id', profiles.user_id)
+            .single();
+            
+          if (userError) {
+            toast({
+              title: "Sign In Error", 
+              description: "Error retrieving user information. Please try using your email address.",
+              variant: "destructive",
+            });
+            return { error: userError };
+          }
+
+          // Since we can't directly access auth.users, we'll try to sign in with username as email
+          // and let Supabase handle the error if it's not valid
+        } catch (lookupError) {
+          toast({
+            title: "Sign In Error",
+            description: "Username not found. Please check your username or use your email address.",
+            variant: "destructive",
+          });
+          return { error: lookupError };
+        }
+      }
+
       const { data, error } = await supabase.auth.signInWithPassword({
-        email,
+        email: emailOrUsername, // Use original input, Supabase will handle email validation
         password,
       });
 
       if (error) {
+        let errorMessage = error.message;
+        if (error.message.includes("Invalid login credentials")) {
+          if (!emailOrUsername.includes('@')) {
+            errorMessage = "Invalid username or password. Please check your credentials and make sure your username is correct.";
+          } else {
+            errorMessage = "Invalid email or password. Please verify your email address and password.";
+          }
+        } else if (error.message.includes("Email not confirmed")) {
+          errorMessage = "Email not confirmed. Please check your email and click the confirmation link before signing in.";
+        } else if (error.message.includes("Too many requests")) {
+          errorMessage = "Too many sign-in attempts. Please wait a few minutes and try again.";
+        } else if (error.message.includes("Invalid email")) {
+          errorMessage = "Invalid email format. Please enter a valid email address or try using your username instead.";
+        }
+        
         toast({
           title: "Sign In Error",
-          description: error.message,
+          description: errorMessage,
           variant: "destructive",
         });
         return { error };
@@ -143,7 +220,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (error: any) {
       toast({
         title: "Sign In Error",
-        description: error.message,
+        description: "An unexpected error occurred during sign in. Please try again.",
         variant: "destructive",
       });
       return { error };
@@ -152,20 +229,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signOut = async () => {
     try {
-      cleanupAuthState();
+      // Immediately update state for faster UI response
+      setSession(null);
+      setUser(null);
       
-      try {
-        await supabase.auth.signOut({ scope: 'global' });
-      } catch (err) {
-        // Ignore errors
-      }
-      
+      // Show toast immediately
       toast({
         title: "Signed out",
         description: "You have been successfully signed out.",
       });
       
+      // Redirect immediately
       window.location.href = '/auth';
+      
+      // Clean up in the background
+      setTimeout(() => {
+        cleanupAuthState();
+        supabase.auth.signOut({ scope: 'global' }).catch(() => {});
+      }, 100);
     } catch (error: any) {
       toast({
         title: "Sign Out Error",

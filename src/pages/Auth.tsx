@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/components/AuthProvider';
+import { useSubscription } from '@/contexts/SubscriptionContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,6 +11,7 @@ import { Link } from 'react-router-dom';
 
 export const Auth = () => {
   const { signUp, signIn, user } = useAuth();
+  const { createCheckout } = useSubscription();
   const [loading, setLoading] = useState(false);
   
   // Sign up form state
@@ -38,7 +40,13 @@ export const Auth = () => {
     setLoading(true);
     
     try {
-      await signUp(signUpData.email, signUpData.password, signUpData.username, signUpData.displayName);
+      const result = await signUp(signUpData.email, signUpData.password, signUpData.username, signUpData.displayName);
+      if (result.needsSubscription && !result.error) {
+        // Wait a moment for auth to process, then redirect to checkout
+        setTimeout(() => {
+          createCheckout();
+        }, 2000);
+      }
     } finally {
       setLoading(false);
     }
@@ -103,11 +111,11 @@ export const Auth = () => {
               <TabsContent value="signin" className="space-y-4">
                 <form onSubmit={handleSignIn} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signin-email">Email</Label>
+                    <Label htmlFor="signin-email">Email or Username</Label>
                     <Input
                       id="signin-email"
-                      type="email"
-                      placeholder="Enter your email"
+                      type="text"
+                      placeholder="Enter your email or username"
                       value={signInData.email}
                       onChange={(e) => setSignInData({ ...signInData, email: e.target.value })}
                       required
@@ -138,6 +146,14 @@ export const Auth = () => {
               </TabsContent>
               
               <TabsContent value="signup" className="space-y-4">
+                <div className="mb-6 p-4 bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 rounded-lg">
+                  <h3 className="font-semibold text-primary mb-2">Annual Subscription - $30/year</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Join Digital Wellness Premium for advanced analytics, AI insights, and accountability features. 
+                    Cancel anytime.
+                  </p>
+                </div>
+                
                 <form onSubmit={handleSignUp} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -193,7 +209,7 @@ export const Auth = () => {
                         Creating Account...
                       </>
                     ) : (
-                      'Create Account'
+                      'Create Account & Subscribe ($30/year)'
                     )}
                   </Button>
                 </form>

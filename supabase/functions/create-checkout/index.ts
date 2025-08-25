@@ -71,10 +71,12 @@ serve(async (req) => {
       cancel_url: `${origin}/?canceled=true`,
       allow_promotion_codes: true,
       billing_address_collection: "auto",
-      customer_update: {
-        address: "auto",
-        name: "auto"
-      }
+      ...(customerId && {
+        customer_update: {
+          address: "auto",
+          name: "auto"
+        }
+      })
     });
 
     logStep("Checkout session created", { sessionId: session.id, url: session.url });
