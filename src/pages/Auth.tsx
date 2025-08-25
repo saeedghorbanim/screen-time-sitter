@@ -4,10 +4,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2, Smartphone, Users, Target, ArrowRight, ArrowLeft, Clock, Heart, CheckCircle } from 'lucide-react';
+import { Loader2, Smartphone, Users, Target, ArrowRight, ArrowLeft, Clock, Heart, CheckCircle, Lightbulb, Timer, Bell } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-type AuthStep = 'welcome' | 'onboarding' | 'signup' | 'signin';
+type AuthStep = 'welcome' | 'onboarding' | 'suggestions' | 'signup' | 'signin';
 
 interface OnboardingData {
   mostUsedApps: string[];
@@ -95,7 +95,7 @@ export const Auth = () => {
       multiple: true
     },
     {
-      title: "How many hours do you think you're on your phone each day?",
+      title: "Daily phone usage hours?",
       subtitle: "Choose the range that feels most accurate",
       options: ["Less than 2 hours", "2-4 hours", "4-6 hours", "6-8 hours", "More than 8 hours"],
       key: "dailyHours" as keyof OnboardingData,
@@ -224,6 +224,115 @@ export const Auth = () => {
     </div>
   );
 
+  const generatePersonalizedSuggestions = () => {
+    const suggestions = [];
+    
+    // Based on daily hours
+    if (onboardingData.dailyHours.includes("More than 8 hours") || onboardingData.dailyHours.includes("6-8 hours")) {
+      suggestions.push({
+        icon: Timer,
+        title: "Smart Time Limits",
+        description: "Set personalized app limits based on your usage patterns to gradually reduce screen time"
+      });
+    }
+    
+    // Based on challenges
+    if (onboardingData.currentChallenges.includes("Mindless scrolling")) {
+      suggestions.push({
+        icon: Bell,
+        title: "Mindful Break Reminders",
+        description: "Get gentle nudges to pause and reflect before endless scrolling sessions"
+      });
+    }
+    
+    // Based on goals
+    if (onboardingData.digitalGoals.includes("Better sleep habits")) {
+      suggestions.push({
+        icon: Clock,
+        title: "Sleep Protection Mode",
+        description: "Automatically limit screen exposure and blue light before bedtime"
+      });
+    }
+    
+    // Based on accountability preferences
+    if (onboardingData.accountabilityPrefs.includes("Community challenges") || onboardingData.accountabilityPrefs.includes("Friend/family support")) {
+      suggestions.push({
+        icon: Users,
+        title: "Accountability Partners",
+        description: "Connect with friends and family to share your progress and stay motivated"
+      });
+    }
+    
+    // Default suggestions if no specific matches
+    if (suggestions.length < 3) {
+      suggestions.push({
+        icon: Target,
+        title: "Personalized Goals",
+        description: "Set daily and weekly screen time goals tailored to your lifestyle"
+      });
+      
+      if (suggestions.length < 3) {
+        suggestions.push({
+          icon: Lightbulb,
+          title: "Smart Insights",
+          description: "Get AI-powered insights about your digital habits and improvement tips"
+        });
+      }
+    }
+    
+    return suggestions.slice(0, 3);
+  };
+
+  const renderSuggestionsStep = () => {
+    const suggestions = generatePersonalizedSuggestions();
+    
+    return (
+      <div className="space-y-8">
+        <div className="text-center space-y-4">
+          <Lightbulb className="w-16 h-16 text-primary mx-auto" />
+          <h2 className="text-2xl font-bold text-primary">Here's How MindfulTime Can Help You</h2>
+          <p className="text-muted-foreground">
+            Based on your answers, we've personalized your experience
+          </p>
+        </div>
+        
+        <div className="space-y-4">
+          {suggestions.map((suggestion, index) => (
+            <div key={index} className="flex items-start space-x-4 p-4 bg-white/50 rounded-lg border border-primary/10">
+              <suggestion.icon className="w-8 h-8 text-primary mt-1 flex-shrink-0" />
+              <div>
+                <h3 className="font-semibold text-primary">{suggestion.title}</h3>
+                <p className="text-sm text-muted-foreground">{suggestion.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        <div className="flex justify-between pt-4">
+          <Button
+            variant="outline"
+            onClick={() => {
+              setOnboardingStep(onboardingQuestions.length - 1);
+              setCurrentStep('onboarding');
+            }}
+            className="border-primary/20 hover:bg-primary/5"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back
+          </Button>
+          
+          <Button
+            onClick={() => setCurrentStep('signup')}
+            className="bg-gradient-primary hover:opacity-90"
+          >
+            Let's Get Started
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
   const renderOnboardingStep = () => {
     const currentQuestion = onboardingQuestions[onboardingStep];
     const progress = ((onboardingStep + 1) / onboardingQuestions.length) * 100;
@@ -290,7 +399,7 @@ export const Auth = () => {
           <Button
             onClick={() => {
               if (onboardingStep === onboardingQuestions.length - 1) {
-                setCurrentStep('signup');
+                setCurrentStep('suggestions');
               } else {
                 setOnboardingStep(prev => prev + 1);
               }
@@ -298,7 +407,7 @@ export const Auth = () => {
             disabled={!canProceedToNext()}
             className="bg-gradient-primary hover:opacity-90"
           >
-            {onboardingStep === onboardingQuestions.length - 1 ? "Continue to Sign Up" : "Next"}
+            {onboardingStep === onboardingQuestions.length - 1 ? "See Your Plan" : "Next"}
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
@@ -468,6 +577,7 @@ export const Auth = () => {
           <CardContent className="p-8">
             {currentStep === 'welcome' && renderWelcomeStep()}
             {currentStep === 'onboarding' && renderOnboardingStep()}
+            {currentStep === 'suggestions' && renderSuggestionsStep()}
             {currentStep === 'signup' && renderSignUpStep()}
             {currentStep === 'signin' && renderSignInStep()}
             
