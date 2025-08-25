@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/components/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
-import { Trash2, User, AlertTriangle } from "lucide-react";
+import { Trash2, User, AlertTriangle, Lock } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,6 +25,9 @@ export const AccountSettings = () => {
   const [newUsername, setNewUsername] = useState("");
   const [isUpdatingUsername, setIsUpdatingUsername] = useState(false);
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
 
   const handleUsernameChange = async () => {
     if (!newUsername.trim()) {
@@ -73,6 +76,9 @@ export const AccountSettings = () => {
       });
 
       setNewUsername("");
+      
+      // Refresh the page to update username everywhere
+      window.location.reload();
     } catch (error: any) {
       toast({
         title: "Update Failed",
@@ -81,6 +87,61 @@ export const AccountSettings = () => {
       });
     } finally {
       setIsUpdatingUsername(false);
+    }
+  };
+
+  const handlePasswordChange = async () => {
+    if (!newPassword.trim()) {
+      toast({
+        title: "Invalid Password",
+        description: "Please enter a new password",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      toast({
+        title: "Passwords Don't Match",
+        description: "Please make sure both passwords match",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      toast({
+        title: "Password Too Short",
+        description: "Password must be at least 6 characters long",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsUpdatingPassword(true);
+
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Password Updated",
+        description: "Your password has been successfully updated!",
+      });
+
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error: any) {
+      toast({
+        title: "Update Failed",
+        description: error.message || "Failed to update password",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUpdatingPassword(false);
     }
   };
 
@@ -179,6 +240,50 @@ export const AccountSettings = () => {
             className="bg-gradient-primary hover:opacity-90"
           >
             {isUpdatingUsername ? "Updating..." : "Update Username"}
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Password Change */}
+      <Card className="shadow-wellness border-2 border-primary/10 bg-white/80">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-primary">
+            <Lock className="w-5 h-5" />
+            Change Password
+          </CardTitle>
+          <CardDescription>
+            Update your account password for better security.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="new-password">New Password</Label>
+            <Input
+              id="new-password"
+              type="password"
+              placeholder="Enter new password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="max-w-sm"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="confirm-password">Confirm New Password</Label>
+            <Input
+              id="confirm-password"
+              type="password"
+              placeholder="Confirm new password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="max-w-sm"
+            />
+          </div>
+          <Button 
+            onClick={handlePasswordChange}
+            disabled={isUpdatingPassword || !newPassword.trim() || !confirmPassword.trim()}
+            className="bg-gradient-primary hover:opacity-90"
+          >
+            {isUpdatingPassword ? "Updating..." : "Update Password"}
           </Button>
         </CardContent>
       </Card>
