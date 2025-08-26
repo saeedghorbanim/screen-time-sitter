@@ -26,15 +26,8 @@ const Index = () => {
   const [hasShownWarning, setHasShownWarning] = useState(false);
   const [showWelcomeBack, setShowWelcomeBack] = useState(false);
   const [userProfile, setUserProfile] = useState<{ username?: string; display_name?: string } | null>(null);
+  const [hasShownWelcomeBack, setHasShownWelcomeBack] = useState(false);
   const { toast } = useToast();
-  
-  // Check if welcome back modal has been shown this session
-  const getWelcomeBackShown = () => {
-    if (!user) return false;
-    return localStorage.getItem(`welcomeBackShown_${user.id}`) === 'true';
-  };
-
-  const [hasShownWelcomeBack, setHasShownWelcomeBack] = useState(getWelcomeBackShown);
   
   // Fetch user profile data
   useEffect(() => {
@@ -96,18 +89,22 @@ const Index = () => {
     };
   }, [isTracking, dailyLimit, hasShownWarning, currentUsage]);
 
-  // Show welcome back modal when user first loads the dashboard
+  // Show welcome back modal only on fresh login (not on navigation)
   useEffect(() => {
     if (user && !loading && !hasShownWelcomeBack) {
-      // Small delay to ensure smooth transition
-      const timer = setTimeout(() => {
-        setShowWelcomeBack(true);
-        setHasShownWelcomeBack(true);
-        // Store in localStorage to prevent showing again this session
-        localStorage.setItem(`welcomeBackShown_${user.id}`, 'true');
-      }, 800);
+      // Check if this is a fresh login by looking at session storage
+      const isNewLogin = !sessionStorage.getItem(`hasSeenDashboard_${user.id}`);
       
-      return () => clearTimeout(timer);
+      if (isNewLogin) {
+        const timer = setTimeout(() => {
+          setShowWelcomeBack(true);
+          setHasShownWelcomeBack(true);
+          // Mark that we've shown the welcome modal for this session
+          sessionStorage.setItem(`hasSeenDashboard_${user.id}`, 'true');
+        }, 800);
+        
+        return () => clearTimeout(timer);
+      }
     }
   }, [user, loading, hasShownWelcomeBack]);
 
