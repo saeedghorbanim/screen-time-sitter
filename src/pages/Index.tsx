@@ -89,18 +89,19 @@ const Index = () => {
     };
   }, [isTracking, dailyLimit, hasShownWarning, currentUsage]);
 
-  // Show welcome back modal only on fresh login (not on navigation)
+  // Show welcome back modal only once per day on first sign-in
   useEffect(() => {
     if (user && !loading && !hasShownWelcomeBack) {
-      // Check if this is a fresh login by looking at session storage
-      const isNewLogin = !sessionStorage.getItem(`hasSeenDashboard_${user.id}`);
+      const today = new Date().toDateString();
+      const lastShownDate = localStorage.getItem(`welcomeBackDate_${user.id}`);
       
-      if (isNewLogin) {
+      // Show modal if it hasn't been shown today
+      if (lastShownDate !== today) {
         const timer = setTimeout(() => {
           setShowWelcomeBack(true);
           setHasShownWelcomeBack(true);
-          // Mark that we've shown the welcome modal for this session
-          sessionStorage.setItem(`hasSeenDashboard_${user.id}`, 'true');
+          // Store today's date to prevent showing again today
+          localStorage.setItem(`welcomeBackDate_${user.id}`, today);
         }, 800);
         
         return () => clearTimeout(timer);
