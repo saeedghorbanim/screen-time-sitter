@@ -26,8 +26,15 @@ const Index = () => {
   const [hasShownWarning, setHasShownWarning] = useState(false);
   const [showWelcomeBack, setShowWelcomeBack] = useState(false);
   const [userProfile, setUserProfile] = useState<{ username?: string; display_name?: string } | null>(null);
-  const [hasShownWelcomeBack, setHasShownWelcomeBack] = useState(false);
   const { toast } = useToast();
+  
+  // Check if welcome back modal has been shown this session
+  const getWelcomeBackShown = () => {
+    if (!user) return false;
+    return localStorage.getItem(`welcomeBackShown_${user.id}`) === 'true';
+  };
+
+  const [hasShownWelcomeBack, setHasShownWelcomeBack] = useState(getWelcomeBackShown);
   
   // Fetch user profile data
   useEffect(() => {
@@ -96,6 +103,8 @@ const Index = () => {
       const timer = setTimeout(() => {
         setShowWelcomeBack(true);
         setHasShownWelcomeBack(true);
+        // Store in localStorage to prevent showing again this session
+        localStorage.setItem(`welcomeBackShown_${user.id}`, 'true');
       }, 800);
       
       return () => clearTimeout(timer);
