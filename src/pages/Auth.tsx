@@ -384,6 +384,12 @@ export const Auth = () => {
             </div>
           ))}
         </div>
+
+        {/* Let's Get Started Section */}
+        <div className="text-center py-6">
+          <h2 className="text-3xl font-bold text-primary mb-2">Let's Get Started</h2>
+          <p className="text-sm text-muted-foreground">$24.99 a year / $2.08 a month</p>
+        </div>
         
         <div className="flex justify-between pt-4">
           <Button
