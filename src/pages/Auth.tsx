@@ -628,18 +628,23 @@ export const Auth = () => {
           />
         </div>
         
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <Button
             type="button"
             variant="outline"
             onClick={() => setCurrentStep('welcome')}
-            className="border-primary/20 hover:bg-primary/5"
+            className="border-primary/20 hover:bg-primary/5 touch-manipulation"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Homepage
           </Button>
           
-          <Button type="submit" className="flex-1 bg-gradient-primary hover:opacity-90" disabled={loading}>
+          <Button 
+            type="submit" 
+            className="flex-1 bg-gradient-primary hover:opacity-90 touch-manipulation min-h-12 font-medium" 
+            disabled={loading}
+            style={{ touchAction: 'manipulation' }}
+          >
             {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
