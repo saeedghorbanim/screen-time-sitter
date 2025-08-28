@@ -254,16 +254,18 @@
 
   /* Mobile Modal Styles */
   .mobile-modal {
-    width: 90vw !important;
-    max-height: 85vh !important;
+    width: 92vw !important;
+    max-height: 75vh !important;
     margin: auto !important;
     overflow-y: auto !important;
+    padding: 1rem !important;
   }
 
   @media (min-width: 640px) {
     .mobile-modal {
       width: auto !important;
       max-height: 90vh !important;
+      padding: 1.5rem !important;
     }
   }
 }

@@ -116,11 +116,11 @@ export const WelcomeBackModal = ({ isOpen, onClose, userName }: WelcomeBackModal
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-sm sm:max-w-lg mx-auto mobile-modal">
+      <DialogContent className="max-w-sm sm:max-w-lg mx-auto mobile-modal p-3 sm:p-6">
         <DialogHeader>
-          <div className="flex items-center gap-3 mb-2">
+          <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
             {motivationalContent.icon}
-            <DialogTitle className="text-xl">{motivationalContent.title}</DialogTitle>
+            <DialogTitle className="text-base sm:text-xl">{motivationalContent.title}</DialogTitle>
           </div>
         </DialogHeader>
 

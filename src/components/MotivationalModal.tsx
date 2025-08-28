@@ -76,38 +76,38 @@ export const MotivationalModal = ({ isOpen, onClose, onExtend, onAcknowledge, da
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-sm mx-auto bg-red-500 border-2 border-red-600 shadow-xl rounded-xl sm:max-w-md mobile-modal">
-        <div className="text-center space-y-3 py-3 px-3 sm:py-4 sm:px-4">
-          <div className="space-y-2 sm:space-y-3">
-            <h2 className="text-lg sm:text-xl font-fredoka text-white leading-tight">
+      <DialogContent className="max-w-sm mx-auto bg-red-500 border-2 border-red-600 shadow-xl rounded-xl sm:max-w-md mobile-modal p-3 sm:p-6">
+        <div className="text-center space-y-2 sm:space-y-3">
+          <div className="space-y-1 sm:space-y-2">
+            <h2 className="text-base sm:text-xl font-fredoka text-white leading-tight">
               {hasExtensionsLeft ? "Time Limit Reached" : "All Extensions Used"}
             </h2>
             
-            <div className="px-1">
-              <h3 className="text-base sm:text-lg font-comfortaa font-medium text-white leading-relaxed break-words">
+            <div>
+              <h3 className="text-sm sm:text-lg font-comfortaa font-medium text-white leading-snug break-words">
                 {hasExtensionsLeft 
                   ? currentQuote.text 
                   : "Your 5-minute extensions are up for today! 🚫"
                 }
               </h3>
               {!hasExtensionsLeft && (
-                <p className="text-white/80 text-sm mt-2">
+                <p className="text-white/80 text-xs sm:text-sm mt-1">
                   Come back tomorrow for fresh extensions
                 </p>
               )}
             </div>
           </div>
           
-          <div className="flex flex-col gap-2 pt-1 sm:pt-2">
+          <div className="flex flex-col gap-1.5 sm:gap-2 pt-1">
             {hasExtensionsLeft ? (
               <>
                 <Button 
                   onClick={onExtend}
                   variant="outline"
                   size="sm"
-                  className="w-full border-white/30 bg-white/10 text-white hover:bg-white/20 text-sm py-2.5 sm:py-3 font-comfortaa font-medium rounded-lg"
+                  className="w-full border-white/30 bg-white/10 text-white hover:bg-white/20 text-xs sm:text-sm py-2 sm:py-2.5 font-comfortaa font-medium rounded-lg h-auto"
                 >
-                  <span className="text-center">
+                  <span className="text-center leading-tight">
                     Just 5 more minutes<br />
                     <span className="text-xs opacity-90">({2 - dailyExtensions} left today)</span>
                   </span>
@@ -115,7 +115,7 @@ export const MotivationalModal = ({ isOpen, onClose, onExtend, onAcknowledge, da
                 <Button 
                   onClick={onAcknowledge}
                   size="sm"
-                  className="w-full bg-white text-red-600 hover:bg-gray-100 text-sm py-2.5 sm:py-3 font-comfortaa font-medium rounded-lg"
+                  className="w-full bg-white text-red-600 hover:bg-gray-100 text-xs sm:text-sm py-2 sm:py-2.5 font-comfortaa font-medium rounded-lg h-auto"
                 >
                   I'll take a break!
                 </Button>
@@ -124,7 +124,7 @@ export const MotivationalModal = ({ isOpen, onClose, onExtend, onAcknowledge, da
               <Button 
                 onClick={onAcknowledge}
                 size="sm"
-                className="w-full bg-white text-red-600 hover:bg-gray-100 text-sm py-2.5 sm:py-3 font-comfortaa font-medium rounded-lg"
+                className="w-full bg-white text-red-600 hover:bg-gray-100 text-xs sm:text-sm py-2 sm:py-2.5 font-comfortaa font-medium rounded-lg h-auto"
               >
                 ✨ Understood, I'll take a break
               </Button>
