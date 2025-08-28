@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
-import { Check, Clock, Star } from 'lucide-react';
+import { Check, Clock, Star, AlertCircle } from 'lucide-react';
 import { useSubscription } from '../hooks/useSubscription';
-import { toast } from 'sonner';
+import { toast } from '@/hooks/use-toast';
 
 interface SubscriptionModalProps {
   isOpen: boolean;
@@ -14,22 +14,52 @@ interface SubscriptionModalProps {
 
 export const SubscriptionModal = ({ isOpen, onClose, onSuccess }: SubscriptionModalProps) => {
   const [showTrialOffer, setShowTrialOffer] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const { purchaseSubscription, isLoading } = useSubscription();
+
+  const handleClose = () => {
+    if (!showTrialOffer && !showConfirmation) {
+      setShowConfirmation(true);
+    } else {
+      // Reset states and close
+      setShowTrialOffer(false);
+      setShowConfirmation(false);
+      onClose();
+    }
+  };
+
+  const handleConfirmCancel = () => {
+    setShowConfirmation(false);
+    setShowTrialOffer(true);
+  };
+
+  const handleReallyCancel = () => {
+    setShowTrialOffer(false);
+    setShowConfirmation(false);
+    onClose();
+  };
 
   const handlePurchase = async (productId: string) => {
     try {
       const success = await purchaseSubscription(productId);
       if (success) {
-        toast.success('Subscription activated successfully!');
+        toast({
+          title: "Success!",
+          description: "Subscription activated successfully!",
+        });
         onSuccess();
         onClose();
       }
     } catch (error) {
       if (error.message === 'CANCELLED') {
-        // User cancelled, show trial offer
+        // User cancelled during purchase, show trial offer
         setShowTrialOffer(true);
       } else {
-        toast.error('Purchase failed. Please try again.');
+        toast({
+          title: "Error",
+          description: "Purchase failed. Please try again.",
+          variant: "destructive",
+        });
       }
     }
   };
@@ -38,16 +68,66 @@ export const SubscriptionModal = ({ isOpen, onClose, onSuccess }: SubscriptionMo
     try {
       const success = await purchaseSubscription('mindfultime_annual_trial');
       if (success) {
-        toast.success('Free trial started! Enjoy 3 days free.');
+        toast({
+          title: "Free trial started!",
+          description: "Enjoy 3 days free.",
+        });
         onSuccess();
         onClose();
       }
     } catch (error) {
       if (error.message !== 'CANCELLED') {
-        toast.error('Failed to start trial. Please try again.');
+        toast({
+          title: "Error",
+          description: "Failed to start trial. Please try again.",
+          variant: "destructive",
+        });
       }
     }
   };
+
+  // Confirmation dialog when user tries to cancel
+  if (showConfirmation) {
+    return (
+      <Dialog open={isOpen} onOpenChange={handleClose}>
+        <DialogContent className="max-w-md mx-auto">
+          <DialogHeader>
+            <DialogTitle className="text-center text-2xl font-bold text-primary flex items-center justify-center gap-2">
+              <AlertCircle className="w-6 h-6" />
+              Wait! Are you sure?
+            </DialogTitle>
+            <DialogDescription className="text-center">
+              You're about to miss out on transforming your digital wellness
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="text-center py-4">
+            <p className="text-muted-foreground mb-6">
+              MindfulTime helps thousands of people build healthier relationships with their devices. 
+              Are you sure you don't want to join them?
+            </p>
+            
+            <div className="space-y-3">
+              <Button 
+                onClick={handleConfirmCancel}
+                className="w-full bg-gradient-primary hover:opacity-90"
+              >
+                Actually, I'm interested - show me options
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                onClick={handleReallyCancel}
+                className="w-full"
+              >
+                No thanks, maybe later
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   if (showTrialOffer) {
     return (
@@ -112,7 +192,7 @@ export const SubscriptionModal = ({ isOpen, onClose, onSuccess }: SubscriptionMo
               
               <Button 
                 variant="ghost" 
-                onClick={onClose}
+                onClick={handleClose}
                 className="w-full text-muted-foreground"
               >
                 Maybe later
@@ -125,7 +205,7 @@ export const SubscriptionModal = ({ isOpen, onClose, onSuccess }: SubscriptionMo
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-md mx-auto">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl font-bold text-primary">
@@ -184,7 +264,7 @@ export const SubscriptionModal = ({ isOpen, onClose, onSuccess }: SubscriptionMo
             
             <Button 
               variant="outline" 
-              onClick={onClose}
+              onClick={handleClose}
               className="w-full"
             >
               Cancel
