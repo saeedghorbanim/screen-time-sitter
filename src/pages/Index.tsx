@@ -19,8 +19,8 @@ const Index = () => {
   const navigate = useNavigate();
   // ALL HOOKS MUST BE CALLED FIRST - BEFORE ANY CONDITIONAL RETURNS
   const { user, signOut, loading } = useAuth();
-  const [dailyLimit, setDailyLimit] = useState(120); // 2 hours default
-  const [currentUsage, setCurrentUsage] = useState(85); // Demo usage
+  const [dailyLimit, setDailyLimit] = useState(120 * 60); // 2 hours in seconds
+  const [currentUsage, setCurrentUsage] = useState(85 * 60); // Demo usage in seconds
   const [isTracking, setIsTracking] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [hasShownWarning, setHasShownWarning] = useState(false);
@@ -62,6 +62,11 @@ const Index = () => {
   // Calculate progress percentage
   const progressPercentage = (currentUsage / dailyLimit) * 100;
   const remainingTime = Math.max(0, dailyLimit - currentUsage);
+  
+  // Convert seconds to minutes for display
+  const currentUsageMinutes = Math.floor(currentUsage / 60);
+  const remainingTimeMinutes = Math.floor(remainingTime / 60);
+  const dailyLimitMinutes = Math.floor(dailyLimit / 60);
 
   // Demo timer effect - ALL useEffect calls must be before conditional returns
   useEffect(() => {
@@ -81,7 +86,7 @@ const Index = () => {
           
           return newUsage;
         });
-      }, 1000); // Increase usage by 1 minute every second for demo
+      }, 1000); // Increase usage by 1 second every second (real time)
     }
 
     return () => {
@@ -130,7 +135,7 @@ const Index = () => {
   }
 
   const handleLimitChange = (newLimit: number) => {
-    setDailyLimit(newLimit);
+    setDailyLimit(newLimit * 60); // Convert minutes to seconds
     setHasShownWarning(false);
     toast({
       title: "Limit Updated",
@@ -173,7 +178,7 @@ const Index = () => {
   };
 
   const handleModalExtend = () => {
-    setDailyLimit(prev => prev + 5); // Add 5 minutes
+    setDailyLimit(prev => prev + (5 * 60)); // Add 5 minutes in seconds
     setShowModal(false);
     setHasShownWarning(false); // Reset warning so it can show again at new limit
     setIsTracking(true); // Resume tracking
@@ -277,14 +282,14 @@ const Index = () => {
                   
                   <div className="grid grid-cols-2 gap-4 w-full max-w-md">
                     <TimeDisplay
-                      minutes={currentUsage}
+                      minutes={currentUsageMinutes}
                       label="Used Today"
                       variant={progressPercentage > 100 ? "warning" : progressPercentage > 80 ? "warning" : "success"}
                     />
                     <TimeDisplay
-                      minutes={remainingTime}
+                      minutes={remainingTimeMinutes}
                       label="Remaining"
-                      variant={remainingTime === 0 ? "warning" : "default"}
+                      variant={remainingTimeMinutes === 0 ? "warning" : "default"}
                     />
                   </div>
                   
@@ -373,8 +378,8 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <TimeLimitSettings
-                  currentLimit={dailyLimit}
-                  onLimitChange={setDailyLimit}
+                  currentLimit={dailyLimitMinutes}
+                  onLimitChange={handleLimitChange}
                 />
               </CardContent>
             </Card>
