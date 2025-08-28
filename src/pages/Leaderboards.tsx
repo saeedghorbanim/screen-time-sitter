@@ -189,22 +189,34 @@ export const Leaderboards = () => {
 
         {/* Leaderboard Tabs */}
         <Tabs defaultValue="usage" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-white/50 border border-primary/10">
-            <TabsTrigger value="usage" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-white/50 border border-primary/10 p-1 rounded-lg">
+            <TabsTrigger 
+              value="usage" 
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2 rounded-md transition-all duration-200 data-[state=active]:bg-gradient-primary data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-primary/10 hover:text-primary"
+            >
               <TrendingDown className="w-3 h-3 sm:w-4 sm:h-4" />
               <span className="hidden xs:inline">Low Usage</span>
               <span className="xs:hidden">Usage</span>
             </TabsTrigger>
-            <TabsTrigger value="streaks" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+            <TabsTrigger 
+              value="streaks" 
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2 rounded-md transition-all duration-200 data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-orange-100 hover:text-orange-600"
+            >
               <Flame className="w-3 h-3 sm:w-4 sm:h-4" />
               Streaks
             </TabsTrigger>
-            <TabsTrigger value="goals" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+            <TabsTrigger 
+              value="goals" 
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2 rounded-md transition-all duration-200 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-cyan-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-blue-100 hover:text-blue-600"
+            >
               <Target className="w-3 h-3 sm:w-4 sm:h-4" />
               <span className="hidden xs:inline">Goal Achievement</span>
               <span className="xs:hidden">Goals</span>
             </TabsTrigger>
-            <TabsTrigger value="improved" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+            <TabsTrigger 
+              value="improved" 
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2 rounded-md transition-all duration-200 data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-pink-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-purple-100 hover:text-purple-600"
+            >
               <Trophy className="w-3 h-3 sm:w-4 sm:h-4" />
               <span className="hidden xs:inline">Most Improved</span>
               <span className="xs:hidden">Improved</span>
