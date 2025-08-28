@@ -237,19 +237,20 @@ export const Auth = () => {
       </div>
 
       {/* Main Action Buttons */}
-      <div className="space-y-5 max-w-md mx-auto">
+      <div className="space-y-4 max-w-md mx-auto">
         <Button 
           onClick={() => setCurrentStep('onboarding')}
-          className="w-full h-20 sm:h-16 text-xl sm:text-lg font-bold bg-gradient-primary hover:opacity-90 hover-scale shadow-elegant transform transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-manipulation"
+          className="w-full h-14 text-lg font-semibold bg-blue-primary text-white hover:bg-blue-secondary transition-all duration-200 shadow-lg rounded-lg touch-manipulation"
           size="lg"
         >
-          <Heart className="w-7 h-7 sm:w-6 sm:h-6 mr-3" />
+          <Heart className="w-5 h-5 mr-2" />
           Let's get to know you better
         </Button>
         
         <Button 
           onClick={() => setCurrentStep('signin')}
-          className="w-full h-16 sm:h-12 text-lg sm:text-base font-semibold bg-gradient-to-r from-secondary/90 to-accent/90 text-white border-0 hover:from-secondary hover:to-accent hover-scale shadow-lg transform transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-manipulation"
+          variant="outline"
+          className="w-full h-12 text-base font-medium border-2 border-blue-primary text-blue-primary hover:bg-blue-light hover:border-blue-secondary transition-all duration-200 rounded-lg touch-manipulation"
           size="lg"
         >
           Already have an account? Sign In

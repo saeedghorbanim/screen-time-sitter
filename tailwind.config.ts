@@ -82,6 +82,11 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				blue: {
+					primary: 'hsl(var(--blue-primary))',
+					secondary: 'hsl(var(--blue-secondary))',
+					light: 'hsl(var(--blue-light))'
 				}
 			},
 			backgroundImage: {

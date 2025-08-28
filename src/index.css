@@ -34,6 +34,11 @@
     --accent: 45 95% 70%;
     --accent-foreground: 20 15% 15%;
 
+    /* Blue variants for special buttons */
+    --blue-primary: 210 100% 60%;
+    --blue-secondary: 220 80% 50%;
+    --blue-light: 210 100% 95%;
+
     /* Warning - vibrant sunset orange */
     --warning: 15 90% 65%;
     --warning-foreground: 0 0% 100%;
@@ -120,6 +125,11 @@
 
     --accent: 45 85% 35%;
     --accent-foreground: 45 5% 95%;
+
+    /* Blue variants for dark mode */
+    --blue-primary: 210 90% 65%;
+    --blue-secondary: 220 70% 55%;
+    --blue-light: 210 30% 20%;
 
     --warning: 15 85% 70%;
     --warning-foreground: 15 10% 8%;
