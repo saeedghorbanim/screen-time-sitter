@@ -398,7 +398,7 @@ export const Auth = () => {
         <div className="text-center py-6">
           <Button
             onClick={() => setShowSubscriptionModal(true)}
-            className="bg-gradient-primary hover:opacity-90 text-3xl font-bold py-6 px-8"
+            className="w-full bg-gradient-primary hover:opacity-90 text-lg sm:text-xl font-bold py-4 px-6 sm:py-6 sm:px-8"
           >
             Let's Get Started
             <ArrowRight className="w-4 h-4 ml-2" />
