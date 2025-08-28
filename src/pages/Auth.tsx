@@ -573,14 +573,11 @@ export const Auth = () => {
           <Button
             type="button"
             variant="outline"
-            onClick={() => {
-              setOnboardingStep(onboardingQuestions.length - 1);
-              setCurrentStep('onboarding');
-            }}
+            onClick={() => setCurrentStep('welcome')}
             className="border-primary/20 hover:bg-primary/5"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back
+            Homepage
           </Button>
           
           <Button type="submit" className="flex-1 bg-gradient-primary hover:opacity-90" disabled={loading}>
@@ -639,7 +636,7 @@ export const Auth = () => {
             className="border-primary/20 hover:bg-primary/5"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back
+            Homepage
           </Button>
           
           <Button type="submit" className="flex-1 bg-gradient-primary hover:opacity-90" disabled={loading}>
