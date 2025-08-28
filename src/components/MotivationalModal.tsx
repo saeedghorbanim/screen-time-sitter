@@ -76,7 +76,7 @@ export const MotivationalModal = ({ isOpen, onClose, onExtend, onAcknowledge, da
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-sm mx-auto bg-red-500 border-2 border-red-600 shadow-xl rounded-xl sm:max-w-md mobile-modal p-3 sm:p-6">
+      <DialogContent className="max-w-sm mx-auto bg-red-500 border-2 border-red-600 shadow-xl rounded-2xl sm:rounded-xl sm:max-w-md mobile-modal p-3 sm:p-6">
         <div className="text-center space-y-2 sm:space-y-3">
           <div className="space-y-1 sm:space-y-2">
             <h2 className="text-base sm:text-xl font-fredoka text-white leading-tight">
