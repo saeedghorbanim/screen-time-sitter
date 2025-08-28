@@ -146,85 +146,107 @@ export const Testimonials = () => {
   }
 
   return (
-    <div className="min-h-screen bg-wellness-enhanced floating-orbs p-4">
-      <div className="container mx-auto max-w-4xl space-y-6">
-        {/* Header */}
-        <div className="text-center py-8">
-          <Heart className="w-16 h-16 mx-auto text-red-500 mb-4" />
-          <h1 className="text-4xl font-bold text-primary mb-4">Community Successes</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Real stories from real people who have transformed their digital wellness with MindfulTime.
-          </p>
-          <div className="flex gap-4 justify-center mt-6">
-            <Button asChild variant="outline">
-              <Link to="/dashboard">← Back to Dashboard</Link>
-            </Button>
-            <Button 
-              onClick={() => setShowForm(!showForm)}
-              className="bg-gradient-primary hover:opacity-90"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Share Your Success
-            </Button>
+    <div className="min-h-screen bg-wellness-enhanced floating-orbs">
+      {/* Header */}
+      <header className="bg-white/80 backdrop-blur-sm border-b border-primary/10 sticky top-0 z-40">
+        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4 max-w-4xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-gradient-primary rounded-xl p-1.5 sm:p-2">
+                <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-lg sm:text-xl font-bold text-primary">Success Stories</h1>
+                <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Community Achievements</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <Button asChild variant="outline" size="sm" className="text-xs sm:text-sm">
+                <Link to="/dashboard">← Back</Link>
+              </Button>
+              <Button 
+                onClick={() => setShowForm(!showForm)}
+                size="sm"
+                className="bg-gradient-primary hover:opacity-90 text-xs sm:text-sm"
+              >
+                <Plus className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Share</span>
+              </Button>
+            </div>
           </div>
+        </div>
+      </header>
+
+      <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 max-w-4xl space-y-4 sm:space-y-6">
+
+        {/* Hero Section */}
+        <div className="text-center py-4 sm:py-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-primary mb-2">Community Successes</h2>
+          <p className="text-sm sm:text-base text-muted-foreground px-2">
+            Real stories from people transforming their digital wellness
+          </p>
         </div>
 
         {/* Submit Form */}
         {showForm && (
           <Card className="border-2 border-primary/10 bg-white/80 backdrop-blur-sm">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <MessageSquare className="w-5 h-5" />
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
                 Share Your Success
               </CardTitle>
-              <CardDescription>
-                Help inspire others by sharing how MindfulTime has helped improve your digital wellness.
+              <CardDescription className="text-xs sm:text-sm">
+                Help inspire others by sharing your digital wellness journey
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <label className="text-sm font-medium">Title</label>
+                <label className="text-xs sm:text-sm font-medium">Title</label>
                 <Input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="e.g., 'Reduced my screen time by 3 hours daily!'"
-                  className="mt-1"
+                  placeholder="e.g., 'Reduced screen time by 3 hours!'"
+                  className="mt-1 text-sm"
                   maxLength={100}
                 />
               </div>
               
               <div>
-                <label className="text-sm font-medium">Your Success</label>
+                <label className="text-xs sm:text-sm font-medium">Your Success</label>
                 <Textarea
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  placeholder="Share your experience, challenges you overcame, and how the app helped you..."
-                  className="mt-1 min-h-[120px]"
+                  placeholder="Share your experience and how the app helped..."
+                  className="mt-1 min-h-[100px] sm:min-h-[120px] text-sm"
                   maxLength={1000}
                 />
               </div>
 
               <div>
-                <label className="text-sm font-medium mb-2 block">Rating</label>
+                <label className="text-xs sm:text-sm font-medium mb-2 block">Rating</label>
                 <div className="flex gap-1">
                   {renderInteractiveStars(rating, setRating)}
                 </div>
               </div>
 
-              <div className="flex gap-2 justify-end">
+              <div className="flex gap-2 justify-end pt-2">
                 <Button 
                   variant="outline" 
+                  size="sm"
                   onClick={() => setShowForm(false)}
+                  className="text-xs sm:text-sm"
                 >
                   Cancel
                 </Button>
                 <Button 
                   onClick={handleSubmit}
                   disabled={submitTestimonialMutation.isPending}
-                  className="bg-gradient-primary hover:opacity-90"
+                  size="sm"
+                  className="bg-gradient-primary hover:opacity-90 text-xs sm:text-sm"
                 >
-                  <Send className="w-4 h-4 mr-2" />
-                  {submitTestimonialMutation.isPending ? "Submitting..." : "Submit Success"}
+                  <Send className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  {submitTestimonialMutation.isPending ? "Submitting..." : "Submit"}
                 </Button>
               </div>
             </CardContent>
@@ -233,23 +255,23 @@ export const Testimonials = () => {
 
         {/* Stats Card */}
         <Card className="border-2 border-primary/10 bg-white/80 backdrop-blur-sm">
-          <CardContent className="pt-6">
-            <div className="grid grid-cols-3 gap-4 text-center">
+          <CardContent className="pt-4 sm:pt-6">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
               <div>
-                <div className="text-2xl font-bold text-primary">{testimonials.length}</div>
-                <div className="text-sm text-muted-foreground">Successes</div>
+                <div className="text-lg sm:text-2xl font-bold text-primary">{testimonials.length}</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Successes</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-primary">
+                <div className="text-lg sm:text-2xl font-bold text-primary">
                   {testimonials.length > 0 ? (testimonials.reduce((sum, t) => sum + t.rating, 0) / testimonials.length).toFixed(1) : '0'}
                 </div>
-                <div className="text-sm text-muted-foreground">Average Rating</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Avg Rating</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-primary">
+                <div className="text-lg sm:text-2xl font-bold text-primary">
                   {testimonials.filter(t => t.is_featured).length}
                 </div>
-                <div className="text-sm text-muted-foreground">Featured Successes</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Featured</div>
               </div>
             </div>
           </CardContent>
@@ -257,23 +279,24 @@ export const Testimonials = () => {
 
         {/* Loading State */}
         {isLoading && (
-          <div className="text-center py-12">
-            <MessageSquare className="w-12 h-12 mx-auto text-primary mb-4 animate-pulse" />
-            <p className="text-muted-foreground">Loading successes...</p>
+          <div className="text-center py-8 sm:py-12">
+            <MessageSquare className="w-8 h-8 sm:w-12 sm:h-12 mx-auto text-primary mb-4 animate-pulse" />
+            <p className="text-sm sm:text-base text-muted-foreground">Loading successes...</p>
           </div>
         )}
 
-        {/* Testimonials Grid */}
+        {/* Empty State */}
         {!isLoading && testimonials.length === 0 && (
           <Card className="border-2 border-primary/10 bg-white/80 backdrop-blur-sm">
-            <CardContent className="pt-6 text-center py-12">
-              <MessageSquare className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-xl font-semibold mb-2">No successes yet</h3>
-              <p className="text-muted-foreground mb-4">
+            <CardContent className="pt-6 text-center py-8 sm:py-12">
+              <MessageSquare className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-muted-foreground mb-4" />
+              <h3 className="text-lg sm:text-xl font-semibold mb-2">No successes yet</h3>
+              <p className="text-sm sm:text-base text-muted-foreground mb-4 px-4">
                 Be the first to share your success with the community!
               </p>
               <Button 
                 onClick={() => setShowForm(true)}
+                size="sm"
                 className="bg-gradient-primary hover:opacity-90"
               >
                 <Plus className="w-4 h-4 mr-2" />
@@ -284,48 +307,48 @@ export const Testimonials = () => {
         )}
 
         {/* Testimonials List */}
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {testimonials.map((testimonial) => (
             <Card 
               key={testimonial.id} 
               className={`border-2 ${testimonial.is_featured ? 'border-yellow-200 bg-gradient-to-r from-yellow-50/80 to-white/80' : 'border-primary/10 bg-white/80'} backdrop-blur-sm`}
             >
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
+              <CardHeader className="pb-3 sm:pb-4">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-2">
                       {testimonial.is_featured && (
-                        <Award className="w-5 h-5 text-yellow-500" />
+                        <Award className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500 flex-shrink-0" />
                       )}
-                      <CardTitle className="text-lg">{testimonial.title}</CardTitle>
+                      <CardTitle className="text-sm sm:text-lg leading-tight">{testimonial.title}</CardTitle>
                     </div>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
                       <div className="flex items-center gap-1">
-                        <span>By {testimonial.profiles?.display_name || testimonial.profiles?.username || 'Anonymous User'}</span>
+                        <span className="truncate">By {testimonial.profiles?.display_name || testimonial.profiles?.username || 'Anonymous User'}</span>
                       </div>
                       <div className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        {formatDistanceToNow(new Date(testimonial.created_at), { addSuffix: true })}
+                        <Calendar className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                        <span className="truncate">{formatDistanceToNow(new Date(testimonial.created_at), { addSuffix: true })}</span>
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 flex-shrink-0">
                     {renderStars(testimonial.rating)}
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
-                <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+              <CardContent className="pt-0">
+                <p className="text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line mb-4">
                   {testimonial.content}
                 </p>
-                <div className="flex items-center justify-between mt-4">
+                <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <ThumbsUp className="w-4 h-4 text-green-500" />
-                    <span className="text-sm text-muted-foreground">Helpful success</span>
+                    <ThumbsUp className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" />
+                    <span className="text-xs sm:text-sm text-muted-foreground">Helpful success</span>
                   </div>
                   {testimonial.is_featured && (
-                     <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
-                       Featured Success
+                     <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 text-xs">
+                       Featured
                      </Badge>
                   )}
                 </div>
@@ -334,8 +357,7 @@ export const Testimonials = () => {
           ))}
         </div>
 
-
-      </div>
+      </main>
     </div>
   );
 };
