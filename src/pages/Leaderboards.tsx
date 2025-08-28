@@ -33,13 +33,30 @@ export const Leaderboards = () => {
 
       if (error) throw error;
 
+      // Get unique user IDs from usage data
+      const userIds = [...new Set(usageData.map(record => record.user_id))];
+      
+      // Fetch profiles for these users
+      const { data: profilesData } = await supabase
+        .from('profiles')
+        .select('user_id, username, display_name')
+        .in('user_id', userIds);
+
+      // Create a map for quick profile lookup
+      const profilesMap = new Map();
+      profilesData?.forEach(profile => {
+        profilesMap.set(profile.user_id, profile);
+      });
+
       // Calculate metrics per user
       const userMetrics = new Map();
       
       usageData.forEach(record => {
         if (!userMetrics.has(record.user_id)) {
+          const profile = profilesMap.get(record.user_id);
           userMetrics.set(record.user_id, {
             userId: record.user_id,
+            username: profile?.username || profile?.display_name || 'User',
             todayUsage: 0,
             todayLimit: 120,
             totalDays: 0,
@@ -213,7 +230,7 @@ export const Leaderboards = () => {
                       <div className="flex items-center gap-3">
                         {getRankIcon(index)}
                         <div>
-                          <p className="font-medium">Anonymous User</p>
+                          <p className="font-medium">{user.username}</p>
                           <p className="text-sm text-muted-foreground">
                             {formatTime(user.todayUsage)} / {formatTime(user.todayLimit)} limit
                           </p>
@@ -248,7 +265,7 @@ export const Leaderboards = () => {
                       <div className="flex items-center gap-3">
                         {getRankIcon(index)}
                         <div>
-                          <p className="font-medium">Anonymous User</p>
+                          <p className="font-medium">{user.username}</p>
                           <p className="text-sm text-muted-foreground">
                             Current streak: {user.currentStreak} days
                           </p>
@@ -283,7 +300,7 @@ export const Leaderboards = () => {
                       <div className="flex items-center gap-3">
                         {getRankIcon(index)}
                         <div>
-                          <p className="font-medium">Anonymous User</p>
+                          <p className="font-medium">{user.username}</p>
                           <p className="text-sm text-muted-foreground">
                             {user.successfulDays}/{user.totalDays} successful days
                           </p>
@@ -318,7 +335,7 @@ export const Leaderboards = () => {
                       <div className="flex items-center gap-3">
                         {getRankIcon(index)}
                         <div>
-                          <p className="font-medium">Anonymous User</p>
+                          <p className="font-medium">{user.username}</p>
                           <p className="text-sm text-muted-foreground">
                             Avg: {formatTime(Math.round(user.avgUsage))} → Today: {formatTime(user.todayUsage)}
                           </p>
@@ -339,10 +356,10 @@ export const Leaderboards = () => {
         <Card className="border-2 border-primary/10 bg-white/80 backdrop-blur-sm">
           <CardContent className="pt-6">
             <div className="text-center text-sm text-muted-foreground">
-              <p className="font-medium mb-2">🔒 Privacy Protected</p>
+              <p className="font-medium mb-2">🏆 Community Rankings</p>
               <p>
-                All leaderboards are completely anonymous. No personal information or usernames are displayed.
-                Rankings are updated in real-time based on community usage patterns.
+                Rankings show usernames from user profiles and are updated in real-time. 
+                Compete with your community and celebrate each other's digital wellness achievements!
               </p>
             </div>
           </CardContent>
