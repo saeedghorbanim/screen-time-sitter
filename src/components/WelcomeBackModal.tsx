@@ -101,7 +101,7 @@ export const WelcomeBackModal = ({ isOpen, onClose, userName }: WelcomeBackModal
   if (loading) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-sm sm:max-w-md mx-auto mobile-modal">
           <div className="flex items-center justify-center py-8">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
@@ -116,7 +116,7 @@ export const WelcomeBackModal = ({ isOpen, onClose, userName }: WelcomeBackModal
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-sm sm:max-w-lg mx-auto mobile-modal">
         <DialogHeader>
           <div className="flex items-center gap-3 mb-2">
             {motivationalContent.icon}

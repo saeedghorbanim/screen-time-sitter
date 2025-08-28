@@ -76,15 +76,15 @@ export const MotivationalModal = ({ isOpen, onClose, onExtend, onAcknowledge, da
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-sm mx-auto bg-red-500 border-2 border-red-600 shadow-xl rounded-xl">
-        <div className="text-center space-y-4 py-4 px-4">
-          <div className="space-y-3">
-            <h2 className="text-xl font-fredoka text-white leading-tight">
+      <DialogContent className="max-w-sm mx-auto bg-red-500 border-2 border-red-600 shadow-xl rounded-xl sm:max-w-md mobile-modal">
+        <div className="text-center space-y-3 py-3 px-3 sm:py-4 sm:px-4">
+          <div className="space-y-2 sm:space-y-3">
+            <h2 className="text-lg sm:text-xl font-fredoka text-white leading-tight">
               {hasExtensionsLeft ? "Time Limit Reached" : "All Extensions Used"}
             </h2>
             
             <div className="px-1">
-              <h3 className="text-lg font-comfortaa font-medium text-white leading-relaxed break-words">
+              <h3 className="text-base sm:text-lg font-comfortaa font-medium text-white leading-relaxed break-words">
                 {hasExtensionsLeft 
                   ? currentQuote.text 
                   : "Your 5-minute extensions are up for today! 🚫"
@@ -98,14 +98,14 @@ export const MotivationalModal = ({ isOpen, onClose, onExtend, onAcknowledge, da
             </div>
           </div>
           
-          <div className="flex flex-col gap-2 pt-2">
+          <div className="flex flex-col gap-2 pt-1 sm:pt-2">
             {hasExtensionsLeft ? (
               <>
                 <Button 
                   onClick={onExtend}
                   variant="outline"
-                  size="default"
-                  className="w-full border-white/30 bg-white/10 text-white hover:bg-white/20 text-sm py-3 font-comfortaa font-medium rounded-lg"
+                  size="sm"
+                  className="w-full border-white/30 bg-white/10 text-white hover:bg-white/20 text-sm py-2.5 sm:py-3 font-comfortaa font-medium rounded-lg"
                 >
                   <span className="text-center">
                     Just 5 more minutes<br />
@@ -114,8 +114,8 @@ export const MotivationalModal = ({ isOpen, onClose, onExtend, onAcknowledge, da
                 </Button>
                 <Button 
                   onClick={onAcknowledge}
-                  size="default"
-                  className="w-full bg-white text-red-600 hover:bg-gray-100 text-sm py-3 font-comfortaa font-medium rounded-lg"
+                  size="sm"
+                  className="w-full bg-white text-red-600 hover:bg-gray-100 text-sm py-2.5 sm:py-3 font-comfortaa font-medium rounded-lg"
                 >
                   I'll take a break!
                 </Button>
@@ -123,8 +123,8 @@ export const MotivationalModal = ({ isOpen, onClose, onExtend, onAcknowledge, da
             ) : (
               <Button 
                 onClick={onAcknowledge}
-                size="default"
-                className="w-full bg-white text-red-600 hover:bg-gray-100 text-sm py-3 font-comfortaa font-medium rounded-lg"
+                size="sm"
+                className="w-full bg-white text-red-600 hover:bg-gray-100 text-sm py-2.5 sm:py-3 font-comfortaa font-medium rounded-lg"
               >
                 ✨ Understood, I'll take a break
               </Button>

@@ -251,4 +251,19 @@
       transform: translateY(-30px) translateX(5px);
     }
   }
+
+  /* Mobile Modal Styles */
+  .mobile-modal {
+    width: 90vw !important;
+    max-height: 85vh !important;
+    margin: auto !important;
+    overflow-y: auto !important;
+  }
+
+  @media (min-width: 640px) {
+    .mobile-modal {
+      width: auto !important;
+      max-height: 90vh !important;
+    }
+  }
 }

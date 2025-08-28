@@ -97,7 +97,7 @@ export const SubscriptionModal = ({ isOpen, onClose, onSuccess }: SubscriptionMo
   if (showConfirmation) {
     return (
       <Dialog open={isOpen} onOpenChange={handleClose}>
-        <DialogContent className="max-w-md mx-auto">
+        <DialogContent className="max-w-sm sm:max-w-md mx-auto mobile-modal">
           <DialogHeader>
             <DialogTitle className="text-center text-2xl font-bold text-primary flex items-center justify-center gap-2">
               <AlertCircle className="w-6 h-6" />
@@ -139,7 +139,7 @@ export const SubscriptionModal = ({ isOpen, onClose, onSuccess }: SubscriptionMo
   if (showTrialOffer) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-md mx-auto">
+        <DialogContent className="max-w-sm sm:max-w-md mx-auto mobile-modal">
           <DialogHeader>
             <DialogTitle className="text-center text-2xl font-bold text-primary">
               Special Offer Just for You! 🎉
@@ -213,7 +213,7 @@ export const SubscriptionModal = ({ isOpen, onClose, onSuccess }: SubscriptionMo
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-md mx-auto">
+      <DialogContent className="max-w-sm sm:max-w-md mx-auto mobile-modal">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl font-bold text-primary">
             Choose Your Plan
