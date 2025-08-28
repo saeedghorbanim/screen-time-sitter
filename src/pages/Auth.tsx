@@ -514,16 +514,16 @@ export const Auth = () => {
   const renderSignUpStep = () => (
     <div className="space-y-6">
       <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold text-primary">Create Your Account</h2>
-        <p className="text-muted-foreground">
+        <h2 className="text-xl sm:text-2xl font-bold text-primary">Create Your Account</h2>
+        <p className="text-sm sm:text-base text-muted-foreground px-2">
           Great! Now let's create your account to get started
         </p>
       </div>
 
-      <form onSubmit={handleSignUp} className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
+      <form onSubmit={handleSignUp} className="space-y-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="signup-username">Username</Label>
+            <Label htmlFor="signup-username" className="text-sm font-medium">Username</Label>
             <Input
               id="signup-username"
               type="text"
@@ -531,10 +531,11 @@ export const Auth = () => {
               value={signUpData.username}
               onChange={(e) => setSignUpData({ ...signUpData, username: e.target.value })}
               required
+              className="min-h-[48px] text-base touch-manipulation"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="signup-displayname">Display Name</Label>
+            <Label htmlFor="signup-displayname" className="text-sm font-medium">Display Name</Label>
             <Input
               id="signup-displayname"
               type="text"
@@ -542,11 +543,12 @@ export const Auth = () => {
               value={signUpData.displayName}
               onChange={(e) => setSignUpData({ ...signUpData, displayName: e.target.value })}
               required
+              className="min-h-[48px] text-base touch-manipulation"
             />
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="signup-email">Email</Label>
+          <Label htmlFor="signup-email" className="text-sm font-medium">Email</Label>
           <Input
             id="signup-email"
             type="email"
@@ -554,33 +556,39 @@ export const Auth = () => {
             value={signUpData.email}
             onChange={(e) => setSignUpData({ ...signUpData, email: e.target.value })}
             required
+            className="min-h-[48px] text-base touch-manipulation"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="signup-password">Password</Label>
+          <Label htmlFor="signup-password" className="text-sm font-medium">Password</Label>
           <Input
             id="signup-password"
             type="password"
-            placeholder="Create a password"
+            placeholder="Create a password (min 6 characters)"
             value={signUpData.password}
             onChange={(e) => setSignUpData({ ...signUpData, password: e.target.value })}
             required
             minLength={6}
+            className="min-h-[48px] text-base touch-manipulation"
           />
         </div>
         
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3 pt-2">
           <Button
             type="button"
             variant="outline"
             onClick={() => setCurrentStep('welcome')}
-            className="border-primary/20 hover:bg-primary/5"
+            className="border-primary/20 hover:bg-primary/5 min-h-[48px] touch-manipulation order-2 sm:order-1"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Homepage
           </Button>
           
-          <Button type="submit" className="flex-1 bg-gradient-primary hover:opacity-90" disabled={loading}>
+          <Button 
+            type="submit" 
+            className="flex-1 bg-gradient-primary hover:opacity-90 min-h-[48px] touch-manipulation font-medium order-1 sm:order-2" 
+            disabled={loading}
+          >
             {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
