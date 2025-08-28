@@ -449,7 +449,7 @@ export const Auth = () => {
           <p className="text-muted-foreground">{currentQuestion.subtitle}</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-4">
           {currentQuestion.options.map((option) => {
             const currentData = onboardingData[currentQuestion.key];
             const isSelected = currentQuestion.multiple 
@@ -460,16 +460,16 @@ export const Auth = () => {
               <Button
                 key={option}
                 variant={isSelected ? "default" : "outline"}
-                className={`h-auto p-4 justify-start text-left ${
+                className={`h-auto min-h-[56px] p-5 justify-start text-left w-full touch-manipulation active:scale-95 transition-all duration-150 ${
                   isSelected 
-                    ? "bg-gradient-primary text-white" 
-                    : "border-primary/20 hover:bg-primary/5"
+                    ? "bg-gradient-primary text-white border-primary shadow-lg" 
+                    : "border-primary/20 hover:bg-primary/5 hover:border-primary/40"
                 }`}
                 onClick={() => handleOptionSelect(currentQuestion.key, option, currentQuestion.multiple)}
               >
-                <div className="flex items-center w-full">
-                  {isSelected && <CheckCircle className="w-4 h-4 mr-2 flex-shrink-0" />}
-                  <span className="flex-1">{option}</span>
+                <div className="flex items-center w-full gap-3">
+                  {isSelected && <CheckCircle className="w-5 h-5 flex-shrink-0" />}
+                  <span className="flex-1 text-sm sm:text-base leading-relaxed">{option}</span>
                 </div>
               </Button>
             );
