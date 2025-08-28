@@ -172,22 +172,25 @@ export const Leaderboards = () => {
 
         {/* Leaderboard Tabs */}
         <Tabs defaultValue="usage" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-white/50 border border-primary/10">
-            <TabsTrigger value="usage" className="flex items-center gap-2">
-              <TrendingDown className="w-4 h-4" />
-              Low Usage
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-white/50 border border-primary/10">
+            <TabsTrigger value="usage" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+              <TrendingDown className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden xs:inline">Low Usage</span>
+              <span className="xs:hidden">Usage</span>
             </TabsTrigger>
-            <TabsTrigger value="streaks" className="flex items-center gap-2">
-              <Flame className="w-4 h-4" />
+            <TabsTrigger value="streaks" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+              <Flame className="w-3 h-3 sm:w-4 sm:h-4" />
               Streaks
             </TabsTrigger>
-            <TabsTrigger value="goals" className="flex items-center gap-2">
-              <Target className="w-4 h-4" />
-              Goal Achievement
+            <TabsTrigger value="goals" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+              <Target className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden xs:inline">Goal Achievement</span>
+              <span className="xs:hidden">Goals</span>
             </TabsTrigger>
-            <TabsTrigger value="improved" className="flex items-center gap-2">
-              <Trophy className="w-4 h-4" />
-              Most Improved
+            <TabsTrigger value="improved" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+              <Trophy className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden xs:inline">Most Improved</span>
+              <span className="xs:hidden">Improved</span>
             </TabsTrigger>
           </TabsList>
 

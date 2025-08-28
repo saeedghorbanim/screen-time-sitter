@@ -236,6 +236,10 @@ const Index = () => {
                 </div>
               </div>
               
+              <div className="text-xs font-medium text-primary sm:hidden">
+                {displayName}
+              </div>
+              
               <Button
                 onClick={signOut}
                 variant="outline" 
