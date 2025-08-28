@@ -457,21 +457,21 @@ export const Auth = () => {
               : currentData === option;
 
             return (
-              <Button
+              <button
                 key={option}
-                variant={isSelected ? "default" : "outline"}
-                className={`h-auto min-h-[56px] p-5 justify-start text-left w-full touch-manipulation active:scale-95 transition-all duration-150 ${
+                type="button"
+                className={`h-auto min-h-[56px] p-5 w-full text-left rounded-md border-2 touch-manipulation active:scale-95 transition-all duration-150 flex items-center gap-3 ${
                   isSelected 
                     ? "bg-gradient-primary text-white border-primary shadow-lg" 
-                    : "border-primary/20 hover:bg-primary/5 hover:border-primary/40"
+                    : "border-primary/20 bg-white hover:bg-primary/5 hover:border-primary/40 text-foreground"
                 }`}
                 onClick={() => handleOptionSelect(currentQuestion.key, option, currentQuestion.multiple)}
               >
-                <div className="flex items-center w-full gap-3">
-                  {isSelected && <CheckCircle className="w-5 h-5 flex-shrink-0" />}
-                  <span className="flex-1 text-sm sm:text-base leading-relaxed">{option}</span>
-                </div>
-              </Button>
+                {isSelected && <CheckCircle className="w-5 h-5 flex-shrink-0" />}
+                <span className="flex-1 text-sm sm:text-base leading-relaxed font-medium">
+                  {option}
+                </span>
+              </button>
             );
           })}
         </div>
