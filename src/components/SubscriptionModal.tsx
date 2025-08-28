@@ -142,70 +142,93 @@ export const SubscriptionModal = ({ isOpen, onClose, onSuccess }: SubscriptionMo
         <DialogContent className="max-w-sm sm:max-w-md mx-auto mobile-modal p-3 sm:p-6">
           <DialogHeader>
             <DialogTitle className="text-center text-lg sm:text-2xl font-bold text-primary">
-              Special Offer Just for You! 🎉
+              Choose Your Plan 🎉
             </DialogTitle>
             <DialogDescription className="text-center text-sm">
-              Don't miss out on transforming your digital wellness
+              Select the perfect plan for your digital wellness journey
             </DialogDescription>
           </DialogHeader>
           
-          <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-secondary/5">
-            <CardContent className="p-3 sm:p-6 text-center">
-              <div className="flex justify-center mb-2 sm:mb-4">
-                <div className="bg-primary/10 p-2 sm:p-3 rounded-full">
-                  <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
+          <div className="space-y-3 sm:space-y-4">
+            {/* Monthly Plan */}
+            <Card className="border-2 border-secondary/20 bg-gradient-to-br from-secondary/5 to-primary/5">
+              <CardContent className="p-3 sm:p-4 text-center">
+                <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">Monthly Plan</h3>
+                
+                <div className="text-center mb-2 sm:mb-3">
+                  <span className="text-2xl sm:text-3xl font-bold text-primary">$6.99</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">/month</span>
                 </div>
-              </div>
-              
-              <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">3-Day Free Trial</h3>
-              <p className="text-muted-foreground mb-2 sm:mb-4 text-sm">
-                Try MindfulTime risk-free, then continue for just
-              </p>
-              
-              <div className="text-center mb-2 sm:mb-4">
-                <span className="text-2xl sm:text-3xl font-bold text-primary">$19.99</span>
-                <span className="text-xs sm:text-sm text-muted-foreground">/year</span>
-                <div className="text-xs sm:text-sm text-muted-foreground line-through">
-                  Was $24.99/year
+                
+                <Button 
+                  onClick={() => handlePurchase('mindfultime_monthly')}
+                  disabled={isLoading}
+                  className="w-full bg-secondary hover:opacity-90 mb-2 text-sm py-2 sm:py-3"
+                >
+                  {isLoading ? 'Processing...' : 'Subscribe Monthly'}
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Annual Trial Plan */}
+            <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-secondary/5">
+              <CardContent className="p-3 sm:p-4 text-center">
+                <div className="flex justify-center mb-2 sm:mb-3">
+                  <div className="bg-primary/10 p-2 sm:p-3 rounded-full">
+                    <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
+                  </div>
                 </div>
-              </div>
-              
-              <div className="space-y-1 sm:space-y-2 mb-3 sm:mb-6 text-left">
-                <div className="flex items-center gap-2">
-                  <Check className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" />
-                  <span className="text-xs sm:text-sm">Screen time tracking & insights</span>
+                
+                <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">3-Day Free Trial</h3>
+                <p className="text-muted-foreground mb-2 sm:mb-3 text-sm">
+                  Try MindfulTime risk-free, then continue for just
+                </p>
+                
+                <div className="text-center mb-2 sm:mb-3">
+                  <span className="text-2xl sm:text-3xl font-bold text-primary">$19.99</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">/year</span>
+                  <div className="text-xs sm:text-sm text-muted-foreground line-through">
+                    Was $24.99/year
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Check className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" />
-                  <span className="text-xs sm:text-sm">Personalized wellness recommendations</span>
+                
+                <div className="space-y-1 sm:space-y-2 mb-3 sm:mb-4 text-left">
+                  <div className="flex items-center gap-2">
+                    <Check className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" />
+                    <span className="text-xs sm:text-sm">Screen time tracking & insights</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Check className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" />
+                    <span className="text-xs sm:text-sm">Personalized wellness recommendations</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Check className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" />
+                    <span className="text-xs sm:text-sm">Progress tracking & achievements</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Check className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" />
+                    <span className="text-xs sm:text-sm">Cancel anytime</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Check className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" />
-                  <span className="text-xs sm:text-sm">Progress tracking & achievements</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Check className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" />
-                  <span className="text-xs sm:text-sm">Cancel anytime</span>
-                </div>
-              </div>
-              
-              <Button 
-                onClick={handleTrialPurchase}
-                disabled={isLoading}
-                className="w-full bg-gradient-primary hover:opacity-90 mb-2 sm:mb-3 text-sm py-2 sm:py-3"
-              >
-                {isLoading ? 'Processing...' : 'Start Free Trial'}
-              </Button>
-              
-              <Button 
-                variant="ghost" 
-                onClick={handleDirectClose}
-                className="w-full text-muted-foreground text-sm py-1 sm:py-2"
-              >
-                Maybe later
-              </Button>
-            </CardContent>
-          </Card>
+                
+                <Button 
+                  onClick={handleTrialPurchase}
+                  disabled={isLoading}
+                  className="w-full bg-gradient-primary hover:opacity-90 mb-2 sm:mb-3 text-sm py-2 sm:py-3"
+                >
+                  {isLoading ? 'Processing...' : 'Start Free Trial'}
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <Button 
+            variant="ghost" 
+            onClick={handleDirectClose}
+            className="w-full text-muted-foreground text-sm py-1 sm:py-2 mt-2"
+          >
+            Maybe later
+          </Button>
         </DialogContent>
       </Dialog>
     );
