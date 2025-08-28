@@ -387,11 +387,17 @@ export const Auth = () => {
 
         {/* Let's Get Started Section */}
         <div className="text-center py-6">
-          <h2 className="text-3xl font-bold text-primary mb-2">Let's Get Started</h2>
-          <p className="text-sm text-muted-foreground">$24.99 a year / $2.08 a month</p>
+          <Button
+            onClick={() => setCurrentStep('signup')}
+            className="bg-gradient-primary hover:opacity-90 text-3xl font-bold py-6 px-8"
+          >
+            Let's Get Started
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+          <p className="text-sm text-muted-foreground mt-2">$24.99 a year / $2.08 a month</p>
         </div>
         
-        <div className="flex justify-between pt-4">
+        <div className="flex justify-start pt-4">
           <Button
             variant="outline"
             onClick={() => {
@@ -402,14 +408,6 @@ export const Auth = () => {
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back
-          </Button>
-          
-          <Button
-            onClick={() => setCurrentStep('signup')}
-            className="bg-gradient-primary hover:opacity-90"
-          >
-            Let's Get Started
-            <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
       </div>
