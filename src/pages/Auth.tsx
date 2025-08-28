@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Loader2, Smartphone, Users, Target, ArrowRight, ArrowLeft, Clock, Heart, CheckCircle, Lightbulb, Timer, Bell, Star, TrendingUp, Shield, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { SubscriptionModal } from '@/components/SubscriptionModal';
+import { useSubscription } from '@/hooks/useSubscription';
 
 type AuthStep = 'welcome' | 'onboarding' | 'suggestions' | 'signup' | 'signin';
 
@@ -26,6 +28,13 @@ export const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState<AuthStep>('welcome');
   const [onboardingStep, setOnboardingStep] = useState(0);
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+  
+  const { initializeStore } = useSubscription();
+
+  useEffect(() => {
+    initializeStore();
+  }, []);
   
   // Onboarding data
   const [onboardingData, setOnboardingData] = useState<OnboardingData>({
@@ -388,7 +397,7 @@ export const Auth = () => {
         {/* Let's Get Started Section */}
         <div className="text-center py-6">
           <Button
-            onClick={() => setCurrentStep('signup')}
+            onClick={() => setShowSubscriptionModal(true)}
             className="bg-gradient-primary hover:opacity-90 text-3xl font-bold py-6 px-8"
           >
             Let's Get Started
@@ -409,10 +418,16 @@ export const Auth = () => {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back
           </Button>
-        </div>
       </div>
-    );
-  };
+      
+      <SubscriptionModal
+        isOpen={showSubscriptionModal}
+        onClose={() => setShowSubscriptionModal(false)}
+        onSuccess={() => setCurrentStep('signup')}
+      />
+    </div>
+  );
+};
 
   const renderOnboardingStep = () => {
     const currentQuestion = onboardingQuestions[onboardingStep];
