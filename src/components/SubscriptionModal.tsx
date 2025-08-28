@@ -39,6 +39,13 @@ export const SubscriptionModal = ({ isOpen, onClose, onSuccess }: SubscriptionMo
     onClose();
   };
 
+  const handleDirectClose = () => {
+    // Direct close without state transitions to prevent flash
+    setShowTrialOffer(false);
+    setShowConfirmation(false);
+    onClose();
+  };
+
   const handlePurchase = async (productId: string) => {
     try {
       const success = await purchaseSubscription(productId);
@@ -192,7 +199,7 @@ export const SubscriptionModal = ({ isOpen, onClose, onSuccess }: SubscriptionMo
               
               <Button 
                 variant="ghost" 
-                onClick={handleClose}
+                onClick={handleDirectClose}
                 className="w-full text-muted-foreground"
               >
                 Maybe later
