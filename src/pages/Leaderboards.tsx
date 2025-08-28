@@ -148,9 +148,12 @@ export const Leaderboards = () => {
               Please sign in to view the community leaderboards
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-3">
             <Button asChild className="w-full">
-              <Link to="/auth">Sign In</Link>
+              <Link to="/">Sign In</Link>
+            </Button>
+            <Button asChild variant="outline" className="w-full">
+              <Link to="/">Create Account</Link>
             </Button>
           </CardContent>
         </Card>
