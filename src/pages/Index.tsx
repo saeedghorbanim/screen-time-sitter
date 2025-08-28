@@ -214,23 +214,23 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-wellness-enhanced floating-orbs px-4 py-2">
+    <div className="min-h-screen bg-wellness-enhanced floating-orbs">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-primary/10 sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="bg-gradient-primary rounded-xl p-2">
-                <Smartphone className="w-6 h-6 text-white" />
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-gradient-primary rounded-xl p-1.5 sm:p-2">
+                <Smartphone className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-primary">MindfulTime</h1>
-                <p className="text-sm text-muted-foreground">Digital Wellness Companion</p>
+                <h1 className="text-lg sm:text-xl font-bold text-primary">MindfulTime</h1>
+                <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Digital Wellness Companion</p>
               </div>
             </div>
             
-            <div className="flex items-center gap-3">
-              <div className="text-right">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="text-right hidden sm:block">
                 <div className="text-sm font-medium text-primary">
                   {displayName}
                 </div>
@@ -240,41 +240,46 @@ const Index = () => {
                 onClick={signOut}
                 variant="outline" 
                 size="sm"
-                className="border-primary/20 hover:bg-primary/5"
+                className="border-primary/20 hover:bg-primary/5 text-xs sm:text-sm px-2 sm:px-3"
               >
-                <LogOut className="w-4 h-4 mr-2" />
-                Sign Out
+                <LogOut className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Sign Out</span>
               </Button>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 max-w-4xl">
-        <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 bg-white/50 border border-primary/10">
-            <TabsTrigger value="dashboard" className="flex items-center gap-2">
-              <BarChart3 className="w-4 h-4" />
-              Dashboard
+      <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-4xl">
+        <Tabs defaultValue="dashboard" className="space-y-4 sm:space-y-6">
+          <TabsList className="grid w-full grid-cols-5 bg-white/50 border border-primary/10 h-auto p-1">
+            <TabsTrigger value="dashboard" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
+              <BarChart3 className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden xs:inline">Dashboard</span>
+              <span className="xs:hidden">📊</span>
             </TabsTrigger>
-            <TabsTrigger value="leaderboards" className="flex items-center gap-2">
-              <Trophy className="w-4 h-4" />
-              Leaderboards
+            <TabsTrigger value="leaderboards" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
+              <Trophy className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden xs:inline">Leaders</span>
+              <span className="xs:hidden">🏆</span>
             </TabsTrigger>
             <TabsTrigger 
               value="testimonials" 
-              className="flex items-center gap-2"
+              className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm"
             >
-              <Heart className="w-4 h-4" />
-              Successes
+              <Heart className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden xs:inline">Success</span>
+              <span className="xs:hidden">💝</span>
             </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
-              <Settings className="w-4 h-4" />
-              Settings
+            <TabsTrigger value="settings" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
+              <Settings className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden xs:inline">Settings</span>
+              <span className="xs:hidden">⚙️</span>
             </TabsTrigger>
-            <TabsTrigger value="insights" className="flex items-center gap-2">
-              <Smartphone className="w-4 h-4" />
-              Insights
+            <TabsTrigger value="insights" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
+              <Smartphone className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden xs:inline">Insights</span>
+              <span className="xs:hidden">📱</span>
             </TabsTrigger>
           </TabsList>
 
