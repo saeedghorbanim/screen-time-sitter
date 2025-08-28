@@ -27,7 +27,18 @@ const Index = () => {
   const [showWelcomeBack, setShowWelcomeBack] = useState(false);
   const [userProfile, setUserProfile] = useState<{ username?: string; display_name?: string } | null>(null);
   const [hasShownWelcomeBack, setHasShownWelcomeBack] = useState(false);
+  const [dailyExtensions, setDailyExtensions] = useState(0);
   const { toast } = useToast();
+  
+  // Track daily extensions - reset each day
+  useEffect(() => {
+    if (user) {
+      const today = new Date().toDateString();
+      const extensionKey = `dailyExtensions_${user.id}_${today}`;
+      const stored = localStorage.getItem(extensionKey);
+      setDailyExtensions(stored ? parseInt(stored) : 0);
+    }
+  }, [user]);
   
   // Fetch user profile data
   useEffect(() => {
@@ -49,7 +60,7 @@ const Index = () => {
     const handleProfileUpdate = () => {
       fetchUserProfile();
     };
-    
+
     window.addEventListener('profileUpdated', handleProfileUpdate);
     
     return () => {
@@ -178,13 +189,23 @@ const Index = () => {
   };
 
   const handleModalExtend = () => {
+    if (dailyExtensions >= 2 || !user) return;
+    
+    const newExtensionCount = dailyExtensions + 1;
+    setDailyExtensions(newExtensionCount);
+    
+    // Store in localStorage with date
+    const today = new Date().toDateString();
+    const extensionKey = `dailyExtensions_${user.id}_${today}`;
+    localStorage.setItem(extensionKey, newExtensionCount.toString());
+    
     setDailyLimit(prev => prev + (5 * 60)); // Add 5 minutes in seconds
     setShowModal(false);
     setHasShownWarning(false); // Reset warning so it can show again at new limit
     setIsTracking(true); // Resume tracking
     toast({
       title: "Extended! ⏰",
-      description: "Added 5 more minutes to your daily limit",
+      description: `Added 5 more minutes to your daily limit. Extensions left today: ${2 - newExtensionCount}`,
     });
   };
 
@@ -399,6 +420,7 @@ const Index = () => {
         onClose={() => setShowModal(false)}
         onExtend={handleModalExtend}
         onAcknowledge={handleModalAcknowledge}
+        dailyExtensions={dailyExtensions}
       />
 
       {/* Welcome Back Modal */}
