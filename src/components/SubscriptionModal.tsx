@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
+import { Switch } from './ui/switch';
 import { Check, Clock, Star, AlertCircle } from 'lucide-react';
 import { useSubscription } from '../hooks/useSubscription';
 import { toast } from '@/hooks/use-toast';
@@ -15,6 +16,7 @@ interface SubscriptionModalProps {
 export const SubscriptionModal = ({ isOpen, onClose, onSuccess }: SubscriptionModalProps) => {
   const [showTrialOffer, setShowTrialOffer] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isYearly, setIsYearly] = useState(true);
   const { purchaseSubscription, isLoading } = useSubscription();
 
   const handleClose = () => {
@@ -149,28 +151,28 @@ export const SubscriptionModal = ({ isOpen, onClose, onSuccess }: SubscriptionMo
             </DialogDescription>
           </DialogHeader>
           
-          <div className="space-y-3 sm:space-y-4">
-            {/* Monthly Plan */}
-            <Card className="border-2 border-secondary/20 bg-gradient-to-br from-secondary/5 to-primary/5">
-              <CardContent className="p-3 sm:p-4 text-center">
-                <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">Monthly Plan</h3>
-                
-                <div className="text-center mb-2 sm:mb-3">
-                  <span className="text-2xl sm:text-3xl font-bold text-primary">$6.99</span>
-                  <span className="text-xs sm:text-sm text-muted-foreground">/month</span>
-                </div>
-                
-                <Button 
-                  onClick={() => handlePurchase('mindfultime_monthly')}
-                  disabled={isLoading}
-                  className="w-full bg-secondary hover:opacity-90 mb-2 text-sm py-2 sm:py-3"
-                >
-                  {isLoading ? 'Processing...' : 'Subscribe Monthly'}
-                </Button>
-              </CardContent>
-            </Card>
+          {/* Billing Toggle */}
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <span className={`text-sm ${!isYearly ? 'text-primary font-medium' : 'text-muted-foreground'}`}>
+              Monthly
+            </span>
+            <Switch 
+              checked={isYearly} 
+              onCheckedChange={setIsYearly}
+              className="data-[state=checked]:bg-primary"
+            />
+            <span className={`text-sm ${isYearly ? 'text-primary font-medium' : 'text-muted-foreground'}`}>
+              Yearly
+            </span>
+            {isYearly && (
+              <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                Save 58%
+              </span>
+            )}
+          </div>
 
-            {/* Annual Trial Plan */}
+          <div className="space-y-3 sm:space-y-4">
+            {/* Main Plan */}
             <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-secondary/5">
               <CardContent className="p-3 sm:p-4 text-center">
                 <div className="flex justify-center mb-2 sm:mb-3">
@@ -179,17 +181,27 @@ export const SubscriptionModal = ({ isOpen, onClose, onSuccess }: SubscriptionMo
                   </div>
                 </div>
                 
-                <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">3-Day Free Trial</h3>
-                <p className="text-muted-foreground mb-2 sm:mb-3 text-sm">
-                  Try MindfulTime risk-free, then continue for just
-                </p>
+                <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">
+                  {isYearly ? '3-Day Free Trial' : 'Monthly Plan'}
+                </h3>
+                {isYearly && (
+                  <p className="text-muted-foreground mb-2 sm:mb-3 text-sm">
+                    Try MindfulTime risk-free, then continue for just
+                  </p>
+                )}
                 
                 <div className="text-center mb-2 sm:mb-3">
-                  <span className="text-2xl sm:text-3xl font-bold text-primary">$19.99</span>
-                  <span className="text-xs sm:text-sm text-muted-foreground">/year</span>
-                  <div className="text-xs sm:text-sm text-muted-foreground line-through">
-                    Was $24.99/year
-                  </div>
+                  <span className="text-2xl sm:text-3xl font-bold text-primary">
+                    {isYearly ? '$19.99' : '$4.99'}
+                  </span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">
+                    {isYearly ? '/year' : '/month'}
+                  </span>
+                  {isYearly && (
+                    <div className="text-xs sm:text-sm text-muted-foreground line-through">
+                      Was $24.99/year
+                    </div>
+                  )}
                 </div>
                 
                 <div className="space-y-1 sm:space-y-2 mb-3 sm:mb-4 text-left">
@@ -212,11 +224,11 @@ export const SubscriptionModal = ({ isOpen, onClose, onSuccess }: SubscriptionMo
                 </div>
                 
                 <Button 
-                  onClick={handleTrialPurchase}
+                  onClick={() => handlePurchase(isYearly ? 'mindfultime_annual_trial' : 'mindfultime_monthly')}
                   disabled={isLoading}
                   className="w-full bg-gradient-primary hover:opacity-90 mb-2 sm:mb-3 text-sm py-2 sm:py-3"
                 >
-                  {isLoading ? 'Processing...' : 'Start Free Trial'}
+                  {isLoading ? 'Processing...' : (isYearly ? 'Start Free Trial' : 'Subscribe Monthly')}
                 </Button>
               </CardContent>
             </Card>
