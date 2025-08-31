@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/components/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
-import { Trash2, User, AlertTriangle, Lock } from "lucide-react";
+import { Trash2, User, AlertTriangle, Lock, CreditCard, RefreshCw, ExternalLink } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,16 +22,77 @@ import {
 export const AccountSettings = () => {
   const { user, signOut } = useAuth();
   const { toast } = useToast();
+  const [subscriptionStatus, setSubscriptionStatus] = useState<any>(null);
   const [newUsername, setNewUsername] = useState("");
   const [isUpdatingUsername, setIsUpdatingUsername] = useState(false);
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  useEffect(() => {
+    checkSubscriptionStatus();
+  }, []);
 
   const refreshProfile = () => {
     // Trigger a custom event that the parent component can listen to
     window.dispatchEvent(new CustomEvent('profileUpdated'));
+  };
+
+  const checkSubscriptionStatus = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('subscribers')
+        .select('*')
+        .eq('user_id', user?.id)
+        .single();
+      
+      if (error && error.code !== 'PGRST116') throw error;
+      setSubscriptionStatus(data || { subscribed: false });
+    } catch (error) {
+      console.error('Error checking subscription:', error);
+      setSubscriptionStatus({ subscribed: false });
+    }
+  };
+
+  const handleRefreshSubscription = async () => {
+    setIsRefreshing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('check-subscription');
+      if (error) throw error;
+      
+      await checkSubscriptionStatus();
+      toast({
+        title: "Subscription Updated",
+        description: "Your subscription status has been refreshed!",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Refresh Failed",
+        description: error.message || "Failed to refresh subscription status",
+        variant: "destructive",
+      });
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  const handleManageSubscription = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('customer-portal');
+      if (error) throw error;
+      
+      if (data?.url) {
+        window.open(data.url, '_blank');
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to open subscription management",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleUsernameChange = async () => {
@@ -216,6 +277,56 @@ export const AccountSettings = () => {
 
   return (
     <div className="space-y-6">
+      {/* Subscription Management */}
+      <Card className="shadow-wellness border-2 border-primary/10 bg-white/80">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-primary">
+            <CreditCard className="w-5 h-5" />
+            Subscription Management
+          </CardTitle>
+          <CardDescription>
+            Manage your MindfulTime subscription and billing.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between p-4 bg-primary/5 rounded-lg">
+            <div>
+              <h4 className="font-medium text-primary">
+                {subscriptionStatus?.subscribed ? 'Premium Plan Active' : 'Free Plan'}
+              </h4>
+              <p className="text-sm text-muted-foreground">
+                {subscriptionStatus?.subscribed 
+                  ? `${subscriptionStatus.subscription_tier || 'Premium'} • Expires ${subscriptionStatus.subscription_end ? new Date(subscriptionStatus.subscription_end).toLocaleDateString() : 'N/A'}`
+                  : 'Upgrade to unlock premium features'
+                }
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={handleRefreshSubscription}
+                disabled={isRefreshing}
+                className="flex items-center gap-2"
+              >
+                <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                Refresh
+              </Button>
+              {subscriptionStatus?.subscribed && (
+                <Button 
+                  size="sm"
+                  onClick={handleManageSubscription}
+                  className="bg-gradient-primary hover:opacity-90 flex items-center gap-2"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Manage
+                </Button>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Username Change */}
       <Card className="shadow-wellness border-2 border-primary/10 bg-white/80">
         <CardHeader>

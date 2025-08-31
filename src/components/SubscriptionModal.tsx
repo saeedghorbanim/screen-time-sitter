@@ -36,9 +36,12 @@ export const SubscriptionModal = ({ isOpen, onClose, onSuccess }: SubscriptionMo
   };
 
   const handleReallyCancel = () => {
-    setShowTrialOffer(false);
-    setShowConfirmation(false);
     onClose();
+    // Reset states after close to prevent any flash
+    setTimeout(() => {
+      setShowTrialOffer(false);
+      setShowConfirmation(false);
+    }, 0);
   };
 
   const handleDirectClose = () => {
