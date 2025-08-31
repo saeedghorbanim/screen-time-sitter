@@ -217,53 +217,32 @@ export const AccountSettings = () => {
     setIsDeletingAccount(true);
 
     try {
-      // Delete user's profile and related data
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .delete()
-        .eq('user_id', user.id);
+      // Use the edge function to properly delete the account
+      const { data, error } = await supabase.functions.invoke('delete-account');
+      
+      if (error) throw error;
 
-      if (profileError) throw profileError;
-
-      // Delete daily usage data
-      const { error: usageError } = await supabase
-        .from('daily_usage')
-        .delete()
-        .eq('user_id', user.id);
-
-      if (usageError) throw usageError;
-
-      // Delete buddy relationships
-      const { error: buddyError } = await supabase
-        .from('buddies')
-        .delete()
-        .or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`);
-
-      if (buddyError) throw buddyError;
-
-      // Delete buddy requests
-      const { error: requestError } = await supabase
-        .from('buddy_requests')
-        .delete()
-        .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`);
-
-      if (requestError) throw requestError;
-
-      // Delete testimonials
-      const { error: testimonialError } = await supabase
-        .from('testimonials')
-        .delete()
-        .eq('user_id', user.id);
-
-      if (testimonialError) throw testimonialError;
+      // Clear all auth state from local storage
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+          localStorage.removeItem(key);
+        }
+      });
+      
+      // Clear session storage as well
+      Object.keys(sessionStorage || {}).forEach((key) => {
+        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+          sessionStorage.removeItem(key);
+        }
+      });
 
       toast({
         title: "Account Deleted",
         description: "Your account and all data have been permanently deleted.",
       });
 
-      // Sign out after successful deletion
-      await signOut();
+      // Force redirect to auth page and refresh to ensure clean state
+      window.location.href = '/auth';
     } catch (error: any) {
       toast({
         title: "Deletion Failed",

@@ -50,6 +50,9 @@ verify_jwt = true
 [functions.customer-portal]
 verify_jwt = true
 
+[functions.delete-account]
+verify_jwt = true
+
 [auth]
 enabled = true
 additional_redirect_urls = ["https://127.0.0.1:3000"]

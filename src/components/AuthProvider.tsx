@@ -68,7 +68,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signUp = async (email: string, password: string, username: string, displayName: string) => {
     try {
+      // Always clean up any existing auth state first
       cleanupAuthState();
+      
+      // Force sign out to ensure no existing session interferes
+      try {
+        await supabase.auth.signOut({ scope: 'global' });
+      } catch (err) {
+        // Continue even if this fails
+      }
       
       const redirectUrl = `${window.location.origin}/`;
       
@@ -85,9 +93,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       if (error) {
+        // Handle specific error cases for better UX
+        let errorMessage = error.message;
+        if (error.message.includes("User already registered")) {
+          errorMessage = "An account with this email already exists. Please sign in instead or use a different email address.";
+        } else if (error.message.includes("Password should be at least")) {
+          errorMessage = "Password must be at least 6 characters long.";
+        } else if (error.message.includes("Invalid email")) {
+          errorMessage = "Please enter a valid email address.";
+        }
+        
         toast({
           title: "Sign Up Error",
-          description: error.message,
+          description: errorMessage,
           variant: "destructive",
         });
         return { error };
