@@ -26,6 +26,8 @@ export const AccountSettings = () => {
   const [newUsername, setNewUsername] = useState("");
   const [isUpdatingUsername, setIsUpdatingUsername] = useState(false);
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+  const [showFirstConfirmation, setShowFirstConfirmation] = useState(false);
+  const [showFinalConfirmation, setShowFinalConfirmation] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
@@ -241,8 +243,8 @@ export const AccountSettings = () => {
         description: "Your account and all data have been permanently deleted.",
       });
 
-      // Force redirect to auth page and refresh to ensure clean state
-      window.location.href = '/auth';
+      // Force redirect to homepage and refresh to ensure clean state
+      window.location.href = '/';
     } catch (error: any) {
       toast({
         title: "Deletion Failed",
@@ -395,12 +397,14 @@ export const AccountSettings = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <AlertDialog>
+          {/* First Confirmation Dialog */}
+          <AlertDialog open={showFirstConfirmation} onOpenChange={setShowFirstConfirmation}>
             <AlertDialogTrigger asChild>
               <Button 
                 variant="destructive" 
                 className="flex items-center gap-2"
                 disabled={isDeletingAccount}
+                onClick={() => setShowFirstConfirmation(true)}
               >
                 <Trash2 className="w-4 h-4" />
                 Delete Account
@@ -408,21 +412,52 @@ export const AccountSettings = () => {
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogTitle>Are you sure you want to delete your account?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete your account
-                  and remove all your data including usage history, buddy connections,
-                  and testimonials from our servers.
+                  This will permanently delete your account and remove all your data including 
+                  usage history, buddy connections, and testimonials from our servers.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogCancel onClick={() => setShowFirstConfirmation(false)}>
+                  Cancel
+                </AlertDialogCancel>
                 <AlertDialogAction 
-                  onClick={handleDeleteAccount}
+                  onClick={() => {
+                    setShowFirstConfirmation(false);
+                    setShowFinalConfirmation(true);
+                  }}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  Yes, I want to delete my account
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+
+          {/* Final Confirmation Dialog */}
+          <AlertDialog open={showFinalConfirmation} onOpenChange={setShowFinalConfirmation}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>⚠️ This is your last chance!</AlertDialogTitle>
+                <AlertDialogDescription>
+                  <strong>This action cannot be undone.</strong> Your account and all associated data 
+                  will be permanently deleted. Are you absolutely certain you want to proceed?
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel onClick={() => setShowFinalConfirmation(false)}>
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction 
+                  onClick={() => {
+                    setShowFinalConfirmation(false);
+                    handleDeleteAccount();
+                  }}
                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                   disabled={isDeletingAccount}
                 >
-                  {isDeletingAccount ? "Deleting..." : "Delete Account"}
+                  {isDeletingAccount ? "Deleting..." : "Yes, permanently delete my account"}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
