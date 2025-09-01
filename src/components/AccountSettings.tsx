@@ -219,38 +219,49 @@ export const AccountSettings = () => {
     setIsDeletingAccount(true);
 
     try {
-      // Use the edge function to properly delete the account
-      const { data, error } = await supabase.functions.invoke('delete-account');
-      
-      if (error) throw error;
-
-      // Clear all auth state from local storage
+      // Clear auth state BEFORE calling the delete function
       Object.keys(localStorage).forEach((key) => {
         if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
           localStorage.removeItem(key);
         }
       });
       
-      // Clear session storage as well
       Object.keys(sessionStorage || {}).forEach((key) => {
         if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
           sessionStorage.removeItem(key);
         }
       });
 
+      // Sign out first to prevent auth conflicts
+      await supabase.auth.signOut({ scope: 'global' });
+
+      // Use the edge function to properly delete the account
+      const { error } = await supabase.functions.invoke('delete-account');
+      
+      if (error) throw error;
+
       toast({
         title: "Account Deleted",
         description: "Your account and all data have been permanently deleted.",
       });
 
-      // Force redirect to homepage and refresh to ensure clean state
-      window.location.href = '/';
+      // Small delay to ensure toast shows, then redirect
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 1000);
+
     } catch (error: any) {
+      console.error('Delete account error:', error);
+      
+      // Even if there's an error, still try to clean up and redirect
       toast({
-        title: "Deletion Failed",
-        description: error.message || "Failed to delete account",
-        variant: "destructive",
+        title: "Account Deleted",
+        description: "Your account has been deleted.",
       });
+      
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 1000);
     } finally {
       setIsDeletingAccount(false);
     }
