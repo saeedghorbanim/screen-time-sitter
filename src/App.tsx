@@ -17,8 +17,8 @@ const App = () => (
       <div className="min-h-screen relative">
         {/* Background Pattern */}
         <div className="absolute inset-0">
-          <div className="relative h-full w-full [&>div]:absolute [&>div]:bottom-0 [&>div]:right-0 [&>div]:z-[-2] [&>div]:h-full [&>div]:w-full [&>div]:bg-[var(--gradient-hero)]">
-            <div></div>
+          <div className="relative h-full w-full">
+            <div className="absolute bottom-0 right-0 z-[-2] h-full w-full bg-gradient-to-b from-blue-200 to-white"></div>
           </div>
         </div>
         
