@@ -32,26 +32,13 @@ serve(async (req) => {
       throw new Error("No authorization header");
     }
 
-    // Create client for user operations
-    const supabaseUser = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_ANON_KEY") ?? "",
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false,
-        },
-        global: {
-          headers: {
-            Authorization: authHeader,
-          },
-        },
-      }
-    );
-
-    // Get the user from the JWT
-    const { data: { user }, error: userError } = await supabaseUser.auth.getUser();
+    // Extract the JWT token from the Bearer header
+    const jwt = authHeader.replace('Bearer ', '');
+    
+    // Verify the JWT token using the admin client
+    const { data: { user }, error: userError } = await supabaseAdmin.auth.getUser(jwt);
     if (userError || !user) {
+      console.error('Auth error:', userError);
       throw new Error("Unauthorized");
     }
 

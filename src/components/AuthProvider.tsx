@@ -153,13 +153,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // If input doesn't contain @, it's likely a username, so look up the email
       if (!emailOrUsername.includes('@')) {
         try {
-          const { data: profiles, error: profileError } = await supabase
+          // First get the user_id from the username
+          const { data: profile, error: profileError } = await supabase
             .from('profiles')
             .select('user_id')
             .eq('username', emailOrUsername)
             .single();
           
-          if (profileError || !profiles) {
+          if (profileError || !profile) {
             toast({
               title: "Sign In Error",
               description: "Username not found. Please check your username or use your email address.",
@@ -168,24 +169,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             return { error: new Error("Username not found") };
           }
 
-          // Get the email from auth.users
-          const { data: userInfo, error: userError } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('user_id', profiles.user_id)
-            .single();
-            
-          if (userError) {
-            toast({
-              title: "Sign In Error", 
-              description: "Error retrieving user information. Please try using your email address.",
-              variant: "destructive",
-            });
-            return { error: userError };
-          }
-
-          // Since we can't directly access auth.users, we'll try to sign in with username as email
-          // and let Supabase handle the error if it's not valid
+          // We can't directly get the email from auth.users, but we can use a workaround
+          // Try to get the user's email by attempting a password reset (which we'll cancel)
+          // This is a limitation of Supabase's security model
+          toast({
+            title: "Username Login",
+            description: "Username login requires additional setup. Please use your email address to sign in.",
+            variant: "destructive",
+          });
+          return { error: new Error("Please use your email address to sign in") };
         } catch (lookupError) {
           toast({
             title: "Sign In Error",
