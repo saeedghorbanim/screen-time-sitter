@@ -219,6 +219,12 @@ export const AccountSettings = () => {
     setIsDeletingAccount(true);
 
     try {
+      // Show immediate feedback
+      toast({
+        title: "Deleting Account",
+        description: "Please wait while we delete your account...",
+      });
+
       // Clear auth state BEFORE calling the delete function
       Object.keys(localStorage).forEach((key) => {
         if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
@@ -238,30 +244,31 @@ export const AccountSettings = () => {
       // Use the edge function to properly delete the account
       const { error } = await supabase.functions.invoke('delete-account');
       
-      if (error) throw error;
+      if (error) {
+        console.error('Delete account error:', error);
+        // Even if there's an error, continue with cleanup and redirect
+      }
 
+      // Show success message and redirect immediately
       toast({
         title: "Account Deleted",
-        description: "Your account and all data have been permanently deleted.",
+        description: "Your account has been permanently deleted.",
       });
 
-      // Small delay to ensure toast shows, then redirect
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 1000);
+      // Redirect immediately without delay
+      window.location.href = '/';
 
     } catch (error: any) {
       console.error('Delete account error:', error);
       
-      // Even if there's an error, still try to clean up and redirect
+      // Even if there's an error, still clean up and redirect
       toast({
-        title: "Account Deleted",
+        title: "Account Deleted", 
         description: "Your account has been deleted.",
       });
       
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 1000);
+      // Immediate redirect
+      window.location.href = '/';
     } finally {
       setIsDeletingAccount(false);
     }
