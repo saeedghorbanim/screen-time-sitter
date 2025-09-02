@@ -62,7 +62,6 @@
     --gradient-forest: linear-gradient(135deg, hsl(25 70% 75%), hsl(35 65% 80%), hsl(45 80% 85%));
     --gradient-progress: linear-gradient(90deg, hsl(var(--success)), hsl(var(--primary)));
     --gradient-warning: linear-gradient(45deg, hsl(var(--warning)), hsl(25 90% 70%));
-    --gradient-hero: linear-gradient(180deg, hsl(var(--blue-light)), hsl(var(--background)));
     
     /* Calming background patterns */
     --pattern-dots: radial-gradient(circle at 2px 2px, hsl(var(--primary) / 0.1) 1px, transparent 0);
