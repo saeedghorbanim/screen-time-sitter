@@ -26,8 +26,6 @@ export const AccountSettings = () => {
   const [newUsername, setNewUsername] = useState("");
   const [isUpdatingUsername, setIsUpdatingUsername] = useState(false);
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
-  const [showFirstConfirmation, setShowFirstConfirmation] = useState(false);
-  const [showFinalConfirmation, setShowFinalConfirmation] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
@@ -219,49 +217,38 @@ export const AccountSettings = () => {
     setIsDeletingAccount(true);
 
     try {
-      // Clear auth state BEFORE calling the delete function
+      // Use the edge function to properly delete the account
+      const { data, error } = await supabase.functions.invoke('delete-account');
+      
+      if (error) throw error;
+
+      // Clear all auth state from local storage
       Object.keys(localStorage).forEach((key) => {
         if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
           localStorage.removeItem(key);
         }
       });
       
+      // Clear session storage as well
       Object.keys(sessionStorage || {}).forEach((key) => {
         if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
           sessionStorage.removeItem(key);
         }
       });
 
-      // Sign out first to prevent auth conflicts
-      await supabase.auth.signOut({ scope: 'global' });
-
-      // Use the edge function to properly delete the account
-      const { error } = await supabase.functions.invoke('delete-account');
-      
-      if (error) throw error;
-
       toast({
         title: "Account Deleted",
         description: "Your account and all data have been permanently deleted.",
       });
 
-      // Small delay to ensure toast shows, then redirect
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 1000);
-
+      // Force redirect to auth page and refresh to ensure clean state
+      window.location.href = '/auth';
     } catch (error: any) {
-      console.error('Delete account error:', error);
-      
-      // Even if there's an error, still try to clean up and redirect
       toast({
-        title: "Account Deleted",
-        description: "Your account has been deleted.",
+        title: "Deletion Failed",
+        description: error.message || "Failed to delete account",
+        variant: "destructive",
       });
-      
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 1000);
     } finally {
       setIsDeletingAccount(false);
     }
@@ -408,14 +395,12 @@ export const AccountSettings = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {/* First Confirmation Dialog */}
-          <AlertDialog open={showFirstConfirmation} onOpenChange={setShowFirstConfirmation}>
+          <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button 
                 variant="destructive" 
                 className="flex items-center gap-2"
                 disabled={isDeletingAccount}
-                onClick={() => setShowFirstConfirmation(true)}
               >
                 <Trash2 className="w-4 h-4" />
                 Delete Account
@@ -423,52 +408,21 @@ export const AccountSettings = () => {
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Are you sure you want to delete your account?</AlertDialogTitle>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  This will permanently delete your account and remove all your data including 
-                  usage history, buddy connections, and testimonials from our servers.
+                  This action cannot be undone. This will permanently delete your account
+                  and remove all your data including usage history, buddy connections,
+                  and testimonials from our servers.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel onClick={() => setShowFirstConfirmation(false)}>
-                  Cancel
-                </AlertDialogCancel>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction 
-                  onClick={() => {
-                    setShowFirstConfirmation(false);
-                    setShowFinalConfirmation(true);
-                  }}
-                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                >
-                  Yes, I want to delete my account
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-
-          {/* Final Confirmation Dialog */}
-          <AlertDialog open={showFinalConfirmation} onOpenChange={setShowFinalConfirmation}>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>⚠️ This is your last chance!</AlertDialogTitle>
-                <AlertDialogDescription>
-                  <strong>This action cannot be undone.</strong> Your account and all associated data 
-                  will be permanently deleted. Are you absolutely certain you want to proceed?
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel onClick={() => setShowFinalConfirmation(false)}>
-                  Cancel
-                </AlertDialogCancel>
-                <AlertDialogAction 
-                  onClick={() => {
-                    setShowFinalConfirmation(false);
-                    handleDeleteAccount();
-                  }}
+                  onClick={handleDeleteAccount}
                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                   disabled={isDeletingAccount}
                 >
-                  {isDeletingAccount ? "Deleting..." : "Yes, permanently delete my account"}
+                  {isDeletingAccount ? "Deleting..." : "Delete Account"}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
