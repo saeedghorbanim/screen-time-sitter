@@ -35,14 +35,8 @@ serve(async (req) => {
     // Extract the JWT token from the Bearer header
     const jwt = authHeader.replace('Bearer ', '');
     
-    // Create a regular client to verify the user session
-    const supabaseClient = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_ANON_KEY") ?? ""
-    );
-    
-    // Verify the JWT token using the regular client
-    const { data: { user }, error: userError } = await supabaseClient.auth.getUser(jwt);
+    // Verify the JWT token using the admin client directly
+    const { data: { user }, error: userError } = await supabaseAdmin.auth.getUser(jwt);
     if (userError || !user) {
       console.error('Auth error:', userError);
       throw new Error("Unauthorized");
