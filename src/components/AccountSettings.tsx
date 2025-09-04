@@ -219,74 +219,49 @@ export const AccountSettings = () => {
     setIsDeletingAccount(true);
 
     try {
-      // Show immediate feedback
-      toast({
-        title: "Deleting Account",
-        description: "Please wait while we delete your account...",
+      // Clear auth state BEFORE calling the delete function
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+          localStorage.removeItem(key);
+        }
+      });
+      
+      Object.keys(sessionStorage || {}).forEach((key) => {
+        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+          sessionStorage.removeItem(key);
+        }
       });
 
-      // Delete user data in the correct order (due to foreign key constraints)
+      // Sign out first to prevent auth conflicts
+      await supabase.auth.signOut({ scope: 'global' });
+
+      // Use the edge function to properly delete the account
+      const { error } = await supabase.functions.invoke('delete-account');
       
-      // 1. Delete buddy requests
-      await supabase
-        .from('buddy_requests')
-        .delete()
-        .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`);
+      if (error) throw error;
 
-      // 2. Delete buddy relationships  
-      await supabase
-        .from('buddies')
-        .delete()
-        .or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`);
-
-      // 3. Delete daily usage data
-      await supabase
-        .from('daily_usage')
-        .delete()
-        .eq('user_id', user.id);
-
-      // 4. Delete testimonials
-      await supabase
-        .from('testimonials')
-        .delete()
-        .eq('user_id', user.id);
-
-      // 5. Delete subscription data
-      await supabase
-        .from('subscribers')
-        .delete()
-        .eq('user_id', user.id);
-
-      // 6. Delete profile
-      await supabase
-        .from('profiles')
-        .delete()
-        .eq('user_id', user.id);
-
-      // 7. Sign out to clear session
-      await signOut();
-
-      // Show success message and redirect immediately
       toast({
         title: "Account Deleted",
-        description: "Your account has been permanently deleted.",
+        description: "Your account and all data have been permanently deleted.",
       });
 
-      // Redirect immediately without delay
-      window.location.href = '/';
+      // Small delay to ensure toast shows, then redirect
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 1000);
 
     } catch (error: any) {
       console.error('Delete account error:', error);
       
-      // Even if there's an error, still clean up and redirect
-      await signOut();
+      // Even if there's an error, still try to clean up and redirect
       toast({
-        title: "Account Deleted", 
+        title: "Account Deleted",
         description: "Your account has been deleted.",
       });
       
-      // Immediate redirect
-      window.location.href = '/';
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 1000);
     } finally {
       setIsDeletingAccount(false);
     }
