@@ -26,6 +26,7 @@ export const AccountSettings = () => {
   const [newUsername, setNewUsername] = useState("");
   const [isUpdatingUsername, setIsUpdatingUsername] = useState(false);
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+  const [deleteConfirmationStep, setDeleteConfirmationStep] = useState(0); // 0: closed, 1: first confirmation, 2: final confirmation
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
@@ -241,8 +242,8 @@ export const AccountSettings = () => {
         description: "Your account and all data have been permanently deleted.",
       });
 
-      // Force redirect to auth page and refresh to ensure clean state
-      window.location.href = '/auth';
+      // Redirect to homepage
+      window.location.href = '/';
     } catch (error: any) {
       toast({
         title: "Deletion Failed",
@@ -251,6 +252,7 @@ export const AccountSettings = () => {
       });
     } finally {
       setIsDeletingAccount(false);
+      setDeleteConfirmationStep(0);
     }
   };
 
@@ -395,36 +397,66 @@ export const AccountSettings = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <AlertDialog>
+          <AlertDialog open={deleteConfirmationStep > 0} onOpenChange={(open) => !open && setDeleteConfirmationStep(0)}>
             <AlertDialogTrigger asChild>
               <Button 
                 variant="destructive" 
                 className="flex items-center gap-2"
                 disabled={isDeletingAccount}
+                onClick={() => setDeleteConfirmationStep(1)}
               >
                 <Trash2 className="w-4 h-4" />
                 Delete Account
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete your account
-                  and remove all your data including usage history, buddy connections,
-                  and testimonials from our servers.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction 
-                  onClick={handleDeleteAccount}
-                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                  disabled={isDeletingAccount}
-                >
-                  {isDeletingAccount ? "Deleting..." : "Delete Account"}
-                </AlertDialogAction>
-              </AlertDialogFooter>
+              {deleteConfirmationStep === 1 && (
+                <>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure you want to delete your account?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This will permanently delete your account and remove all your data including usage history, buddy connections, and testimonials from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel onClick={() => setDeleteConfirmationStep(0)}>Cancel</AlertDialogCancel>
+                    <AlertDialogAction 
+                      onClick={() => setDeleteConfirmationStep(2)}
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    >
+                      Yes, Delete My Account
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </>
+              )}
+              {deleteConfirmationStep === 2 && (
+                <>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="text-destructive">⚠️ This is your last chance!</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      <span className="font-semibold text-destructive">This action cannot be undone!</span>
+                      <br /><br />
+                      All your data will be permanently deleted:
+                      <ul className="mt-2 ml-4 list-disc space-y-1">
+                        <li>Usage history and statistics</li>
+                        <li>Accountability buddy connections</li>
+                        <li>Testimonials and reviews</li>
+                        <li>Account settings and preferences</li>
+                      </ul>
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel onClick={() => setDeleteConfirmationStep(0)}>Cancel</AlertDialogCancel>
+                    <AlertDialogAction 
+                      onClick={handleDeleteAccount}
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      disabled={isDeletingAccount}
+                    >
+                      {isDeletingAccount ? "Deleting..." : "Yes, Permanently Delete Everything"}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </>
+              )}
             </AlertDialogContent>
           </AlertDialog>
         </CardContent>
