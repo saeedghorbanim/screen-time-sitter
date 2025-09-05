@@ -397,18 +397,17 @@ export const AccountSettings = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <Button 
+            variant="destructive" 
+            className="flex items-center gap-2"
+            disabled={isDeletingAccount}
+            onClick={() => setDeleteConfirmationStep(1)}
+          >
+            <Trash2 className="w-4 h-4" />
+            Delete Account
+          </Button>
+          
           <AlertDialog open={deleteConfirmationStep > 0} onOpenChange={(open) => !open && setDeleteConfirmationStep(0)}>
-            <AlertDialogTrigger asChild>
-              <Button 
-                variant="destructive" 
-                className="flex items-center gap-2"
-                disabled={isDeletingAccount}
-                onClick={() => setDeleteConfirmationStep(1)}
-              >
-                <Trash2 className="w-4 h-4" />
-                Delete Account
-              </Button>
-            </AlertDialogTrigger>
             <AlertDialogContent>
               {deleteConfirmationStep === 1 && (
                 <>
