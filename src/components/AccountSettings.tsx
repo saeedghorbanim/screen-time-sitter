@@ -236,11 +236,6 @@ export const AccountSettings = () => {
         }
       });
 
-      toast({
-        title: "Account Deleted",
-        description: "Your account and all data have been permanently deleted.",
-      });
-
       // Force redirect to homepage and refresh to ensure clean state
       window.location.href = '/';
     } catch (error: any) {
