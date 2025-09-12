@@ -30,6 +30,7 @@ export const AccountSettings = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [showFinalDeleteConfirm, setShowFinalDeleteConfirm] = useState(false);
 
   useEffect(() => {
     checkSubscriptionStatus();
@@ -418,11 +419,41 @@ export const AccountSettings = () => {
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction 
+                  onClick={() => setShowFinalDeleteConfirm(true)}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  disabled={isDeletingAccount}
+                >
+                  Yes, Delete Account
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+
+          {/* Final confirmation dialog */}
+          <AlertDialog open={showFinalDeleteConfirm} onOpenChange={setShowFinalDeleteConfirm}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle className="text-destructive">⚠️ FINAL WARNING ⚠️</AlertDialogTitle>
+                <AlertDialogDescription className="text-base">
+                  <strong>This is your last chance!</strong>
+                  <br /><br />
+                  Once you click "PERMANENTLY DELETE", your account and ALL data will be:
+                  <br />
+                  • <strong>Completely erased from our servers</strong>
+                  • <strong>Impossible to recover</strong>
+                  • <strong>Gone forever</strong>
+                  <br /><br />
+                  Are you 100% absolutely certain you want to proceed? There is no way back after this point.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>No, Keep My Account</AlertDialogCancel>
+                <AlertDialogAction 
                   onClick={handleDeleteAccount}
                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                   disabled={isDeletingAccount}
                 >
-                  {isDeletingAccount ? "Deleting..." : "Delete Account"}
+                  {isDeletingAccount ? "Deleting..." : "PERMANENTLY DELETE"}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
