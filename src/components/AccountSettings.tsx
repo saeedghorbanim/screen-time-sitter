@@ -222,21 +222,7 @@ export const AccountSettings = () => {
       
       if (error) throw error;
 
-      // Clear all auth state from local storage
-      Object.keys(localStorage).forEach((key) => {
-        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
-          localStorage.removeItem(key);
-        }
-      });
-      
-      // Clear session storage as well
-      Object.keys(sessionStorage || {}).forEach((key) => {
-        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
-          sessionStorage.removeItem(key);
-        }
-      });
-
-      // Force redirect to homepage and refresh to ensure clean state
+      // Immediately redirect to homepage - page reload will clear all state
       window.location.href = '/';
     } catch (error: any) {
       toast({
