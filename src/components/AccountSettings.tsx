@@ -241,8 +241,8 @@ export const AccountSettings = () => {
         description: "Your account and all data have been permanently deleted.",
       });
 
-      // Force redirect to auth page and refresh to ensure clean state
-      window.location.href = '/auth';
+      // Force redirect to homepage and refresh to ensure clean state
+      window.location.href = '/';
     } catch (error: any) {
       toast({
         title: "Deletion Failed",
