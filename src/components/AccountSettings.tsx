@@ -222,7 +222,26 @@ export const AccountSettings = () => {
       
       if (error) throw error;
 
-      // Immediately redirect to homepage - page reload will clear all state
+      // Clear all auth state from local storage
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+          localStorage.removeItem(key);
+        }
+      });
+      
+      // Clear session storage as well
+      Object.keys(sessionStorage || {}).forEach((key) => {
+        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+          sessionStorage.removeItem(key);
+        }
+      });
+
+      toast({
+        title: "Account Deleted",
+        description: "Your account and all data have been permanently deleted.",
+      });
+
+      // Force redirect to homepage and refresh to ensure clean state
       window.location.href = '/';
     } catch (error: any) {
       toast({
