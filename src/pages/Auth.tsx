@@ -473,7 +473,6 @@ export const Auth = () => {
                   {option}
                 </span>
                 {/* Full clickable overlay */}
-                <div className="absolute inset-0 z-10" />
               </button>
             );
           })}
