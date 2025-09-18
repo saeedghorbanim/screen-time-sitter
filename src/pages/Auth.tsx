@@ -460,19 +460,17 @@ export const Auth = () => {
               <button
                 key={option}
                 type="button"
-                className={`h-auto min-h-[56px] p-5 w-full text-left rounded-md border-2 touch-manipulation transition-all duration-150 flex items-center gap-3 relative overflow-hidden ${
+                className={`h-auto min-h-[56px] p-5 w-full text-left rounded-md border-2 touch-manipulation active:scale-95 transition-all duration-150 flex items-center gap-3 ${
                   isSelected 
                     ? "bg-gradient-primary text-white border-primary shadow-lg" 
                     : "border-primary/20 bg-white hover:bg-primary/5 hover:border-primary/40 text-foreground"
                 }`}
                 onClick={() => handleOptionSelect(currentQuestion.key, option, currentQuestion.multiple)}
-                style={{ WebkitTapHighlightColor: 'transparent' }}
               >
-                {isSelected && <CheckCircle className="w-5 h-5 flex-shrink-0 pointer-events-none" />}
-                <span className="flex-1 text-sm sm:text-base leading-relaxed font-medium pointer-events-none">
+                {isSelected && <CheckCircle className="w-5 h-5 flex-shrink-0" />}
+                <span className="flex-1 text-sm sm:text-base leading-relaxed font-medium">
                   {option}
                 </span>
-                {/* Full clickable overlay */}
               </button>
             );
           })}
