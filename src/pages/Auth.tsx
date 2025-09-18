@@ -398,9 +398,9 @@ export const Auth = () => {
         <div className="text-center py-6">
           <Button
             onClick={() => setShowSubscriptionModal(true)}
-            className="w-full bg-gradient-primary hover:opacity-90 text-lg sm:text-xl font-bold py-4 px-6 sm:py-6 sm:px-8"
+            className="w-full bg-gradient-primary hover:opacity-90 text-lg sm:text-xl font-bold py-4 px-6 sm:py-6 sm:px-8 flex items-center justify-center"
           >
-            Let's Get Started
+            <span>Let's Get Started</span>
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
           <p className="text-sm text-muted-foreground mt-2">$24.99 a year / $2.08 a month</p>
