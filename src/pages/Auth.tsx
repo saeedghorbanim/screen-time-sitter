@@ -395,7 +395,7 @@ export const Auth = () => {
         </div>
 
         {/* Let's Get Started Section */}
-        <div className="text-center py-6">
+        <div>
           <Button
             onClick={() => setShowSubscriptionModal(true)}
             className="w-full bg-gradient-primary hover:opacity-90 text-lg sm:text-xl font-bold py-4 px-6 sm:py-6 sm:px-8"
